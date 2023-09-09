@@ -4,6 +4,7 @@ import BookmarkIcon from '../icons/menu/bookmark';
 import CommunityIcon from "../icons/menu/communities";
 import ProfileIcon from '../icons/menu/profile';
 import SMItem from "./sm-items";
+import { Link } from 'react-router-dom';
 
 function SMList() {
 
@@ -20,9 +21,7 @@ function SMList() {
         <div className='h-[100%] flex flex-col justify-around mt-2 xl:items-start items-center'>
             <div className='w-[90%]'>
             {menu.map((pick, index) => (
-                <a href='#'>
-                <SMItem key={index} data={pick} />
-                </a>
+                pick[1] === "Profile" ? (<Link to={'profile'}><SMItem key={index} data={pick} /></Link>) : <a href='#' className='pointer-events-none'><SMItem key={index} data={pick} /></a>
             ))}
             </div>
         </div>

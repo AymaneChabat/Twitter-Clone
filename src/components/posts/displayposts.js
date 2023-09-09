@@ -1,9 +1,9 @@
 import Dots from "../icons/menu/dots";
-import InteractionButtons from "../icons/posts/model";
+import InteractionButtons from "../buttons/model";
 import ReactPlayer from 'react-player';
 
 
-function DisplayPost({data}) {
+function DisplayPosts({data}) {
     const sample = [
         {
             "userId": "0",
@@ -118,6 +118,7 @@ function DisplayPost({data}) {
            }
         }
     ]
+
   return (
     <div>
         {sample.map((post, index)=>(
@@ -127,7 +128,7 @@ function DisplayPost({data}) {
                 <div className="w-[90%]">
                     <div className="flex w-full items-start justify-between">
                         <div>
-                            <span className="font-bold text-[13px] font-twitterchirp mr-2">{post.name}</span>
+                            <span className="font-bold text-[15px] font-twitterchirp mr-2">{post.name}</span>
                             <span className="text-[15px] font-twitterchirp text-[#536471]"><span className="text-[12px]">@</span>{post.username} . {post.time}</span>
                         </div>
                         <div className="hover:bg-[#1D9BF0]/[.1] p-2 rounded-full">
@@ -135,7 +136,7 @@ function DisplayPost({data}) {
                         </div>
                     </div>
                     <div>
-                        <p className="text-[#0f1419] text-[15px] font-twitterchirp leading-[20px] break-words">
+                        <p className="text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">
                             {post.content}
                             {post.images.length > 0 ? (
                                 <div className="w-[100%] mt-1">
@@ -164,4 +165,4 @@ function DisplayPost({data}) {
   );
 }
 
-export default DisplayPost;
+export default DisplayPosts;

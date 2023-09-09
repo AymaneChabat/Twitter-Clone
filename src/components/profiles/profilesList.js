@@ -7,7 +7,7 @@ function FollowProfileList() {
         ["SaitAlbania", "@thealpha_wolf1"]
       ]
     return (
-        <div className='w-full h-auto my-2 bg-[#EFF3F4] pt-3 rounded-2xl'>
+        <div className='w-full h-auto my-2 bg-[#f7f9f9] pt-3 rounded-2xl'>
             <h1 className='font-bold px-4 text-[23px] font-chirp'>Who to follow</h1>
             <div className='my-1'>
                 {profiles.map((profile, index)=>(

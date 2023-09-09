@@ -4,7 +4,7 @@ import PickReplies from './repliesAudience';
 import PostFooter from './postfooter';
 import DeleteIcon from '../icons/posts/delete';
 
-function HomePost() {
+function HomePost({floating}) {
 
     const [content,setContent] = useState('')
     const [image,setImages] = useState(null)
@@ -28,7 +28,7 @@ function HomePost() {
                 <div className='w-auto border-b relative'>
                     {content === "" ? (<div className='text-[#000000]/[.6] text-[20px] font-chirp absolute pointer-events-none h-[30px]'>What is happening?!</div>) : ""}
                     <div className='max-w-[100%]'>
-                        <div className='focus:outline-none text-[20px] w-full grow-0 break-word font-chirp min-h-[50px]' contentEditable={true} onInput={(e)=>{setContent(e.target.innerHTML)}}></div>
+                        <div className={'focus:outline-none text-[20px] w-full grow-0 break-word font-chirp ' + (floating ? "min-h-[150px]" : "min-h-[90px]")} contentEditable={true} onInput={(e)=>{setContent(e.target.innerHTML)}}></div>
                         {image !== null ? imageDisplay : ""}
                         <PickReplies />
                     </div>

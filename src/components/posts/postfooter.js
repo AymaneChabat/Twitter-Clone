@@ -22,7 +22,7 @@ function PostFooter({content, image, setImages}) {
         </div>
       </div>
       <div>
-          <button type="button" class={"text-white text-sm bg-[#1d9bf0]/"+ (content === '' && image === null ? "[.5]" : "[.9]") + " font-medium rounded-full transition duration-300 py-0.5 px-5"} disabled={content === "" && image === null ? true : false}>Post</button>
+          <button type="button" class={"text-white text-sm font-medium rounded-full transition duration-300 py-0.5 px-5 " + (content === "" && image === null ? "bg-[#1d9bf0]/[.5]" : "bg-[#1d9bf0]/[.9]")} disabled={content === "" && image === null ? true : false}>Post</button>
       </div>
     </div>
   );

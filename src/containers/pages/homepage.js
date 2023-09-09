@@ -1,25 +1,38 @@
-import FinalMenu from '../../containers/homepage/menu';
-import LastContainer from '../homepage/last-container';
-import Main from '../homepage/home/home';
-import Explore from '../homepage/explore/explore';
-import Messages from '../homepage/messages/messages';
-import { useState } from 'react';
-import Profile from '../homepage/profile/profile';
-
+import { Fragment, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import Main from '../homepage/home';
+import Explore from '../homepage/explore';
+import Messages from '../homepage/messages';
+import Profile from '../homepage/profile';
+import Template from '../homepage/template';
+import { checkLogged } from '../../functions/authentication';
 
 function HomePage() {
-
   const [opened,setOpened] = useState(false)
-
   const [w,setW] = useState(window.innerWidth)
   window.addEventListener('resize', ()=>{setW(window.innerWidth)})
 
+
+  function NotFound() {
+    return <Navigate to="/home" />;
+  }
+
+  const elements = [
+    ["/home", <Main opened={opened} setOpened={setOpened} w={w}/>],
+    ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
+    ["/messages", <Messages w={w}/>],
+    ["/profile", <Profile />]
+  ]
+
   return (
-      <div className='flex h-screen overflow-hidden'>
-        <FinalMenu w={w}/>
-        <Profile />
-        <LastContainer w={w} page={"profile"}/>
-      </div>
+      <Fragment>
+        <Routes>
+          {elements.map((element, index)=>(
+            <Route key={index} path={element[0]} exact element={<Template w={w} element={element[1]}/>} />
+          ))}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Fragment>
   );
 }
 

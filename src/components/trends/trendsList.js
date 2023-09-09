@@ -13,7 +13,7 @@ function TrendingList() {
       ]
 
     return (
-        <div className='w-full h-auto mb-4 pt-3 bg-[#EFF3F4] rounded-2xl'>
+        <div className='w-full h-auto mb-4 pt-3 bg-[#f7f9f9] rounded-2xl'>
             <h1 className='font-bold px-4 text-[23px] font-chirp'>Portugal trends</h1>
             <div className='my-1'>
                 {trends.map((trend, index)=>(

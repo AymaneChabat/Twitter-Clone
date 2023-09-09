@@ -38,22 +38,22 @@ function LastContainer({w,page}) {
     )
 
   const show = (
-    <div className='w-[0%] s6:w-[10%] s10:w-[33%] h-full'>
-    <div className='ml-2 w-[20rem] overflow-auto h-screen'>
-        {page === "home" || page === "profile" ? searchDiv : ""}
-        <FollowProfileList />
-        {page === "home" || page === "profile" ? <TrendingList /> : ""}
-        <ul className='w-full flex flex-wrap justify-center pb-4'>
-          {footerLinks.map((link, index)=>(
-            <li key={index} className='text-[11px] mx-1 hover:underline cursor-pointer text-[#000000]/[.7]'>
-              {link}
+    <div className='w-[0%] s6:w-[10%] s10:w-[35.5%] h-full'>
+      <div className='ml-2 w-[22rem] overflow-auto h-screen'>
+          {page === "home" || page === "profile" ? searchDiv : ""}
+          <FollowProfileList />
+          {page === "home" || page === "profile" ? <TrendingList /> : ""}
+          <ul className='w-full flex flex-wrap justify-center pb-4'>
+            {footerLinks.map((link, index)=>(
+              <li key={index} className='text-[11px] mx-1 hover:underline cursor-pointer text-[#000000]/[.7]'>
+                {link}
+              </li>
+            ))}
+            <li className='text-[11px] mx-1 hover:underline cursor-pointer text-[#000000]/[.7]'>
+              &copy; 2023 X Corp.
             </li>
-          ))}
-          <li className='text-[11px] mx-1 hover:underline cursor-pointer text-[#000000]/[.7]'>
-            &copy; 2023 X Corp.
-          </li>
-        </ul>
-    </div>
+          </ul>
+      </div>
     </div>
   )
 

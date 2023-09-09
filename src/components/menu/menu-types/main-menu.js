@@ -11,11 +11,13 @@ import MoreIcon from '../../icons/menu/more';
 import PostIcon from '../../icons/menu/post';
 import Menu from "../items";
 import Dots from '../../icons/menu/dots';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-function MainMenu() {
+function MainMenu({setPostOpen, tab}) {
+  
 
-  const [active,setActive] = useState("Home")
+  const [active,setActive] = useState(tab)
 
   const menu = [
     [<HouseIcon picked={[active,"Home"]}/>,"Home"],
@@ -30,8 +32,21 @@ function MainMenu() {
     [<MoreIcon picked={[active,"More"]}/>,"More"]
   ]
 
+  const verify = (e,n) => {
+    if (n === 1) {
+      if (e === "Home" || e === "Explore" || e === "Messages" || e === "Profile") {
+        setActive(e)
+      }
+    } else if (n === 2) {
+      if (e !== "Home" && e !== "Explore" && e !== "Messages" & e !== "Profile") {
+        return 'pointer-events-none'
+      }
+    }
+  }
+
   return (
-      <div className='s13:w-[32%] pt-1 max-s13:max-w-[15%] s8:pr-2 px-1'>
+    <>
+      <div className='s13:w-[34.5%] pt-1 max-s13:max-w-[15%] s8:pr-2 px-1'>
           <div className='flex flex-col items-end h-[99%] justify-between'>
             <div className='mx-auto s8:mx-0 s13:w-[16rem]'>
               <div className='flex flex-col s13:items-start items-end'>
@@ -41,12 +56,12 @@ function MainMenu() {
                 <div className='h-[100%] flex flex-col justify-around mt-2 s13:items-start items-center'>
                   <div className='mb-4'>
                     {menu.map((pick, index) => (
-                      <a href='#' onClick={()=>{setActive(pick[1])}}>
-                        <Menu key={index} data={pick} picked={active}/>
-                      </a>
+                        <Link to={"/"+pick[1].toLowerCase()} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
+                          <Menu key={index} data={pick} picked={active}/>
+                        </Link>
                     ))}
                   </div>
-                  <div className='inline-flex s13:block w-[100%]'>
+                  <div className='inline-flex s13:block w-[100%]' onClick={()=>{setPostOpen(true)}}>
                     <button type="button" class="text-white s13:w-[16rem] px-0.5 s13:px-0 s13:py-3 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md"><span className='hidden s13:block'>Post</span><PostIcon /></button>
                   </div>
                 </div>
@@ -80,6 +95,7 @@ function MainMenu() {
             </div>
           </div>
         </div>
+      </>
   );
 }
 
