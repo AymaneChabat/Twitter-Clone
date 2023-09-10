@@ -56,8 +56,8 @@ function MainMenu({setPostOpen, tab}) {
                 <div className='h-[100%] flex flex-col justify-around mt-2 s13:items-start items-center'>
                   <div className='mb-4'>
                     {menu.map((pick, index) => (
-                        <Link to={"/"+pick[1].toLowerCase()} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
-                          <Menu key={index} data={pick} picked={active}/>
+                        <Link key={index} to={"/"+pick[1].toLowerCase()} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
+                          <Menu data={pick} picked={active}/>
                         </Link>
                     ))}
                   </div>

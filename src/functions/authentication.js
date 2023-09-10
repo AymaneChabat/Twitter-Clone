@@ -7,7 +7,7 @@ import {
     onAuthStateChanged
 } from "firebase/auth";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const response = (success, message) => {
     return {
@@ -16,31 +16,18 @@ const response = (success, message) => {
     }
 }
 
-// Function to check if user is logged in
-async function checkLogged() {
-    var res;
-    onAuthStateChanged(auth, (user)=>{
-        if (user) {
-            res = true
-        } else {
-            res = false
-        }
-    })
-    return res
-}
-
 // Function to log in a user with the provided email and password
-async function login(email, pass) {
-  return await signInWithEmailAndPassword(auth, email, pass).then((res)=>{
-    console.log("logged")
+async function login(email, password) {
+  return await signInWithEmailAndPassword(auth, email, password).then((res)=>{
+    return res.user
   }).catch((error)=>{
-    return {status: response(false, "Verify your credentials")}
+    return null
   })
 }
 
 // Function to register a new user with the provided email and password
-async function register(email, pass, data) {
-  return await createUserWithEmailAndPassword(auth, email, pass)
+async function register(email, password, name, username) {
+  return await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
           // Successfully registered a new user, now create their profile
           await fetch("http://localhost:9001/api/user", {
@@ -52,8 +39,8 @@ async function register(email, pass, data) {
               body: JSON.stringify({
                   profilepicture: "",
                   banner: "",
-                  name: "",
-                  username: "",
+                  name: name,
+                  username: username.toLowerCase(),
                   description: "",
                   createAt: Math.floor(Date.now() / 1000),
                   posts: 0,
@@ -107,6 +94,5 @@ export  {
     login,
     register,
     logout,
-    resetPassword,
-    checkLogged
+    resetPassword
 }

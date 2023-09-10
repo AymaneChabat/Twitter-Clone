@@ -4,11 +4,14 @@ import IconApple from '../../components/icons/logos/apple-icon';
 import IconGoogle from '../../components/icons/logos/google-icon';
 import CredentialInput from '../../components/inputs/credentials';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../functions/authentication';
+import { logIn } from '../../redux/actions';
+import { useDispatch } from 'react-redux';
 
 const LoginForm = () => {
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const data = [
         ["Google", <IconGoogle />],
@@ -78,7 +81,7 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className='h-[18%] flex flex-col justify-evenly '>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all transition-300' onClick={()=>{login(e, password.current.value)}}>Log in</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all transition-300' onClick={()=>{dispatch(logIn(e, password.current.value))}}>Log in</div>
                 <span className='text-[#536471] text-[18px] font-twitterchirp'>Don't have an account? <button className='text-[#1d9bf0] hover:underline' onClick={()=>{navigate("/i/flow/signup")}}>Sign up</button></span>
             </div>
         </div>
