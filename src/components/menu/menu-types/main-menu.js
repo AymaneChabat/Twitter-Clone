@@ -13,11 +13,15 @@ import Menu from "../items";
 import Dots from '../../icons/menu/dots';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../../../redux/actions/authActions';
 
 function MainMenu({setPostOpen, tab}) {
   
 
   const [active,setActive] = useState(tab)
+  const dispatch = useDispatch()
+
 
   const menu = [
     [<HouseIcon picked={[active,"Home"]}/>,"Home"],
@@ -82,13 +86,10 @@ function MainMenu({setPostOpen, tab}) {
                   </div>
                 </button>
               </div>
-              <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow h-[7rem] w-[19rem] border-2 border-solid">
-                <ul class="py-2 text-sm text-gray-700 h-[100%] flex flex-col justify-evenly" aria-labelledby="dropdownLargeButton">
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 font-bold text-[16px]">Add an existing account</a>
-                  </li>
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 font-bold text-[16px]">Log out @ayman</a>
+              <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow h-auto w-[19rem] border-2 border-solid">
+                <ul class="text-sm text-gray-700 h-[100%] flex flex-col justify-evenly" aria-labelledby="dropdownLargeButton">
+                  <li className='py-4 hover:bg-gray-100' onClick={()=>{dispatch(signOut())}}>
+                    <a href="#" class="block px-4 font-bold text-[16px]">Log out @ayman</a>
                   </li>
                 </ul>
               </div>

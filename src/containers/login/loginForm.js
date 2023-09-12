@@ -4,7 +4,7 @@ import IconApple from '../../components/icons/logos/apple-icon';
 import IconGoogle from '../../components/icons/logos/google-icon';
 import CredentialInput from '../../components/inputs/credentials';
 import { useNavigate } from 'react-router-dom';
-import { logIn } from '../../redux/actions';
+import { logIn } from '../../redux/actions/authActions';
 import { useDispatch } from 'react-redux';
 
 const LoginForm = () => {
@@ -51,10 +51,10 @@ const LoginForm = () => {
                         ))}
                     <span className='flex justify-between items-center text-[20px] font-chirp'><hr className='w-[42%]'/>or<hr className='w-[42%]'/></span>
                      <CredentialInput placeholder="Email" reff={email}/>
-                     <div className='text-[#ffffff] bg-[#000000]/[.9] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-2 rounded-full cursor-pointer transition-all transition-300' onClick={nextFlow}>
+                     <div className='text-[#ffffff] bg-[#000000]/[.9] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-2 rounded-full cursor-pointer transition-all duration-300' onClick={nextFlow}>
                             Next
                     </div>
-                    <div className='text-[#000000] border hover:bg-[#000000]/[.1] text-center font-bold font-twitterchirp py-2 rounded-full cursor-pointer transition-all transition-300' onClick={()=>{navigate("/i/flow/resetPassword")}}>
+                    <div className='text-[#000000] border hover:bg-[#000000]/[.1] text-center font-bold font-twitterchirp py-2 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{navigate("/i/flow/resetPassword")}}>
                         Forgot password?
                     </div>
                 </div>
@@ -81,7 +81,7 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className='h-[18%] flex flex-col justify-evenly '>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all transition-300' onClick={()=>{dispatch(logIn(e, password.current.value))}}>Log in</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(logIn(e, password.current.value))}}>Log in</div>
                 <span className='text-[#536471] text-[18px] font-twitterchirp'>Don't have an account? <button className='text-[#1d9bf0] hover:underline' onClick={()=>{navigate("/i/flow/signup")}}>Sign up</button></span>
             </div>
         </div>

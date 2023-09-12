@@ -1,4 +1,4 @@
-import { signOut } from "../../redux/actions";
+import { signOut } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 
 function DropdownItems({data}) {

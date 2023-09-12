@@ -1,7 +1,7 @@
-export const checkUser = (user) => {
+export const checkUser = (user, token) => {
     return {
         type: "CHECK_USER",
-        payload: {user}
+        payload: {user, token}
     }
 }
 
@@ -22,7 +22,7 @@ export const signUp = (email, password, name, username) => {
 export const resetPassword = (email) => {
     return {
         type: "RESET_PASS",
-        payload: {email}
+        payload: { email }
     }
 }
 

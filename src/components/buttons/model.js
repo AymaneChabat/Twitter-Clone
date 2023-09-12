@@ -14,34 +14,24 @@ function InteractionButtons({data}) {
           return (num / 1000000).toFixed(1) + 'M'; // Convert to M format
         }
       }
+    const display = [
+        [<CommentsIcon />, data.comments],
+        [<RepostsIcon />, data.reposts],
+        [<LikesIcon />, data.likes],
+        [<ImpressionsIcon />, data.impressions]
+    ]
     return (
             <div className="flex justify-between mt-2">
+                {display.map((pick, index)=>(
+                    <div className="group flex items-center" key={index}>
+                        <div className="group-hover:bg-[#1d9bf0]/[.2] p-1 transition-all duration-300 rounded-full">
+                            {pick[0]}
+                        </div>
+                        <span className="text-[13px] group-hover:text-[#67BAF2] ml-1">{roundNumberWithSuffix(pick[1])}</span>
+                    </div>
+                ))}
                 <div className="group flex items-center">
-                    <div className="group-hover:bg-[#67BAF2]/[.2] p-1 transition-all transition-300 rounded-full">
-                        <CommentsIcon />
-                    </div>
-                    <span className="text-[13px] group-hover:text-[#67BAF2] ml-1">{roundNumberWithSuffix(data.comments)}</span>
-                </div>
-                <div className="group flex items-center">
-                    <div className="group-hover:bg-[#00ba7c]/[.2] p-1 transition-all transition-300 rounded-full">
-                        <RepostsIcon />
-                    </div>
-                    <span className="text-[13px] group-hover:text-[#00ba7c] ml-1">{roundNumberWithSuffix(data.reposts)}</span>
-                </div>
-                <div className="group flex  items-center">
-                    <div className="group-hover:bg-[#00ba7c]/[.2] p-1 transition-all transition-300 rounded-full">
-                        <LikesIcon />
-                    </div>
-                    <span className="text-[13px] group-hover:text-[#f91863] ml-1">{roundNumberWithSuffix(data.likes)}</span>
-                </div>
-                <div className="group flex  items-center">
-                    <div className="group-hover:bg-[#1d9bf0]/[.2] p-1 transition-all transition-300 rounded-full">
-                        <ImpressionsIcon />
-                    </div>
-                    <span className="text-[13px] group-hover:text-[#67BAF2] ml-1">{roundNumberWithSuffix(data.impressions)}</span>
-                </div>
-                <div className="group flex items-center">
-                    <div className="group-hover:bg-[#1d9bf0]/[.2] p-1 transition-all transition-300 rounded-full">
+                    <div className="group-hover:bg-[#1d9bf0]/[.2] p-1 transition-all duration-300 rounded-full">
                         <ShareIcon />
                     </div>
                 </div>

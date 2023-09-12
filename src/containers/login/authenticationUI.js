@@ -4,7 +4,7 @@ import IconTwitter from '../../components/icons/logos/twitter-icon';
 import DeleteIcon from '../../components/icons/posts/delete';
 import CredentialInput from '../../components/inputs/credentials';
 import { Routes, Route, useNavigate } from 'react-router';
-import { resetPassword, signUp } from '../../redux/actions';
+import { resetPassword, signUp } from '../../redux/actions/authActions';
 import { useDispatch } from 'react-redux';
 
 const AuthUI = () => {
@@ -33,10 +33,12 @@ const AuthUI = () => {
                     <h1 className='font-bold font-chirp text-[27px]'>Enter your password</h1>
                     <span className='text-[#536471] text-[18px] font-chirp leading-3'>Enter the email associated with your account to change your password.</span>
                 </div>
+                <div className='mt-4'>
                 <CredentialInput placeholder="Email" reff={email}/>
+                </div>
             </div>
             <div className='h-[10%] min-h-[90px]'>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all transition-300' onClick={()=>{dispatch(resetPassword(email))}}>Reset password</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(resetPassword(email))}}>Reset password</div>
             </div>
         </div>
     )
@@ -51,7 +53,7 @@ const AuthUI = () => {
                 <CredentialInput placeholder="Password" password={true} reff={password}/>
             </div>
             <div className='h-[15%]'>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all transition-300' onClick={()=>{dispatch(signUp(email,password,name,password))}}>Sign up</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email,password,name,password))}}>Sign up</div>
             </div>
         </div>
     )
@@ -61,7 +63,7 @@ const AuthUI = () => {
 
     return (
         <div className='w-full h-full absolute bg-[#000000]/[.5] flex justify-center items-center '>
-            <div className='w-full h-full relative s7:w-[650px] s7:h-[700px]'>
+            <div className='w-full h-full relative s7:w-[650px] s7:max-h-[700px] s7:h-[60%] s7:min-h-[500px]'>
                 <div className='w-full h-full bg-[#ffffff] s7:rounded-xl'>
                     <div className='w-full py-2 h-[10%]'>
                         <IconTwitter clas={"w-[37px] mx-auto"}/>

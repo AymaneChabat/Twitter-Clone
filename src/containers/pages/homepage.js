@@ -5,7 +5,6 @@ import Explore from '../homepage/explore';
 import Messages from '../homepage/messages';
 import Profile from '../homepage/profile';
 import Template from '../homepage/template';
-import { checkLogged } from '../../functions/authentication';
 
 function HomePage() {
   const [opened,setOpened] = useState(false)

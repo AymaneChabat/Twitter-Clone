@@ -8,6 +8,8 @@ import DeleteIcon from '../../components/icons/posts/delete';
 import DetailsIcon from '../../components/icons/messages/details';
 import BackArrowIcon from '../../components/icons/messages/backArrow';
 import ReactFileReader from 'react-file-reader';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChats, createChat, deleteChat, selectChat } from '../../redux/actions/chatActions';
 
 function Messages({w}) {
 
@@ -18,12 +20,20 @@ function Messages({w}) {
   const [newMessage, setNewMessage] = useState("")
   const [chatOverflow, setChatOverflow] = useState(0)
   const [convoInfo,setConvoInfo] = useState(false)
+  const dispatch = useDispatch()
+  const currUser = useSelector(state=>state.user)
+  const chats = useSelector(state=>state.chats)
+
+  // const chats = dispatch(fetchChats((await currUser).token))
+  // const createchat = dispatch(createChat((await currUser).token, "B7IIn6aZL1DF7nHgF92o"))
+  // const selectchat = dispatch(selectChat(""))
+  // const deleteChat = dispatch(deleteChat((await currUser).token, "B7IIn6aZL1DF7nHgF92o"))
 
   const handleFiles = files => {
     setImages(files.base64)
   }
 
-  const chats = [
+  const sampleChats = [
     {
       chatId: "0",
       profileP: "#000000",
@@ -279,7 +289,7 @@ function Messages({w}) {
   }
 
   const conversation = (data) => (
-  <>
+  <>  
     <div className='h-[5%] w-full px-3 py-2'>
       <div className='flex justify-between w-full bg-[#ffffff] h-full items-center'>
         <div className='flex items-center'>
@@ -362,7 +372,7 @@ function Messages({w}) {
           </div>
         </div>
         <div className='w-[20%]'>
-          <button className='bg-[#000000] text-[#ffffff] font-twitterchirp font-bold py-2 px-5 rounded-full hover:bg-[#000000]/[.8] transition-all transition-300'>Follow</button>
+          <button className='bg-[#000000] text-[#ffffff] font-twitterchirp font-bold py-2 px-5 rounded-full hover:bg-[#000000]/[.8] transition-all duration-300'>Follow</button>
         </div>
       </div>
       <div className='p-3 border-b border-[#536471]/[.1]'>
@@ -403,7 +413,7 @@ function Messages({w}) {
             </div>
           </div>
           <div className='messages'>
-            {chats.map((chat, index)=>(
+            {sampleChats.map((chat, index)=>(
               <div className={'cursor-pointer w-full border-[#1d9bf0] p-3 flex items-center' + (chat.chatId === activeChat ? " border-r bg-[#97d0f7]/[.1]" : "")} key={index} id={chat.chatId} onClick={()=>{setActiveChat(chat.chatId)}}>
                 <div className='mr-2'>
                   <div className='w-[38px] h-[38px] bg-[#000000] rounded-full'></div>

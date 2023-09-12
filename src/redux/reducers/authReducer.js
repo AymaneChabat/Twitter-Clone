@@ -1,6 +1,6 @@
 import { login, register, logout, resetPassword } from '../../functions/authentication';
 
-const initialState = {};
+const initialState = {user: null, token: null};
 
 const authReducer = async(state = initialState, action) => {
     let pay = action.payload
@@ -8,24 +8,29 @@ const authReducer = async(state = initialState, action) => {
         case 'CHECK_USER':
             return  {
                 ...state,
-                user: pay.user
+                user: pay.user,
+                token: pay.token
             };
         case 'SIGN_IN':
+            const signin = await login(pay.email, pay.password)
             return  {
                 ...state,
-                user: await login(pay.email, pay.password)
+                user: signin,
+                token: (await signin.getIdTokenResult()).token
             };
         case 'SIGN_UP':
+            const signup = await register(pay.email, pay.password, pay.name, pay.username)
             return  {
                 ...state,
-                user: await register(pay.email, pay.password, pay.name, pay.username)
+                user: signup,
+                token: (await signup.getIdTokenResult()).token
             };
         case 'SIGN_OUT':
             return await logout().then(()=>{
                 return initialState;
             }); 
         case 'RESET_PASS':
-            return await resetPassword(pay.email).then(()=>{
+            return await resetPassword(pay.email.current.value).then(()=>{
                 return state;
             }) 
         default:
