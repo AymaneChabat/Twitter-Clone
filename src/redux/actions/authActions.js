@@ -1,33 +1,48 @@
-export const checkUser = (user, token) => {
-    return {
+import { login, register, logout, resetPassword } from '../../functions/authentication';
+
+
+export const checkUser = (user, token) => (dispatch) => {
+    dispatch({
         type: "CHECK_USER",
         payload: {user, token}
-    }
+    })
 }
 
-export const logIn = (email, password) => {
-    return {
-        type: "SIGN_IN",
-        payload: {email, password}
-    }
+export const logIn = (email, password) => (dispatch) => {
+    login(email, password).then(async(user)=>{
+        dispatch({
+            type: "SIGN_IN",
+            payload: {user, token: (await user.getIdTokenResult()).token}
+        })
+    })
 }
 
-export const signUp = (email, password, name, username) => {
-    return {
-        type: "SIGN_UP",
-        payload: {email, password, name, username}
-    }
+export const signUp = (email, password, name, username) => (dispatch) => {
+    register(email, password, name, username).then(async(user)=>{
+        if (user) {
+            dispatch({
+                type: "SIGN_UP",
+                payload: {user, token: (await user.getIdTokenResult()).token}
+            })
+        }
+    })
+    
 }
 
-export const resetPassword = (email) => {
-    return {
-        type: "RESET_PASS",
-        payload: { email }
-    }
+export const resetPass = (email) => (dispatch) => {
+    resetPassword(email.current.value).then(()=>{
+        dispatch({
+            type: "RESET_PASS",
+            payload: {}
+        })
+    })
 }
 
-export const signOut = () => {
-    return {
-        type: "SIGN_OUT"
-    }
+export const signOut = () => (dispatch) => {
+    logout().then(()=>{
+        dispatch({
+            type: "RESET_PASS",
+            payload: {}
+        })
+    })
 }

@@ -14,8 +14,8 @@ async function addPost(data, token) {
 }
 
 // Function to get a list of posts
-async function getPost(token) {
-    return await fetch("http://localhost:9001/api/post", {
+async function getPost(token, tab) {
+    return await fetch("http://localhost:9001/api/post?tab="+tab, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ async function deletePost(token, postId) {
     }))
 }
 
-export default {
+export {
     addPost,
     deletePost,
     getPost

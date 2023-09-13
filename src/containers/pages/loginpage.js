@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 
 function Login() {
   const [page, setPage] = useState("")
-    const location = useLocation();
+  const location = useLocation();
 
     useEffect(() => {
         setPage(location.pathname.slice(1,));

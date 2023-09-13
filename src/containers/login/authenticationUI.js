@@ -4,7 +4,7 @@ import IconTwitter from '../../components/icons/logos/twitter-icon';
 import DeleteIcon from '../../components/icons/posts/delete';
 import CredentialInput from '../../components/inputs/credentials';
 import { Routes, Route, useNavigate } from 'react-router';
-import { resetPassword, signUp } from '../../redux/actions/authActions';
+import { resetPass, signUp } from '../../redux/actions/authActions';
 import { useDispatch } from 'react-redux';
 
 const AuthUI = () => {
@@ -38,7 +38,7 @@ const AuthUI = () => {
                 </div>
             </div>
             <div className='h-[10%] min-h-[90px]'>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(resetPassword(email))}}>Reset password</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(resetPass(email.current.value))}}>Reset password</div>
             </div>
         </div>
     )
@@ -53,7 +53,7 @@ const AuthUI = () => {
                 <CredentialInput placeholder="Password" password={true} reff={password}/>
             </div>
             <div className='h-[15%]'>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email,password,name,password))}}>Sign up</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value,password.current.value))}}>Sign up</div>
             </div>
         </div>
     )
