@@ -43,12 +43,12 @@ async function register(email, password, name, username) {
                   username: username.toLowerCase(),
                   description: "",
                   createAt: Math.floor(Date.now() / 1000),
-                  posts: 0,
-                  comments: 0,
-                  likes: 0,
-                  reposts: 0,
-                  followers: 0,
-                  following: 0,
+                  posts: [],
+                  comments: [],
+                  likes: [],
+                  reposts: [],
+                  followers: [],
+                  following: [],
                   private: false
               })
           }).then(async (res) => {

@@ -23,7 +23,7 @@ function App() {
           dispatch(checkUser(user, (await user.getIdTokenResult()).token));
           const links = ["home", "messages", "profile", "explore"]
           if (!links.includes(location.pathname.slice(1,))) {
-            navigate("/")
+            window.location = "http://localhost:3000/home"
           }
           
       } else {

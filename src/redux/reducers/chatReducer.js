@@ -6,7 +6,7 @@ const chatReducer = (state = initialState, action) => {
         case "GET_CHATS":
             return {
                 ...state,
-                chats: payload.snapshot === false ? [...state.chats, ...payload.chats[0]] : payload.chats[0],
+                chats: payload.snapshot === true ? payload.chats[0] : [...state.chats, ...payload.chats[0]],
                 activeChat: state.activeChat,
                 last: payload.chats[1] === null ? state.last : payload.chats[1]
             }

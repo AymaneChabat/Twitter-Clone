@@ -14,8 +14,8 @@ async function addPost(data, token) {
 }
 
 // Function to get a list of posts
-async function getPost(token, tab) {
-    return await fetch("http://localhost:9001/api/post?tab="+tab, {
+async function getPost(token, tab, last) {
+    return await fetch("http://localhost:9001/api/post?tab="+tab+"&last="+last, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

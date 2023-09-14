@@ -10,20 +10,24 @@ const PostReducer = (state = initialState, action) => {
         case "HOME_GET_POSTS":
             return {
                 ...state,
-                home: [...initialState.home, ...payload.res]
+                home: payload.res.length !== 0 ? [...state.home, ...payload.res] : state.home
             }
         case "PROFILE_GET_POSTS":
             return {
                 ...state,
-                profile: [...initialState.profile, ...payload.res.posts]
+                profile:  payload.res.length !== 0 ? [...state.profile, ...payload.res] : state.profile
             }
         case "LIKES_GET_POSTS":
             return {
                 ...state,
-                likes: [...initialState.likes, ...payload.res.posts]
+                likes:  payload.res.length !== 0 ? [...state.likes, ...payload.res] : state.likes
             }
         case "CREATE_POST":
-            return [...state, payload.res]
+            return {
+                ...state,
+                home: [...state.home, payload.res.post],
+                profile: [...state.profile, payload.res.post]    
+            }
         case "DEL_POST":
             return {
                 ...state,

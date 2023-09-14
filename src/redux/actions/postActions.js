@@ -18,29 +18,25 @@ export const deletePost = (token, postId) => (dispatch) => {
     }) 
 }
 
-export const getHomePost = (token) => (dispatch) => {
-    fetchPosts(token, "home").then((res)=>{
-        dispatch({
-            type: "HOME_GET_POSTS",
-            payload: {res}
-        })
-    }) 
-}
-
-export const getProfilePost = (token) => (dispatch) => {
-    fetchPosts(token, "profile").then((res)=>{
-        dispatch({
-            type: "PROFILE_GET_POSTS",
-            payload: {res}
-        })
-    }) 
-}
-
-export const getLikePost = (token) => (dispatch) => {
-    fetchPosts(token, "likes").then((res)=>{
-        dispatch({
-            type: "LIKES_GET_POSTS",
-            payload: {res}
-        })
+export const getPost = (token, tab, last) => (dispatch) => {
+    fetchPosts(token, tab, last).then((res)=>{
+        switch(tab) {
+            case "profile":
+                return dispatch({
+                    type: "PROFILE_GET_POSTS",
+                    payload: {res}
+                })
+            case "likes":
+                return dispatch({
+                    type: "LIKES_GET_POSTS",
+                    payload: {res}
+                })
+            default:
+                return dispatch({
+                    type: "HOME_GET_POSTS",
+                    payload: {res}
+                })
+        }
+        
     }) 
 }

@@ -25,7 +25,7 @@ function FinalMenu({w}) {
                 <BackArrowIcon w={20} />
               </div>
               <div className='w-100% s7:w-[650px] rounded-lg mx-auto bg-[#ffffff]' onClick={(e)=>e.stopPropagation()}>
-                <HomePost floating={true}/>
+                <HomePost floating={true} setPostOpen={setPostOpen}/>
               </div>
             </div>
           ) : ""}

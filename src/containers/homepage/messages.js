@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import SettingsIcon from '../../components/icons/menu/settings';
 import SearchIcon from '../../components/icons/menu/search';
 import Dots from '../../components/icons/menu/dots';
@@ -10,20 +10,12 @@ import BackArrowIcon from '../../components/icons/messages/backArrow';
 import IconTwitter from '../../components/icons/logos/twitter-icon';
 import ReactFileReader from 'react-file-reader';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchChats, createChat, removeChat, selectChat } from '../../redux/actions/chatActions';
+import { fetchChats, selectChat, removeChat } from '../../redux/actions/chatActions';
 import { fetchMessages, sendMessage } from '../../redux/actions/messagesActions';
 import {
   collection,
   query,
-  orderBy,
-  startAfter,
-  limit,
-  getDocs,
   getFirestore,
-  addDoc,
-  getDoc,
-  doc,
-  deleteDoc,
   where,
   onSnapshot
 } from 'firebase/firestore';
@@ -45,6 +37,7 @@ function Messages({w}) {
   const currUser = useSelector(state=>state.user)
   const chats = useSelector(state=> state.chats)
   const currMessages = useSelector(state=>state.message)
+  const [snapshot, setSnapshot] = useState(false)
 
   // const chats = dispatch(fetchChats((await currUser).token))
   // const createchat = dispatch(createChat((await currUser).token, "B7IIn6aZL1DF7nHgF92o"))
@@ -52,17 +45,17 @@ function Messages({w}) {
   // const deleteChat = dispatch(deleteChat((await currUser).token, "B7IIn6aZL1DF7nHgF92o"))
   // const getmessages = dispatch(fetchMessages((await currUser).token, "D4xbZ0bPyMHkC3tLK9s2"))
   // const sendmessage = dispatch(sendMessage((await currUser).token, {chatId: "D4xbZ0bPyMHkC3tLK9s2", content: "dead a das d", media: []}))
-  
+
   useEffect(()=>{
-    var snapshot = 0
+    dispatch(fetchChats(currUser.token, chats.last, false))
     if (currUser.user !== null) {
       const q = query(collection(db, "chats"), where("participants", "array-contains", currUser.user.uid));
       onSnapshot(q, () => {
-              dispatch(fetchChats(currUser.token, snapshot === 0 ? null : chats.last, snapshot === 0 ? true : false))
+              dispatch(fetchChats(currUser.token, undefined, true))
             }); 
-      snapshot = 1
     }
-}, [currUser])
+    setSnapshot(true)
+}, [])
 
   
 
@@ -164,70 +157,70 @@ function Messages({w}) {
   
 
   const conversation = (data) => (
-  <>  
-    <div className='h-[5%] w-full px-3 py-2'>
-      <div className='flex justify-between w-full bg-[#ffffff] h-full items-center'>
-        <div className='flex items-center'>
-          <div className='block s11:hidden mr-3' onClick={()=>dispatch(selectChat(null))}>
-            <BackArrowIcon w={20}/>
-          </div>
-          {chatOverflow > 0 ? (
-          <>
-            <div className='w-[30px] h-[30px] bg-[#000000] rounded-full'></div>
-            <span className='font-semibold tracking-tight ml-2'>{data.name}</span>
-          </>
-          ): ""}
-        </div>
-        <div className='p-1.5 hover:bg-[#000000]/[.1] rounded-full cursor-pointer' onClick={()=>{setConvoInfo(true)}}>
-          <DetailsIcon w={18}/>
-        </div>
-      </div>
-    </div>
-    <div className='h-[90%] px-3 overflow-auto shrink' id='chat' onScroll={scrollDetect}>
-      <div className='h-auto w-full flex flex-col items-center mb-8'>
-        <div className='p-4 w-full'>
-          <div className='w-full flex justify-center'>
-            <div className='bg-[#000000] h-[50px] w-[50px] rounded-full'></div>
-          </div>
-          <h1 className='text-[#000000] mr-1 font-semibold tracking-tight w-full text-center'>{data.name}</h1>
-          <h3 className='text-[#536471] font-chirp text-[16px] tracking-tighter w-full text-center'>@{data.username}</h3>
-        </div>
-        <p className='font-twitterchirp text-[14px] w-[70%] text-center'>Cyber Security Engineer - Synack Red Team Member</p>
-        <span className='text-[#536471] font-chirp text-[14px] tracking-tighter mt-2'>Joined May 2018 · 3,551 Followers</span>
-      </div>
-      {!loading ? (currMessages.length > 0 ? currMessages.map((message, index)=>(
-        message.message.sender === currUser.user.uid ? Sent(message, index) : Received(message, index)
-      )): "") : loadingIcon}
-    </div>
-    <div className='w-full min-h-[5%] bottom-0 flex items-center border-t grow absolute bg-[#ffffff]'>
-      <ReactFileReader handleFiles={handleFiles} multipleFiles={true} base64={true}>
-        <div className='ml-2 p-2 hover:bg-[#0a95f2]/[.2] rounded-full cursor-pointer'>
-          <FileIcon />
-        </div>
-      </ReactFileReader>
-      <div className='flex py-2.5 items-center px-4 grow bg-[#ffffff]'>
-        <div className='grow relative'>
-          <div contentEditable={true} className='bg-transparent focus:outline-none text-sm text-[#0f1419] grow break-word' onInput={(e)=>{setNewMessage(e.target.innerHTML)}}></div>
-            {images !== "" ? (
-            <div className='relative h-[150px] w-[150px] mt-2'>
-              <div className='absolute text-center bg-[#ffffff] rounded-full p-1 right-1 top-1 hover:bg-[#000000]/[.7] cursor-pointer' onClick={()=>{setImages("")}}>
-                  <DeleteIcon />
-              </div>
-              <img className='h-full w-full' src={images}/>
+    <Fragment>  
+      <div className='h-[5%] w-full px-3 py-2'>
+        <div className='flex justify-between w-full bg-[#ffffff] h-full items-center'>
+          <div className='flex items-center'>
+            <div className='block s11:hidden mr-3' onClick={()=>dispatch(selectChat(null))}>
+              <BackArrowIcon w={20}/>
             </div>
-            ) : ""}
-            {newMessage === "" && images === "" ? (<div className='text-[#000000]/[.6] text-sm font-chirp absolute pointer-events-none top-0'>Start a new message</div>) : ""}
-        </div>
-        <div className={newMessage === "" ? 'pointer-events-none cursor-not-allowed ml-2' : "cursor-pointer ml-2"} onClick={()=>{dispatch(sendMessage(currUser.token, {chatId: chats.activeChat, content: newMessage, media: []}))}}>
-          <SendIcon w={18}/>
+            {chatOverflow > 0 ? (
+            <>
+              <div className='w-[30px] h-[30px] bg-[#000000] rounded-full'></div>
+              <span className='font-semibold tracking-tight ml-2'>{data.name}</span>
+            </>
+            ): ""}
+          </div>
+          <div className='p-1.5 hover:bg-[#000000]/[.1] rounded-full cursor-pointer' onClick={()=>{setConvoInfo(true)}}>
+            <DetailsIcon w={18}/>
+          </div>
         </div>
       </div>
-    </div>
-  </>
+      <div className='h-[90%] px-3 overflow-auto shrink' id='chat' onScroll={scrollDetect}>
+        <div className='h-auto w-full flex flex-col items-center mb-8'>
+          <div className='p-4 w-full'>
+            <div className='w-full flex justify-center'>
+              <div className='bg-[#000000] h-[50px] w-[50px] rounded-full'></div>
+            </div>
+            <h1 className='text-[#000000] mr-1 font-semibold tracking-tight w-full text-center'>{data.name}</h1>
+            <h3 className='text-[#536471] font-chirp text-[16px] tracking-tighter w-full text-center'>@{data.username}</h3>
+          </div>
+          <p className='font-twitterchirp text-[14px] w-[70%] text-center'>Cyber Security Engineer - Synack Red Team Member</p>
+          <span className='text-[#536471] font-chirp text-[14px] tracking-tighter mt-2'>Joined May 2018 · 3,551 Followers</span>
+        </div>
+        {!loading ? (currMessages.length > 0 ? currMessages.map((message, index)=>(
+          message.message.sender === currUser.user.uid ? Sent(message, index) : Received(message, index)
+        )): "") : loadingIcon}
+      </div>
+      <div className='w-full min-h-[5%] bottom-0 flex items-center border-t grow absolute bg-[#ffffff]'>
+        <ReactFileReader handleFiles={handleFiles} multipleFiles={true} base64={true}>
+          <div className='ml-2 p-2 hover:bg-[#0a95f2]/[.2] rounded-full cursor-pointer'>
+            <FileIcon />
+          </div>
+        </ReactFileReader>
+        <div className='flex py-2.5 items-center px-4 grow bg-[#ffffff]'>
+          <div className='grow relative'>
+            <div contentEditable={true} className='bg-transparent focus:outline-none text-sm text-[#0f1419] grow break-word' onInput={(e)=>{setNewMessage(e.target.innerHTML)}}></div>
+              {images !== "" ? (
+              <div className='relative h-[150px] w-[150px] mt-2'>
+                <div className='absolute text-center bg-[#ffffff] rounded-full p-1 right-1 top-1 hover:bg-[#000000]/[.7] cursor-pointer' onClick={()=>{setImages("")}}>
+                    <DeleteIcon />
+                </div>
+                <img className='h-full w-full' src={images}/>
+              </div>
+              ) : ""}
+              {newMessage === "" && images === "" ? (<div className='text-[#000000]/[.6] text-sm font-chirp absolute pointer-events-none top-0'>Start a new message</div>) : ""}
+          </div>
+          <div className={newMessage === "" ? 'pointer-events-none cursor-not-allowed ml-2' : "cursor-pointer ml-2"} onClick={()=>{dispatch(sendMessage(currUser.token, {chatId: chats.activeChat, content: newMessage, media: []}))}}>
+            <SendIcon w={18}/>
+          </div>
+        </div>
+      </div>
+    </Fragment>
   )
 
   const conversationInfo = (data) => (
-    <>
+    <Fragment>
       <div className='h-[5%] w-full py-2'>
         <div className='px-3 flex w-full bg-[#ffffff] h-full items-center'>
             <div className='rounded-full hover:bg-[#000000]/[.1] p-1.5 cursor-pointer' onClick={()=>{setConvoInfo(false)}}>
@@ -260,13 +253,13 @@ function Messages({w}) {
           </label>
         </div>
       </div>
-      <div className='text-center py-4 hover:bg-[#1d9bf0]/[.1] cursor-not-allowed'>
+      <button className='text-center py-4 hover:bg-[#1d9bf0]/[.1] cursor-not-allowed w-full'>
         <span className='text-[#1d9bf0] text-[18px] font-semibold'>Block @{data.username}</span>
-      </div>
-      <div className='text-center py-4 hover:bg-[#f4212e]/[.1] cursor-pointer'>
+      </button>
+      <button className='text-center py-4 hover:bg-[#f4212e]/[.1] cursor-pointer w-full' onClick={()=>{console.log(currUser);dispatch(removeChat(currUser.token, chats.activeChat))}}>
         <span className='text-[#f4212e] text-[18px] font-semibold text-center'>Leave Conversation</span>
-      </div>
-    </>
+      </button>
+    </Fragment>
   )
 
 

@@ -31,6 +31,7 @@ export const selectChat = (active) => (dispatch) => {
 
 export const removeChat = (token, id) => (dispatch) => {
     deleteChat(token, id).then((newLast)=>{
+        console.log(newLast)
         dispatch({
             type: "DELETE_CHAT",
             payload: {newLast}

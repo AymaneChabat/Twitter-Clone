@@ -3,8 +3,8 @@ import IconTwitter from '../../components/icons/logos/twitter-icon';
 import SlideMenu from '../../components/menu/menu-types/slide-menu-sm';
 import HomePost from '../../components/posts/home-post';
 import DisplayPost from '../../components/posts/displayposts';
-import {checkUser} from '../../functions/manageUser'
-import { addPost, deletePost, getHomePost } from '../../redux/actions/postActions';
+import { checkUser } from '../../functions/manageUser'
+import { getPost } from '../../redux/actions/postActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -12,19 +12,23 @@ function Main({setOpened, opened, w}) {
 
   const dispatch = useDispatch()
   const currUser = useSelector(state=>state.user)
-  const chats = useSelector(state=> state.chats)
-  const currMessages = useSelector(state=>state.message)
   const posts = useSelector(state=>state.posts)
 
+  // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1] !== undefined ? posts.home[posts.home.length - 1].postId : undefined))
+  // dispatch(getPost(currUser.token, "profile", posts.profile[posts.profile.length - 1] !== undefined ? posts.profile[posts.profile.length - 1].postId : undefined))
+  // dispatch(getPost(currUser.token, "likes", posts.likes.length))
+
   useEffect(()=>{
-    dispatch(getHomePost(currUser.token))
+      if (posts.home.length === 0) {
+        dispatch(getPost(currUser.token, "home", undefined))
+        // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1].postId))
+      }
   },[])
 
   const localChoices = ["For you", "Following"]
   
   return (
         <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s5:mb-0'>
-          <button onClick={()=>{console.log(posts)}}>hello</button>
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
           <div className='bg-[#ffffff]/[.9] w-[100%]'>
             <div className='w-full py-2 px-2'>

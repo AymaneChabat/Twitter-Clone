@@ -114,7 +114,7 @@ async function getChats(token, last) {
 
 // Function to delete a chat by its ID
 async function deleteChat(token, chatId) {
-    return await fetch("https://xclone-api.vercel.app/api/chats", {
+    return await fetch("http://localhost:9001/api/chats", {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json',
