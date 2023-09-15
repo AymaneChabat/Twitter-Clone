@@ -37,19 +37,8 @@ async function register(email, password, name, username) {
                   'Authorization': userCredential.user.accessToken
               },
               body: JSON.stringify({
-                  profilepicture: "",
-                  banner: "",
                   name: name,
-                  username: username.toLowerCase(),
-                  description: "",
-                  createAt: Math.floor(Date.now() / 1000),
-                  posts: [],
-                  comments: [],
-                  likes: [],
-                  reposts: [],
-                  followers: [],
-                  following: [],
-                  private: false
+                  username: username.toLowerCase()
               })
           }).then(async (res) => {
               return {status: response(true, "Account has been created successfully!"), data: await res.json()}

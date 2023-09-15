@@ -34,7 +34,7 @@ function Messages({w}) {
   const [loading, setLoading] = useState(true)
   const [limit, setLimit] = useState(10)
   const dispatch = useDispatch()
-  const currUser = useSelector(state=>state.user)
+  const currUser = useSelector(state=>state.currUser)
   const chats = useSelector(state=> state.chats)
   const currMessages = useSelector(state=>state.message)
   const [snapshot, setSnapshot] = useState(false)

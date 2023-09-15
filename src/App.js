@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { auth } from './functions/authentication';
 import { checkUser } from './redux/actions/authActions';
+import { getUsers } from './redux/actions/userActions';
 import IconTwitter from './components/icons/logos/twitter-icon';
 
 function App() {
@@ -21,10 +22,7 @@ function App() {
     onAuthStateChanged(auth, async(user)=>{
       if (user) {
           dispatch(checkUser(user, (await user.getIdTokenResult()).token));
-          const links = ["home", "messages", "profile", "explore"]
-          if (!links.includes(location.pathname.slice(1,))) {
-            window.location = "http://localhost:3000/home"
-          }
+          dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token))
           
       } else {
           dispatch(checkUser({}))

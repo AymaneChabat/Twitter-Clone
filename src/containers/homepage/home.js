@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 function Main({setOpened, opened, w}) {
 
   const dispatch = useDispatch()
-  const currUser = useSelector(state=>state.user)
+  const currUser = useSelector(state=>state.currUser)
   const posts = useSelector(state=>state.posts)
 
   // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1] !== undefined ? posts.home[posts.home.length - 1].postId : undefined))

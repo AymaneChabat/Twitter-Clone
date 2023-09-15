@@ -5,8 +5,14 @@ import {
     updateEmail,
     onAuthStateChanged
 } from "firebase/auth";
-import app from "./config"
+import { 
+    getStorage, 
+    ref, 
+    uploadBytes 
+} from "firebase/storage";
+import app from "./config";
 
+const storage = getStorage(app);
 const auth = getAuth(app);
 const response = (success, message) => {
     return {
@@ -43,14 +49,15 @@ async function updateUserEmail(password, newEmail) {
 }
 
 // Function to fetch a list of users based on optional parameters
-async function getUsers(last, username, token) {
-    return await fetch("http://localhost:9001/api/users?" + (last !== undefined ? ("last=" + last) : ("username=" + username)), {
+async function getUsers(id, username, token) {
+    return await fetch("http://localhost:9001/api/users?" + (id !== undefined ? ("id=" + id) : ("username=" + username)), {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     }).then(async (res) => {
+
         // Successfully fetched user data, return the JSON response
         return await res.json()
     })

@@ -11,6 +11,7 @@ import MoreIcon from '../../icons/menu/more';
 import PostIcon from '../../icons/menu/post';
 import Menu from "../items";
 import Dots from '../../icons/menu/dots';
+import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -21,6 +22,8 @@ function MainMenu({setPostOpen, tab}) {
 
   const [active,setActive] = useState(tab)
   const dispatch = useDispatch()
+  const currUser = useSelector(state => state.currUser)
+  const users = useSelector(state => state.users)
 
 
   const menu = [
@@ -60,7 +63,7 @@ function MainMenu({setPostOpen, tab}) {
                 <div className='h-[100%] flex flex-col justify-around mt-2 s13:items-start items-center'>
                   <div className='mb-4'>
                     {menu.map((pick, index) => (
-                        <Link key={index} to={"/"+pick[1].toLowerCase()} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
+                        <Link key={index} to={ "/" + pick[1].toLowerCase() + (pick[1].toLowerCase() === 'profile' ? ("/" + users.activeprofiles[0].username) : "")} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
                           <Menu data={pick} picked={active}/>
                         </Link>
                     ))}
@@ -75,11 +78,11 @@ function MainMenu({setPostOpen, tab}) {
               <div className='s13:w-[100%]'>
                 <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" className='flex items-center justify-around rounded-full hover:bg-[#0f1419]/[.1] p-1.5 transition-all duration-300 s13:w-[100%]'>
                   <div>
-                    <div className='bg-[#000000] w-[35px] h-[35px] rounded-full'></div>
+                    <div className='w-[35px] h-[35px] rounded-full bg-no-repeat bg-cover' style={{backgroundImage: `url("${users.activeprofiles[0].profilepicture}")`}}></div>
                   </div>
                   <div className='flex-col items-start hidden s13:flex w-[65%]'>
-                    <span className='font-bold ml-0.5 -mb-1.5'>a</span>
-                    <span className='text-[#536471]'>@ayman</span>
+                    <span className='font-bold ml-0.5 -mb-1.5'>{users.activeprofiles[0].name}</span>
+                    <span className='text-[#536471]'>@{users.activeprofiles[0].username}</span>
                   </div>
                   <div className='hidden s13:block'>
                     <Dots w={18}/>
@@ -89,7 +92,7 @@ function MainMenu({setPostOpen, tab}) {
               <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow h-auto w-[19rem] border-2 border-solid">
                 <ul class="text-sm text-gray-700 h-[100%] flex flex-col justify-evenly" aria-labelledby="dropdownLargeButton">
                   <li className='py-4 hover:bg-gray-100' onClick={()=>{dispatch(signOut())}}>
-                    <a href="#" class="block px-4 font-bold text-[16px]">Log out @ayman</a>
+                    <a href="#" class="block px-4 font-bold text-[16px]">Log out @{users.activeprofiles[0].username}</a>
                   </li>
                 </ul>
               </div>
