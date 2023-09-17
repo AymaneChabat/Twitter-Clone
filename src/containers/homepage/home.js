@@ -20,7 +20,7 @@ function Main({setOpened, opened, w}) {
 
   useEffect(()=>{
       if (posts.home.length === 0) {
-        dispatch(getPost(currUser.token, "home", undefined))
+        dispatch(getPost(undefined, undefined, "home", undefined))
         // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1].postId))
       }
   },[])
@@ -45,7 +45,7 @@ function Main({setOpened, opened, w}) {
             <ChoiceButtons choices={localChoices}/>
           </div>
           {w >= 500 ? <HomePost/> : ""}
-          <DisplayPost />
+          {posts.home.length > 0 ? <DisplayPost posts={posts.home}/> : ""}
         </div>
   );
 }

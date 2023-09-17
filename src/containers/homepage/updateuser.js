@@ -7,17 +7,17 @@ import { useRef, useState } from "react";
 
 function UpdateUser({setUpdating, user}) {
 
-    const [banner, setBanner] = useState(user.banner)
-    const [pp, setPP] = useState(user.profilepicture)
+    const [banner, setBanner] = useState({url: user.banner})
+    const [pp, setPP] = useState({url: user.profilepicture})
     const name = useRef()
     const bio = useRef()
 
   const handleFilesPP = files => {
-    setPP(files)
+    setPP({file: files.fileList[0], url: files.base64})
   }
 
   const handleFilesBanner = files => {
-    setBanner(files)
+    setBanner({file: files.fileList[0], url: files.base64})
   }
 
   return (
@@ -34,20 +34,30 @@ function UpdateUser({setUpdating, user}) {
                     Save
                 </button>
             </div>
-            <div className={" w-full h-[200px] flex justify-center items-center bg-no-repeat bg-cover"} style={{backgroundImage:`url("${banner}")`}}>
+            <div className={" w-full h-[200px] flex justify-center items-center bg-no-repeat bg-cover"} style={{backgroundImage:`url("${banner.url}")`}}>
                 <ReactFileReader handleFiles={handleFilesBanner} multipleFiles={false} base64={true}>
-                    <div className="p-3 hover:bg-[#ffffff]/[.2] rounded-full cursor-pointer">
+                    <div className="p-3 hover:bg-[#000000]/[.2] rounded-full cursor-pointer bg-[#000000]/[.5] transition duration-300">
                         <UploadImage w={20}/>
                     </div>
                 </ReactFileReader>
+                {banner.url !== user.banner ? (
+                    <button className="hover:bg-[#ffffff]/[.8] p-3 rounded-full cursor-pointer bg-[#000000]/[.5] ml-3 transition duration-300" onClick={()=>{setBanner({url: user.banner})}}>
+                        <DeleteIcon />
+                    </button>
+                ) : ""}
             </div>
             <div className="absolute top-[195px] w-full">
-                <div className="w-[130px] h-[130px] rounded-full border-4 mx-5 flex justify-center items-center border-[#ffffff] bg-no-repeat bg-cover" style={{backgroundImage:`url("${pp}")`}}>
+                <div className="w-[130px] h-[130px] rounded-full border-4 mx-5 flex justify-center items-center border-[#ffffff] bg-no-repeat bg-cover" style={{backgroundImage:`url("${pp.url}")`}}>
                     <ReactFileReader handleFiles={handleFilesPP} multipleFiles={false} base64={true}>
-                        <div className="p-3 hover:bg-[#ffffff]/[.2] rounded-full cursor-pointer">
+                        <div className="p-3 hover:bg-[#000000]/[.2] rounded-full cursor-pointer bg-[#000000]/[.5] transition duration-300">
                             <UploadImage w={20}/>
                         </div>
                     </ReactFileReader>
+                    {pp.url !== user.profilepicture ? (
+                        <button className="hover:bg-[#ffffff]/[.8] p-3 rounded-full cursor-pointer bg-[#ffffff]/[.5] ml-3 transition duration-300" onClick={()=>{setPP({url: user.profilepicture})}}>
+                            <DeleteIcon />
+                        </button>
+                    ) : ""}
                 </div>
                 <div className="mx-5 my-4">
                     <CredentialInput placeholder="Name" ref={name} defaultVal={user.name}/>

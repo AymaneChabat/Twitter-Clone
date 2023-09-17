@@ -15,7 +15,7 @@ const PostReducer = (state = initialState, action) => {
         case "PROFILE_GET_POSTS":
             return {
                 ...state,
-                profile:  payload.res.length !== 0 ? [...state.profile, ...payload.res] : state.profile
+                profile:  payload.res.length !== 0 ? [...state.profile, payload.res] : state.profile
             }
         case "LIKES_GET_POSTS":
             return {
@@ -23,10 +23,14 @@ const PostReducer = (state = initialState, action) => {
                 likes:  payload.res.length !== 0 ? [...state.likes, ...payload.res] : state.likes
             }
         case "CREATE_POST":
+            let oldPosts = state.profile.find(posts => posts.user === payload.user)
+            oldPosts = {...oldPosts, posts: [payload.res.post, ...oldPosts.posts]}
+            const i = state.profile.findIndex(posts => posts.user === payload.user)
+            state.profile[i] = oldPosts
             return {
                 ...state,
-                home: [...state.home, payload.res.post],
-                profile: [...state.profile, payload.res.post]    
+                home: [payload.res.post, ...state.home],
+                profile: state.profile
             }
         case "DEL_POST":
             return {

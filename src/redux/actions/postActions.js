@@ -1,10 +1,10 @@
 import { addPost as createPost, deletePost as delPost, getPost as fetchPosts } from "../../functions/managePosts";
 
-export const addPost = (token, data) => (dispatch) => {
+export const addPost = (token, data, user) => (dispatch) => {
     createPost(data, token).then((res)=>{
         dispatch({
             type: "CREATE_POST",
-            payload: {res}
+            payload: {res, user}
         })
     }) 
 }
@@ -18,8 +18,8 @@ export const deletePost = (token, postId) => (dispatch) => {
     }) 
 }
 
-export const getPost = (token, tab, last) => (dispatch) => {
-    fetchPosts(token, tab, last).then((res)=>{
+export const getPost = (userId, tab, last, username) => (dispatch) => {    
+    fetchPosts(userId, tab, last, username).then((res)=>{
         switch(tab) {
             case "profile":
                 return dispatch({

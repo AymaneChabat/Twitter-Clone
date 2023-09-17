@@ -14,12 +14,11 @@ async function addPost(data, token) {
 }
 
 // Function to get a list of posts
-async function getPost(token, tab, last) {
-    return await fetch("http://localhost:9001/api/post?tab="+tab+"&last="+last, {
+async function getPost(userId, tab, last, username) {
+    return await fetch("http://localhost:9001/api/post?tab="+tab+(last !== undefined ? "&last="+last : "")+(userId !== undefined ? "&user="+userId : "")+(username !== undefined ? "&username="+username : ""), {
         method: "GET",
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
+            'Content-Type': 'application/json'
         }
     }).then(async (res)=>{
         // Successfully fetched a list of posts, return the JSON response

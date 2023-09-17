@@ -8,10 +8,11 @@ const userReducer = (state = initialState, action) => {
     let payload = action.payload
     switch(action.type){
         case 'GET_USERS':
+            console.log(payload)
             return  {
                 ...state,
-               users : payload.profile === false ?  [...state.users, ...payload.res] : state.users,
-               activeprofiles: payload.profile === true && state.activeprofiles.find(profile => profile.username === payload.res.username) === undefined ? [...state.activeprofiles, payload.res] : state.activeprofiles
+               users : payload.tab !== "profile" ?  [...state.users, ...payload.res] : state.users,
+               activeprofiles: payload.tab === "profile" && state.activeprofiles.find(profile => profile.info.username === payload.res.info.username) === undefined ? [...state.activeprofiles, payload.res] : state.activeprofiles
             };
         case 'UPDATE_USER':
             return  {

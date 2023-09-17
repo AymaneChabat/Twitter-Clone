@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PickAudience from './audience';
 import PickReplies from './repliesAudience';
 import DeleteIcon from '../icons/posts/delete';
@@ -8,14 +8,14 @@ import ReactFileReader from 'react-file-reader';
 import { useSelector, useDispatch } from 'react-redux';
 
 function HomePost({floating, setPostOpen}) {
-    const currUser = useSelector(state => state.user)
+    const currUser = useSelector(state => state.currUser)
     const [content,setContent] = useState('')
     const [image,setImages] = useState(null)
     const dispatch = useDispatch()
 
     const handleFiles = files => {
         setImages(files.base64)
-      }
+    }
 
     const imageDisplay = (
         <div className='relative w-[150px]'>
@@ -51,7 +51,7 @@ function HomePost({floating, setPostOpen}) {
                         </button>
                     </div>
                         <button type="button" class={"text-white text-sm font-medium rounded-full transition duration-300 py-0.5 px-5 " + (content === "" && image === null ? "bg-[#1d9bf0]/[.5]" : "bg-[#1d9bf0]/[.9]")} disabled={content === "" && image === null ? true : false} onClick={()=>{
-                            dispatch(addPost(currUser.token, {content: content, media: []})); 
+                            dispatch(addPost(currUser.token, {content: content, media: []}, currUser.user.uid)); 
                             if (floating) {
                                 setPostOpen(false)
                             }

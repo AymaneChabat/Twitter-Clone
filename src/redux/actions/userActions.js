@@ -1,11 +1,11 @@
 import { getUsers as fetchUsers, updateUser as updateUserInfo, updateUserEmail } from '../../functions/manageUser';
 
 
-export const getUsers = (id, username, token) => (dispatch) => {
-    fetchUsers(id, username, token).then((res)=>{
+export const getUsers = (id, username, token, tab) => (dispatch) => {
+    fetchUsers(id, username, token, tab).then((res)=>{
         dispatch({
             type: "GET_USERS",
-            payload: { res, profile: id === undefined ? false : true }
+            payload: { res, tab }
         })
     })
 }
@@ -19,7 +19,7 @@ export const updateUser = (token, updatedData) => (dispatch) => {
     })
 }
 
-export const updateEmail = (password, newEmail) => (dispatch) => {
+export const updateEmail = (password, newEmail) => {
     updateUserEmail(password, newEmail).then((res)=>{
         console.log(res)
     })
