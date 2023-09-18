@@ -3,7 +3,7 @@ import CalendarIcon from "../../components/icons/profile/calendar";
 import ChoiceButtons from "../../components/buttons/choice";
 import DisplayPosts from "../../components/posts/displayposts";
 import UpdateUser from "./updateuser"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Fragment, useEffect, useState } from "react";
 import { getUsers } from "../../redux/actions/userActions";
 import { getPost } from "../../redux/actions/postActions";
@@ -13,14 +13,15 @@ import { useDispatch, useSelector } from 'react-redux';
 function Profile() {
 
   const choices = ["Posts", "Replies", "Highlights", "Media", "Likes"]
+  const params = useParams()
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const [updating, setUpdating] = useState(false)
   const currUser = useSelector(state=>state.currUser)
   const posts = useSelector(state=>state.posts)
   const users = useSelector(state=>state.users)
-  const username = window.location.pathname.split("/")[2]
-  const [user, setUser] = useState(undefined)
+  const username = params.username
+  const user = users.activeprofiles.find(user => user.info.username === username) !== undefined ? users.activeprofiles.find(user => user.info.username === username) : {}
   const [postsFound, setPosts] = useState(undefined)
 
 
@@ -29,26 +30,29 @@ function Profile() {
     navigate(-1); // This function takes you back to the previous URL
   };
 
+  
   useEffect(()=>{
-    if (user === undefined) {
+    if (JSON.stringify(user) === '{}') {
       dispatch(getUsers(undefined, username, currUser.token, "profile"))
     }
-    if (postsFound === undefined) {
+    if (posts.profile.find(posts => posts.user === user.id) === undefined) {
       // dispatch(getPost("u4whEey0gJXiJkrMxVV2jUYHhaH3", "profile", undefined, undefined))
       dispatch(getPost(undefined, "profile", undefined, username))
     }
-  }, [])
+    console.log(posts)
+  }, [username])
 
   useEffect(()=>{
-    setUser(users.activeprofiles.find(user => user.info.username === username))
-    setPosts(posts.profile.find(posts => posts.user === user !== undefined ? user.id : ""))
-  }, [users])
+    if (user !== undefined) { 
+      setPosts(posts.profile.find(posts => posts.user === user.id))
+    }
+    console.log(posts)
+  }, [posts, username])
 
 
   return (
       <Fragment>
-        <button onClick={()=>{console.log(users)}}>click</button>
-        {user !== undefined 
+        {JSON.stringify(user) !== "{}" 
         ? 
         <>
           { updating ? <UpdateUser setUpdating={setUpdating} user={user.info}/> : "" }
@@ -88,7 +92,7 @@ function Profile() {
               <div className="mt-3">
                   <ChoiceButtons choices={choices}/>
               </div>
-              {postsFound !== undefined ? <DisplayPosts posts={postsFound}/> : ""}
+              {postsFound !== undefined ? <DisplayPosts posts={postsFound.posts} users={users.activeprofiles}/> : ""}
             </div>
           </div>
         </>

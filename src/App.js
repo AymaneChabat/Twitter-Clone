@@ -22,7 +22,7 @@ function App() {
     onAuthStateChanged(auth, async(user)=>{
       if (user) {
           dispatch(checkUser(user, (await user.getIdTokenResult()).token));
-          //dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token, "profile"))
+          dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token, "profile"))
           
       } else {
           dispatch(checkUser({}))

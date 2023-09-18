@@ -32,6 +32,13 @@ export const getPost = (userId, tab, last, username) => (dispatch) => {
                     payload: {res}
                 })
             default:
+                res.forEach(element => {
+                    dispatch({
+                        type: "GET_USERS",
+                        payload: {res: element.user, tab: "profile"}
+                    })
+                    delete element.user
+                });
                 return dispatch({
                     type: "HOME_GET_POSTS",
                     payload: {res}

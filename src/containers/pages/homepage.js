@@ -20,7 +20,7 @@ function HomePage() {
     ["/home", <Main opened={opened} setOpened={setOpened} w={w}/>],
     ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
     ["/messages", <Messages w={w}/>],
-    ["/profile/*", <Profile />]
+    ["/profile/:username", <Profile />]
   ]
 
   return (

@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 function Main({setOpened, opened, w}) {
 
   const dispatch = useDispatch()
-  const currUser = useSelector(state=>state.currUser)
+  const users = useSelector(state=>state.users)
   const posts = useSelector(state=>state.posts)
 
   // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1] !== undefined ? posts.home[posts.home.length - 1].postId : undefined))
@@ -20,7 +20,7 @@ function Main({setOpened, opened, w}) {
 
   useEffect(()=>{
       if (posts.home.length === 0) {
-        dispatch(getPost(undefined, undefined, "home", undefined))
+        dispatch(getPost(undefined, "home", undefined, undefined))
         // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1].postId))
       }
   },[])
@@ -45,7 +45,7 @@ function Main({setOpened, opened, w}) {
             <ChoiceButtons choices={localChoices}/>
           </div>
           {w >= 500 ? <HomePost/> : ""}
-          {posts.home.length > 0 ? <DisplayPost posts={posts.home}/> : ""}
+          {posts.home.length > 0 ? <DisplayPost posts={posts.home} users={users.activeprofiles}/> : ""}
         </div>
   );
 }

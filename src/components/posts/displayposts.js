@@ -1,18 +1,21 @@
 import Dots from "../icons/menu/dots";
 import InteractionButtons from "../buttons/model";
+import { useEffect, useState } from "react";
 
-function DisplayPosts({posts}) {
+function DisplayPosts({posts, users}) {
     return (
     <div>
-        {posts !== undefined ? posts.posts.map((post, index)=>(
+        {posts !== undefined ? posts.map((post, index)=>{ 
+            var user = users.find(user => user.id === post.post.userId)
+            return (
                     <div className="px-3 py-2 flex hover:bg-[#000000]/[.1] cursor-pointer border-b" key={index}>
-                        <div className="w-[38px] h-[38px] mr-2 bg-[url('https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=320&h=320&q=80')] bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" >
+                        <div className="w-[38px] h-[38px] mr-2 bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}>
                         </div>
                         <div className="w-[90%]">
                             <div className="flex w-full items-start justify-between">
                                 <div>
-                                    <span className="font-bold text-[15px] font-twitterchirp mr-2">asd</span>
-                                    <span className="text-[15px] font-twitterchirp text-[#536471]"><span className="text-[12px]">@</span>asd . {post.post.time}</span>
+                                    <span className="font-bold text-[15px] font-twitterchirp mr-2">{user.info.name}</span>
+                                    <span className="text-[15px] font-twitterchirp text-[#536471]"><span className="text-[12px]">@</span>{user.info.username} . {post.post.time}</span>
                                 </div>
                                 <div className="hover:bg-[#1D9BF0]/[.1] p-2 rounded-full">
                                     <Dots w={15}/>
@@ -30,10 +33,10 @@ function DisplayPosts({posts}) {
                                     ) : ""}
                                 </p>
                             </div>
-                            <InteractionButtons data={{comments: post.post.comments.length, likes: post.post.likes.length, reposts: post.post.reports.length, impressions: post.post.impressions.length}}/>
+                            <InteractionButtons data={{comments: post.post.comments, likes: post.post.likes, reposts: post.post.reports, impressions: post.post.impressions}}/>
                         </div>
                     </div>
-                )): ""}
+                )}): ""}
     </div>
   );
 }

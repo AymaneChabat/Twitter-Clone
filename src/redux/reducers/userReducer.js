@@ -8,7 +8,6 @@ const userReducer = (state = initialState, action) => {
     let payload = action.payload
     switch(action.type){
         case 'GET_USERS':
-            console.log(payload)
             return  {
                 ...state,
                users : payload.tab !== "profile" ?  [...state.users, ...payload.res] : state.users,
