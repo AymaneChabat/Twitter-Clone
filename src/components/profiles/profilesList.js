@@ -1,11 +1,6 @@
 import FollowProfile from "./whotofollow";
 
-function FollowProfileList() {
-    const profiles = [
-        ["Ash Crypto", "@Ashcryptoreal"],
-        ["steph", "@spnjxnsen"],
-        ["SaitAlbania", "@thealpha_wolf1"]
-      ]
+function FollowProfileList({profiles}) {
     return (
         <div className='w-full h-auto my-2 bg-[#f7f9f9] pt-3 rounded-2xl'>
             <h1 className='font-bold px-4 text-[23px] font-chirp'>Who to follow</h1>

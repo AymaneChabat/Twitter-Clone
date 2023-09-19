@@ -14,7 +14,7 @@ export const updateUser = (token, updatedData) => (dispatch) => {
     updateUserInfo(updatedData, token).then((res)=>{
         dispatch({
             type: "UPDATE_USER",
-            payload: res
+            payload: { res }
         })
     })
 }

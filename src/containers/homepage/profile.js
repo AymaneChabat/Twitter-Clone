@@ -39,14 +39,12 @@ function Profile() {
       // dispatch(getPost("u4whEey0gJXiJkrMxVV2jUYHhaH3", "profile", undefined, undefined))
       dispatch(getPost(undefined, "profile", undefined, username))
     }
-    console.log(posts)
   }, [username])
 
   useEffect(()=>{
     if (user !== undefined) { 
       setPosts(posts.profile.find(posts => posts.user === user.id))
     }
-    console.log(posts)
   }, [posts, username])
 
 

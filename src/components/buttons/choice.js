@@ -11,7 +11,7 @@ function ChoiceButtons({choices}) {
                   <li className={'text-center py-3 cursor-pointer hover:bg-[#E6E7E7]/[.6] transition-all duration-300 w-[100%]'} onClick={()=>{
                     if (picked !== index) {setChoice(index)}
                   }}>
-                    <span className={picked === index ? 'border-b-4 py-3 border-[#1D9BF0] text-md font-chirp' : 'py-4 text-[#7A8791] text-md font-chirp'}>
+                    <span className={picked === index ? 'border-b-4 py-3.5 border-[#1D9BF0] text-md font-chirp' : 'py-3.5 text-[#7A8791] text-md font-chirp'}>
                       {choice}
                     </span> 
                   </li>

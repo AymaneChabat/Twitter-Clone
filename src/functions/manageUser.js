@@ -65,32 +65,27 @@ async function getUsers(id, username, token, tab) {
 
 // Function to update user data with the provided information
 async function updateUser(updatedData, token) {
+    const formData = new FormData();
+    
+    Object.keys(updatedData).forEach(key => {
+        formData.append(key, updatedData[key]);
+    })    
+
     return await fetch("http://localhost:9001/api/user", {
         method: "PUT",
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': token
         },
-        body: JSON.stringify(updatedData)
+        body: formData
     }).then(async (res) => {
         // Successfully updated user data, return the JSON response
         return await res.json()
     })
 }
 
-async function checkUser() {
-    onAuthStateChanged(auth, (user)=>{
-        if (user) {
-            console.log(user.uid)
-        } else {
-            console.log("okay")
-        }
-    })
-}
 
 export {
     updateUser,
     updateUserEmail,
-    getUsers,
-    checkUser
+    getUsers
 }

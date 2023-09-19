@@ -1,6 +1,7 @@
 import Dots from "../icons/menu/dots";
 import InteractionButtons from "../buttons/model";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function DisplayPosts({posts, users}) {
     return (
@@ -9,8 +10,9 @@ function DisplayPosts({posts, users}) {
             var user = users.find(user => user.id === post.post.userId)
             return (
                     <div className="px-3 py-2 flex hover:bg-[#000000]/[.1] cursor-pointer border-b" key={index}>
-                        <div className="w-[38px] h-[38px] mr-2 bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}>
-                        </div>
+                        <Link to={"/profile/"+user.info.username}>
+                            <div className="w-[38px] h-[38px] mr-2 bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}></div>
+                        </Link>
                         <div className="w-[90%]">
                             <div className="flex w-full items-start justify-between">
                                 <div>

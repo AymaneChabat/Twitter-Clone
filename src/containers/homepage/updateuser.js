@@ -3,10 +3,14 @@ import DeleteIcon from "../../components/icons/posts/delete";
 import CredentialInput from '../../components/inputs/credentials';
 import ReactFileReader from 'react-file-reader';
 import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/actions/userActions";
 
 
 function UpdateUser({setUpdating, user}) {
 
+    const dispatch = useDispatch()
+    const currUser = useSelector(state => state.currUser)
     const [banner, setBanner] = useState({url: user.banner})
     const [pp, setPP] = useState({url: user.profilepicture})
     const name = useRef()
@@ -20,6 +24,28 @@ function UpdateUser({setUpdating, user}) {
     setBanner({file: files.fileList[0], url: files.base64})
   }
 
+  const updateUserData = () => {
+    const updatedData = {}
+    if (name.current.value !== "" && name.current.value !== user.name) {
+        updatedData["name"] = name.current.value
+    }
+    if (bio.current.value !== user.description) {
+        updatedData["description"] = bio.current.value
+    }
+    if (banner.file !== undefined) {
+        updatedData["banner"] = banner.file
+    }
+    if (pp.file !== undefined) {
+        updatedData["profilepicture"] = pp.file
+    }
+
+    if (JSON.stringify(updatedData) !== "{}") {
+        dispatch(updateUser(currUser.token, updatedData))
+    }
+
+    setUpdating(false)
+  }
+
   return (
     <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center" onClick={()=>{setUpdating(false)}}>
         <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative" onClick={(e)=>{e.stopPropagation()}}>
@@ -30,11 +56,11 @@ function UpdateUser({setUpdating, user}) {
                 <span className="text-[20px] w-[60%] font-chirp font-bold py-2">
                     Edit profile
                 </span>
-                <button className="bg-[#000000] text-[#ffffff] py-1 px-4 rounded-full font-chirp">
+                <button className="bg-[#000000] text-[#ffffff] py-1 px-4 rounded-full font-chirp" onClick={updateUserData}>
                     Save
                 </button>
             </div>
-            <div className={" w-full h-[200px] flex justify-center items-center bg-no-repeat bg-cover"} style={{backgroundImage:`url("${banner.url}")`}}>
+            <div className={" w-full h-[200px] flex justify-center items-center bg-no-repeat bg-cover bg-center"} style={{backgroundImage:`url("${banner.url}")`}}>
                 <ReactFileReader handleFiles={handleFilesBanner} multipleFiles={false} base64={true}>
                     <div className="p-3 hover:bg-[#000000]/[.2] rounded-full cursor-pointer bg-[#000000]/[.5] transition duration-300">
                         <UploadImage w={20}/>
@@ -47,7 +73,7 @@ function UpdateUser({setUpdating, user}) {
                 ) : ""}
             </div>
             <div className="absolute top-[195px] w-full">
-                <div className="w-[130px] h-[130px] rounded-full border-4 mx-5 flex justify-center items-center border-[#ffffff] bg-no-repeat bg-cover" style={{backgroundImage:`url("${pp.url}")`}}>
+                <div className="w-[130px] h-[130px] rounded-full border-4 mx-5 flex justify-center items-center border-[#ffffff] bg-no-repeat bg-cover bg-center" style={{backgroundImage:`url("${pp.url}")`}}>
                     <ReactFileReader handleFiles={handleFilesPP} multipleFiles={false} base64={true}>
                         <div className="p-3 hover:bg-[#000000]/[.2] rounded-full cursor-pointer bg-[#000000]/[.5] transition duration-300">
                             <UploadImage w={20}/>
@@ -60,10 +86,10 @@ function UpdateUser({setUpdating, user}) {
                     ) : ""}
                 </div>
                 <div className="mx-5 my-4">
-                    <CredentialInput placeholder="Name" ref={name} defaultVal={user.name}/>
+                    <CredentialInput placeholder="Name" reff={name} defaultVal={user.name}/>
                 </div>
                 <div className="mx-5 my-6">
-                    <CredentialInput placeholder="Bio" ref={bio} textarea={true} defaultVal={user.description}/>
+                    <CredentialInput placeholder="Bio" reff={bio} textarea={true} defaultVal={user.description}/>
                 </div>
             </div>
         </div>

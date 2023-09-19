@@ -10,6 +10,7 @@ function HomePage() {
   const [opened,setOpened] = useState(false)
   const [w,setW] = useState(window.innerWidth)
   window.addEventListener('resize', ()=>{setW(window.innerWidth)})
+   
 
 
   function NotFound() {

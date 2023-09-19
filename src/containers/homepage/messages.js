@@ -47,14 +47,10 @@ function Messages({w}) {
   // const sendmessage = dispatch(sendMessage((await currUser).token, {chatId: "D4xbZ0bPyMHkC3tLK9s2", content: "dead a das d", media: []}))
 
   useEffect(()=>{
-    dispatch(fetchChats(currUser.token, chats.last, false))
-    if (currUser.user !== null) {
-      const q = query(collection(db, "chats"), where("participants", "array-contains", currUser.user.uid));
-      onSnapshot(q, () => {
-              dispatch(fetchChats(currUser.token, undefined, true))
-            }); 
-    }
-    setSnapshot(true)
+    const q = query(collection(db, "chats"), where("participants", "array-contains", currUser.user.uid));
+    onSnapshot(q, () => {
+            dispatch(fetchChats(currUser.token, undefined, true))
+        }); 
 }, [])
 
   
@@ -265,7 +261,7 @@ function Messages({w}) {
 
   return (
     <div className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s5:mb-0'>
-      <div className={'min-w-[380px] border-r h-full grow s11:grow-0 ' + (chats.activeChat !== null && w < 1100 ? "hidden" : "block")}>
+      <div className={'s7:w-[380px] border-r h-full grow s11:grow-0 ' + (chats.activeChat !== null && w < 1100 ? "hidden" : "block")}>
           <div className='flex p-3 justify-between items-center'>
             <span className='text-[18px] font-bold font-chirp'>Messages</span>
             <div className='flex w-[10%] justify-around'>
@@ -286,13 +282,21 @@ function Messages({w}) {
                 <div className='mr-2'>
                   <div className='w-[38px] h-[38px] bg-[#000000] rounded-full'></div>
                 </div>
-                <div className='leading-6'>
-                  <div>
-                    <span className='text-[#000000] mr-1 font-semibold tracking-tight'>{chat.user.name.length > 12 ? (chat.user.name.slice(0,12) + "...") : chat.user.name}</span>
-                    <span className='text-[#536471] font-chirp text-md tracking-tighter'>@{chat.user.username.length > 12 ? (chat.user.username.slice(0,12) + "...") : chat.user.username}</span>
-                    <span className='text-[#536471] font-chirp tracking-tighter'> · {formatCustomDate(chat.chat.updatedAt)}</span>
+                <div className='leading-6 block'>
+                  <div className='flex'>
+                    <div className='s7:max-w-[80px] max-w-[140px] overflow-hidden relative block text-ellipsis whitespace-nowrap'>
+                      <span className='text-[#000000] w-[0px] mr-1 font-semibold tracking-tight'>{chat.user.name}</span>
+                    </div>
+                    <div className='s7:max-w-[80px] max-w-[140px] overflow-hidden relative block text-ellipsis whitespace-nowrap'>
+                      <span className='text-[#536471] font-chirp text-md tracking-tighter'>@{chat.user.username}</span>
+                    </div>
+                    <div className='overflow-hidden relative block text-ellipsis whitespace-nowrap'>
+                      <span className='text-[#536471] font-chirp tracking-tighter'> · {formatCustomDate(chat.chat.updatedAt)}</span>
+                    </div>
                   </div>
-                  <span className='text-[15px] font-chirp'>{"hello" > 40 ? ("hello".slice(0,37) + "...") : "hello"}</span>
+                  <div className='s7:max-w-[300px] max-w-[350px] overflow-hidden relative block text-ellipsis whitespace-nowrap'>
+                    <span className='text-[15px]'>{"helldazdazdzadazdazdazdazdzadazdzzdzqdzqdzqdzqdzqdzqdqdzqdo"}</span>
+                  </div>
                 </div>
               </div>
             )): loadingIcon}

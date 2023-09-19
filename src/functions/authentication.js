@@ -26,11 +26,10 @@ async function login(email, password) {
 
 // Function to register a new user with the provided email and password
 async function register(email, password, name, username) {
-    console.log(email, password)
   return await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-          // Successfully registered a new user, now create their profile
-          await fetch("https://xclone-api.vercel.app/api/user", {
+            // Successfully registered a new user, now create their profile
+            return await fetch("http://localhost:9001/api/user", {
               method: "POST",
               headers: {
                   'Content-Type': 'application/json',
@@ -41,13 +40,13 @@ async function register(email, password, name, username) {
                   username: username.toLowerCase()
               })
           }).then(async (res) => {
-              return {status: response(true, "Account has been created successfully!"), data: await res.json()}
+              return {status: response(true, "Account has been created successfully!"), user: userCredential, token: (await userCredential.user.getIdTokenResult()).token}
           })
       })
       .catch((error) => {
-          // Registration failed, return an error message
-          console.log(error.message)
-          return ({status: response(false, error.message)})
+            // Registration failed, return an error message
+            console.log(error.message)
+            return ({status: response(false, error.message)})
       });
 }
 
@@ -64,7 +63,7 @@ async function logout() {
 
 // Function to initiate a password reset request for the given email
 async function resetPassword(email) {
-  return await fetch("https://xclone-api.vercel.app/api/passwordReset", {
+  return await fetch("http://localhost:9001/api/passwordReset", {
       method: "POST",
       headers: {
           'Content-Type': 'application/json'

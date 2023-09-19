@@ -18,11 +18,12 @@ export const logIn = (email, password) => (dispatch) => {
 }
 
 export const signUp = (email, password, name, username) => (dispatch) => {
-    register(email, password, name, username).then(async(user)=>{
-        if (user) {
+    register(email, password, name, username).then(async(res)=>{
+        console.log(res)
+        if (res) {
             dispatch({
                 type: "SIGN_UP",
-                payload: {user, token: (await user.getIdTokenResult()).token}
+                payload: {user: res.user, token: res.token}
             })
         }
     })

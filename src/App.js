@@ -21,9 +21,12 @@ function App() {
   useEffect(()=>{
     onAuthStateChanged(auth, async(user)=>{
       if (user) {
-          dispatch(checkUser(user, (await user.getIdTokenResult()).token));
-          dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token, "profile"))
-          
+          await dispatch(checkUser(user, (await user.getIdTokenResult()).token));
+          await dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token, "profile"))
+
+          if (location.pathname.split("/")[1] === "i") {
+            navigate("/home")
+          }
       } else {
           dispatch(checkUser({}))
           const links = ["i/flow/login", "i/flow/signup", "i/flow/resetPassword"]

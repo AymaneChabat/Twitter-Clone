@@ -41,11 +41,11 @@ function MainMenu({setPostOpen, tab}) {
 
   const verify = (e,n) => {
     if (n === 1) {
-      if (e === "Home" || e === "Explore" || e === "Messages" || e === "Profile") {
+      if (e === "Home" || e === "Messages" || e === "Profile" || e === "Bookmarks") {
         setActive(e)
       }
     } else if (n === 2) {
-      if (e !== "Home" && e !== "Explore" && e !== "Messages" & e !== "Profile") {
+      if (e !== "Home" && e !== "Messages" & e !== "Profile" && e !== "Bookmarks") {
         return 'pointer-events-none'
       }
     }
@@ -67,7 +67,6 @@ function MainMenu({setPostOpen, tab}) {
                           <Menu data={pick} picked={active}/>
                         </Link>
                     ))}
-                    <Link to={'/profile/LLawliet'}><button>hello</button></Link>
                   </div>
                   <div className='inline-flex s13:block w-[100%]' onClick={()=>{setPostOpen(true)}}>
                     <button type="button" class="text-white s13:w-[16rem] px-0.5 s13:px-0 s13:py-3 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md"><span className='hidden s13:block'>Post</span><PostIcon /></button>
