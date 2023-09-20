@@ -1,12 +1,24 @@
 // Function to add a new post
 async function addPost(data, token) {
+    const formData = new FormData();
+
+    formData.append("content", data["content"])
+    console.log(data)
+
+    data.images.forEach(element => {
+        formData.append("images", element);
+    });
+    
+
+    console.log(formData.get("images"))
+
+
     return await fetch("http://localhost:9001/api/post", {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': token
         },
-        body: JSON.stringify(data)
+        body: formData
     }).then(async (res)=>{
         // Successfully added a new post, return the JSON response
         return await res.json()

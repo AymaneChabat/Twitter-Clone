@@ -23,10 +23,13 @@ const PostReducer = (state = initialState, action) => {
                 likes:  payload.res.length !== 0 ? [...state.likes, ...payload.res] : state.likes
             }
         case "CREATE_POST":
+            console.log( state.profile )
             let oldPosts = state.profile.find(posts => posts.user === payload.user)
-            oldPosts = {...oldPosts, posts: [payload.res.post, ...oldPosts.posts]}
-            const i = state.profile.findIndex(posts => posts.user === payload.user)
-            state.profile[i] = oldPosts
+            if (oldPosts !== undefined) {
+                oldPosts = {...oldPosts, posts: [payload.res.post, ...oldPosts.posts]}
+                const i = state.profile.findIndex(posts => posts.user === payload.user)
+                state.profile[i] = oldPosts
+            }
             return {
                 ...state,
                 home: [payload.res.post, ...state.home],

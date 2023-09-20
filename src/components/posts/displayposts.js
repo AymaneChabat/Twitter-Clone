@@ -1,7 +1,7 @@
 import Dots from "../icons/menu/dots";
 import InteractionButtons from "../buttons/model";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DisplayImages from "./displayImages";
 
 function DisplayPosts({posts, users}) {
     return (
@@ -27,11 +27,7 @@ function DisplayPosts({posts, users}) {
                                 <p className="text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">
                                     {post.post.content}
                                     {post.post.media.length > 0 ? (
-                                        <div className="w-[100%] mt-1">
-                                            {post.post.images.map((img,index)=>(
-                                                <img src={img} key={index} className="rounded-lg border"/>
-                                            ))}
-                                        </div>
+                                        <DisplayImages images={post.post.media} posting={false}/>
                                     ) : ""}
                                 </p>
                             </div>
