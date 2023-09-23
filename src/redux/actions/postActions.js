@@ -1,4 +1,4 @@
-import { addPost as createPost, deletePost as delPost, getPost as fetchPosts } from "../../functions/managePosts";
+import { addPost as createPost, deletePost as delPost, getPost as fetchPosts, updatePost as updatepost } from "../../functions/managePosts";
 
 export const addPost = (token, data, user) => (dispatch) => {
     createPost(data, token).then((res)=>{
@@ -16,6 +16,14 @@ export const deletePost = (token, postId) => (dispatch) => {
             payload: {res}
         })
     }) 
+}
+
+export const updatePost = (post, token, user) => (dispatch) => {
+    updatepost(token, post)
+    dispatch({
+        type: "LIKE_POST",
+        payload: {postId: post, user}
+    })
 }
 
 export const getPost = (userId, tab, last, username) => (dispatch) => {    

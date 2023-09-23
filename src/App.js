@@ -4,7 +4,7 @@ import Login from './containers/pages/loginpage';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './functions/authentication';
 import { checkUser } from './redux/actions/authActions';
 import { getUsers } from './redux/actions/userActions';
@@ -14,6 +14,7 @@ function App() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true)
   const [slide, setSlide] = useState(true)
+  const users = useSelector(state => state.users)
   const dispatch = useDispatch()
   const location = useLocation();
 
@@ -21,8 +22,8 @@ function App() {
   useEffect(()=>{
     onAuthStateChanged(auth, async(user)=>{
       if (user) {
-          await dispatch(checkUser(user, (await user.getIdTokenResult()).token));
-          await dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token, "profile"))
+          dispatch(checkUser(user, (await user.getIdTokenResult()).token));
+          dispatch(getUsers(user.uid, undefined, (await user.getIdTokenResult()).token, "profile"))
 
           if (location.pathname.split("/")[1] === "i") {
             navigate("/home")

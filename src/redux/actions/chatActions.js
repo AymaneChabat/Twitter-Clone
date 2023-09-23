@@ -5,10 +5,17 @@ import {
 } from "../../functions/manageChat"
 
 export const fetchChats = (token, last, snapshot) => (dispatch) => {
-    getChats(token, last).then((chatList)=>{
+    getChats(token, last).then((res)=>{
+        res[0].forEach((chat)=>{
+            dispatch({
+                type:"GET_USERS",
+                payload: {res: chat.user, tab: "profile"}
+            })
+            delete chat.user
+        })
         dispatch({
             type: "GET_CHATS",
-            payload: {chats: chatList, snapshot: snapshot}
+            payload: {chats: res, snapshot: snapshot}
         })
     })
 }

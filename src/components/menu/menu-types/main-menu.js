@@ -13,7 +13,7 @@ import Menu from "../items";
 import Dots from '../../icons/menu/dots';
 import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../redux/actions/authActions';
 
@@ -22,8 +22,12 @@ function MainMenu({setPostOpen, tab}) {
 
   const [active,setActive] = useState(tab)
   const dispatch = useDispatch()
-  const currUser = useSelector(state => state.currUser)
+  const currUserId = useSelector(state => state.currUser)
   const users = useSelector(state => state.users)
+  const currUser = users.activeprofiles.find(user => user.id === currUserId.user.uid)
+  const [logout, setLogout] = useState(false) 
+  const chats = useSelector(state=> state.chats)
+
 
 
   const menu = [
@@ -46,14 +50,31 @@ function MainMenu({setPostOpen, tab}) {
       }
     } else if (n === 2) {
       if (e !== "Home" && e !== "Messages" & e !== "Profile" && e !== "Bookmarks") {
-        return 'pointer-events-none'
+        return 'pointer-events-none opacity-20'
       }
+    }
+  }
+
+  const showLogout = () => {
+    if (logout) {
+      setLogout(false)
+    }
+  }
+  
+  const linkConditions = (pick) => {
+    switch(pick) {
+      case "profile":
+        return "/" + (currUser.info.username !== undefined ? currUser.info.username : "")
+      case "messages":
+        return "/" + (chats.activeChat !== undefined && chats.activeChat !== null ? chats.activeChat : "")
+      default:
+        return ""
     }
   }
 
   return (
     <>
-      <div className='s13:w-[34.5%] pt-1 max-s13:max-w-[15%] s8:pr-2 px-1'>
+      <div className='s13:w-[34.5%] pt-1 max-s13:max-w-[15%] s8:pr-2 px-1' onClick={showLogout}>
           <div className='flex flex-col items-end h-[99%] justify-between'>
             <div className='mx-auto s8:mx-0 s13:w-[16rem]'>
               <div className='flex flex-col s13:items-start items-end'>
@@ -63,7 +84,7 @@ function MainMenu({setPostOpen, tab}) {
                 <div className='h-[100%] flex flex-col justify-around mt-2 s13:items-start items-center'>
                   <div className='mb-4'>
                     {menu.map((pick, index) => (
-                        <Link key={index} to={ "/" + pick[1].toLowerCase() + (pick[1].toLowerCase() === 'profile' ? "/"+ users.activeprofiles[0].info.username : "")} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
+                        <Link key={index} to={ "/" + pick[1].toLowerCase() + (linkConditions(pick[1].toLowerCase()))} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
                           <Menu data={pick} picked={active}/>
                         </Link>
                     ))}
@@ -74,27 +95,34 @@ function MainMenu({setPostOpen, tab}) {
                 </div>
               </div>
             </div>
-            <div className='s8:w-[16rem] flex flex-col s13:items-start items-end mx-auto s8:mx-0'>
+            <div className='s8:w-[16rem] flex flex-col s13:items-start items-end mx-auto s8:mx-0 relative' onClick={(e)=>{
+              e.stopPropagation(); 
+              if (logout) {
+                setLogout(false)
+              } else {
+                setLogout(true)
+              };}}>
+              {logout === true ?
+              (<div class="z-10 font-twitter bg-white divide-y divide-gray-100 rounded-lg shadow h-auto w-[17rem] border-2 border-solid mb-3" onClick={(e)=>e.stopPropagation()}>
+                <ul class="text-sm text-gray-700 h-[100%] flex flex-col justify-evenly">
+                  <li className='py-4 hover:bg-gray-100' onClick={()=>{dispatch(signOut())}}>
+                    <a href="#" class="block px-4 font-chirp text-[16px]">Log out {currUser.info.username}</a>
+                  </li>
+                </ul>
+              </div>) : ""}
               <div className='s13:w-[100%]'>
-                <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" className='flex items-center justify-around rounded-full hover:bg-[#0f1419]/[.1] p-1.5 transition-all duration-300 s13:w-[100%]'>
+                <button className='flex items-center justify-around rounded-full hover:bg-[#0f1419]/[.1] p-1.5 transition-all duration-300 s13:w-[100%] border' >
                   <div>
-                    <div className='w-[35px] h-[35px] rounded-full bg-no-repeat bg-cover' style={{backgroundImage: `url("${users.activeprofiles[0].info.profilepicture}")`}}></div>
+                    <div className='w-[35px] h-[35px] rounded-full bg-no-repeat bg-cover' style={{backgroundImage: `url("${currUser.info.profilepicture}")`}}></div>
                   </div>
                   <div className='flex-col items-start hidden s13:flex w-[65%]'>
-                    <span className='font-bold ml-0.5 -mb-1.5'>{users.activeprofiles[0].info.name}</span>
-                    <span className='text-[#536471]'>{users.activeprofiles[0].info.username}</span>
+                    <span className='font-bold ml-0.5 -mb-1.5'>{currUser.info.name}</span>
+                    <span className='text-[#536471]'>{currUser.info.username}</span>
                   </div>
                   <div className='hidden s13:block'>
                     <Dots w={18}/>
                   </div>
                 </button>
-              </div>
-              <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow h-auto w-[19rem] border-2 border-solid">
-                <ul class="text-sm text-gray-700 h-[100%] flex flex-col justify-evenly" aria-labelledby="dropdownLargeButton">
-                  <li className='py-4 hover:bg-gray-100' onClick={()=>{dispatch(signOut())}}>
-                    <a href="#" class="block px-4 font-bold text-[16px]">Log out {users.activeprofiles[0].info.username}</a>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>

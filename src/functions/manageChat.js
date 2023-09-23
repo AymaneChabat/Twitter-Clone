@@ -99,7 +99,7 @@ async function createChats(token, user) {
 
 // Function to get a list of user's chats
 async function getChats(token, last) {
-    return await fetch("https://xclone-api.vercel.app/api/chats", {
+    return await fetch("http://localhost:9001/api/chats", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ async function deleteChat(token, chatId) {
 
 // Function to send a message in a chat
 async function sendMessage(token, message) {
-    return await fetch("https://xclone-api.vercel.app/api/message", {
+    return await fetch("http://localhost:9001/api/message", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ async function sendMessage(token, message) {
 }
 
 async function retrieveMessages(token, chatId) {
-    return await fetch("https://xclone-api.vercel.app/api/message?chat="+chatId, {
+    return await fetch("http://localhost:9001/api/message?chat="+chatId, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

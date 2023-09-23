@@ -4,7 +4,7 @@ function DisplayImages({images, posting, setImages}) {
     const imageDisplay = (data, index) => (
         <div className={'relative w-auto min-h-[49%] overflow-hidden border rounded-lg grow ' + (images.length > 2 && data !== images[0] || images.length > 3 ? "max-h-[49%]" : "")} key={index}>
             {posting ? (
-                <div className='absolute text-center bg-[#000000]/[.1] rounded-full p-1 right-1 top-1 hover:bg-[#ffffff] cursor-pointer transition duration-300' onClick={()=>{setImages(prev => prev.filter(image => image.base64 !== data.base64))}}>
+                <div className='absolute text-center bg-[#ffffff]/[.5] rounded-full p-1 right-1 top-1 hover:bg-[#ffffff] cursor-pointer transition duration-300' onClick={()=>{setImages(prev => prev.filter(image => image.base64 !== data.base64))}}>
                     <DeleteIcon />
                 </div>
             ) : ""}

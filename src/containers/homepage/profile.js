@@ -1,5 +1,6 @@
 import BackArrowIcon from "../../components/icons/messages/backArrow";
 import CalendarIcon from "../../components/icons/profile/calendar";
+import MessageIcon from "../../components/icons/menu/message";
 import ChoiceButtons from "../../components/buttons/choice";
 import DisplayPosts from "../../components/posts/displayposts";
 import UpdateUser from "./updateuser"
@@ -46,8 +47,8 @@ function Profile() {
       setPosts(posts.profile.find(posts => posts.user === user.id))
     }
   }, [posts, username])
-
-
+  
+  console.log(posts)
   return (
       <Fragment>
         {JSON.stringify(user) !== "{}" 
@@ -68,7 +69,7 @@ function Profile() {
               <div className="w-full h-[260px] bg-cover bg-no-repeat bg-center" style={{backgroundImage:`url("${user.info.banner}")`}}></div>
               <div className="absolute w-full z-40 h-[155px] s5:top-[180px] top-[160px] flex justify-between items-end px-5">
                   <div className="s5:w-[155px] s5:h-[155px] rounded-full border-4 border-[#ffffff] w-[100px] h-[100px] bg-cover bg-no-repeat bg-center" style={{backgroundImage:`url("${user.info.profilepicture}")`}}></div>
-                  {currUser.user.uid === user.id ? <div className="border px-4 py-1.5 bg-[#ffffff] rounded-full font-bold font-twitterchirp text-[#0f1419] hover:bg-[#0f1419]/[.1] cursor-pointer text-[0.9rem]" onClick={()=>{setUpdating(true)}}>Edit profile</div> : <div className="border px-4 py-1.5 bg-[#0f1419] rounded-full font-bold font-twitterchirp text-[#ffffff] cursor-pointer text-[0.9rem]">Follow</div>}
+                  {currUser.user.uid === user.id ? <div className="border px-4 py-1.5 bg-[#ffffff] rounded-full font-bold font-twitterchirp text-[#0f1419] hover:bg-[#0f1419]/[.1] cursor-pointer text-[0.9rem]" onClick={()=>{setUpdating(true)}}>Edit profile</div> : <div className="flex items-center"><div className="border rounded-full p-2 m-3 cursor-pointer"><MessageIcon picked={"profile"}/></div><div className="border px-4 py-1.5 bg-[#0f1419] rounded-full font-bold font-twitterchirp text-[#ffffff] cursor-pointer text-[0.9rem]">Follow</div></div>}
               </div>
               <div className="w-full s5:mt-[100px] mt-[80px] px-3">
                   <div className="leading-6">

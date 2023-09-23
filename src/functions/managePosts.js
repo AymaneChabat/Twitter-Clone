@@ -3,15 +3,10 @@ async function addPost(data, token) {
     const formData = new FormData();
 
     formData.append("content", data["content"])
-    console.log(data)
 
     data.images.forEach(element => {
         formData.append("images", element);
     });
-    
-
-    console.log(formData.get("images"))
-
 
     return await fetch("http://localhost:9001/api/post", {
         method: "POST",
@@ -53,8 +48,24 @@ async function deletePost(token, postId) {
     }))
 }
 
+
+// Function to update a post by its ID
+async function updatePost(token, postId) {
+    return await fetch("http://localhost:9001/api/post/"+postId, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    }).then(async (res)=>{
+        // Successfully deleted the post, log and return the JSON response
+        return await res.json()
+    })
+}
+
 export {
     addPost,
     deletePost,
-    getPost
+    getPost,
+    updatePost
 }

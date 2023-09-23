@@ -20,7 +20,7 @@ function HomePage() {
   const elements = [
     ["/home", <Main opened={opened} setOpened={setOpened} w={w}/>],
     ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
-    ["/messages", <Messages w={w}/>],
+    ["/messages/:chat?", <Messages w={w}/>],
     ["/profile/:username", <Profile />]
   ]
 
