@@ -1,5 +1,5 @@
 import FollowProfile from "./whotofollow";
-
+import { Link } from "react-router-dom";
 function FollowProfileList({profiles}) {
     return (
         <div className='w-full h-auto my-2 bg-[#f7f9f9] pt-3 rounded-2xl'>
@@ -10,7 +10,9 @@ function FollowProfileList({profiles}) {
                 ))}
             </div>
             <div className="hover:bg-[#000000]/[.1] py-3 rounded-b-2xl cursor-pointer">
-                <a className='text-[#1d9bf0] px-4 ' href='#'>Show more</a>
+                <Link to={"/explore"}>
+                    <span className='text-[#1d9bf0] px-4'>Show more</span>
+                </Link>
             </div>
         </div>
     );

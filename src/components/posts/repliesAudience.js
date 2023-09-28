@@ -51,7 +51,7 @@ function PickReplies() {
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setSelected(1);setActive(false)}}>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setActive(false)}}>
                         <div className='bg-[#1D9BF0] mr-2 p-2 rounded-full'>
                             <CloseCircle />
                         </div>
@@ -64,7 +64,7 @@ function PickReplies() {
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setSelected(2);setActive(false)}}>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setActive(false)}}>
                         <div className='bg-[#1D9BF0] mr-2 p-2 rounded-full'>
                             <Mentions />
                         </div>

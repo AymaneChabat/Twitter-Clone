@@ -49,8 +49,8 @@ async function updateUserEmail(password, newEmail) {
 }
 
 // Function to fetch a list of users based on optional parameters
-async function getUsers(id, username, token, tab) {
-    return await fetch("http://localhost:9001/api/users?tab=" + tab + (id !== undefined ? ("&id=" + id) : ("&username=" + username)), {
+async function getUsers(id, username, token, tab, limit, last) {
+    return await fetch("http://localhost:9001/api/users?limit="+limit+"&tab=" + tab + (id !== undefined ? ("&id=" + id) : ("&username=" + username)) + (last !== undefined ? "&last=" + last : ""), {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

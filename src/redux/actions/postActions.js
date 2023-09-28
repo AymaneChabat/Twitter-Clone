@@ -1,4 +1,4 @@
-import { addPost as createPost, deletePost as delPost, getPost as fetchPosts, updatePost as updatepost } from "../../functions/managePosts";
+import { addPost as createPost, deletePost as delPost, getPost as fetchPosts, updatePost as updatepost, postReply, getReplies as fetchReplies } from "../../functions/managePosts";
 
 export const addPost = (token, data, user) => (dispatch) => {
     createPost(data, token).then((res)=>{
@@ -18,16 +18,38 @@ export const deletePost = (token, postId) => (dispatch) => {
     }) 
 }
 
-export const updatePost = (post, token, user) => (dispatch) => {
-    updatepost(token, post)
-    dispatch({
-        type: "LIKE_POST",
-        payload: {postId: post, user}
+export const addReply = (token, data, postId, username) => (dispatch) => {
+    postReply(data, token, postId, username).then((res)=>{
+        dispatch({
+            type: "COMMENT_POST",
+            payload: {res, postPath: postId}
+        })
     })
 }
 
-export const getPost = (userId, tab, last, username) => (dispatch) => {    
-    fetchPosts(userId, tab, last, username).then((res)=>{
+export const getReplies = (token, post, username) => (dispatch) => {
+    fetchReplies(token, post, username).then((res)=>{
+        dispatch({
+            type: "REPLIES_GET_POSTS",
+            payload: {res}
+        })
+    })
+}
+
+export const updatePost = (post, token, user, action) => (dispatch) => {
+    updatepost(token, post)
+    dispatch({
+        type: "UPDATE_LIKES",
+        payload: {postId: post, user}
+    })
+    dispatch({
+        type: "LIKE_POST",
+        payload: {postId: post, action, user}
+    })
+}
+
+export const getPost = (post, tab, last, username) => (dispatch) => {    
+    fetchPosts(post, tab, last, username).then((res)=>{
         switch(tab) {
             case "profile":
                 return dispatch({
@@ -39,7 +61,12 @@ export const getPost = (userId, tab, last, username) => (dispatch) => {
                     type: "LIKES_GET_POSTS",
                     payload: {res}
                 })
-            default:
+            case "media":
+                return dispatch({
+                    type: "MEDIA_GET_POSTS",
+                    payload: {res}
+                })
+            case "home":
                 res.forEach(element => {
                     dispatch({
                         type: "GET_USERS",
@@ -51,7 +78,15 @@ export const getPost = (userId, tab, last, username) => (dispatch) => {
                     type: "HOME_GET_POSTS",
                     payload: {res}
                 })
+            default:
+                if (res.status === undefined) {
+                    return dispatch({
+                        type: "POST",
+                        payload: {res}
+                    })
+                } else {
+                    console.log("no post has been found")
+                }
         }
-        
     }) 
 }

@@ -8,6 +8,8 @@ import { updatePost } from "../../redux/actions/postActions";
 
 function InteractionButtons({data}) {
     const currUser = useSelector(state => state.currUser)
+    const users = useSelector(state => state.users)
+    const currUserInfo = (users.activeprofiles.find(user => user.id === currUser.user.uid)).info
     const dispatch = useDispatch()
 
     const roundNumberWithSuffix = (num) => {
@@ -19,16 +21,21 @@ function InteractionButtons({data}) {
           return (num / 1000000).toFixed(1) + 'M'; // Convert to M format
         }
       }
+
+    const prevent = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }
     const display = [
-        [<CommentsIcon />, data.comments.length, "", ()=>{}],
-        [<RepostsIcon />, data.reposts.length, data.reposts.includes(currUser.user.uid) ? "#00ba7c" : "", ()=>{}],
-        [<LikesIcon fill={data.likes.includes(currUser.user.uid) ? "#f91863" : ""}/>, data.likes.length, data.likes.includes(currUser.user.uid) ? "#f91863" : "", ()=>{}],
-        [<ImpressionsIcon />, data.impressions.length, "", ()=>{}]
+        [<CommentsIcon />, data.comments, "", (e)=>{prevent(e);}],
+        [<RepostsIcon />, data.reposts, currUserInfo.reposts.includes(data.post) ? "#00ba7c" : "", (e)=>{prevent(e)}],
+        [<LikesIcon fill={currUserInfo.likes.includes(data.post) ? "#f91863" : ""}/>, data.likes, currUserInfo.likes.includes(data.post) ? "#f91863" : "", (e)=>{prevent(e);dispatch(updatePost(data.post, currUser.token, currUser.user.uid, currUserInfo.likes.includes(data.post) ? "decrement" : "increment"))}],
+        [<ImpressionsIcon />, data.impressions, "", (e)=>{prevent(e)}]
     ]
     return (
             <div className="flex justify-between mt-2">
                 {display.map((pick, index)=>(
-                    <div className="group flex items-center" key={index} onClick={()=>{dispatch(updatePost(data.post, currUser.token, currUser.user.uid))}}>
+                    <div className="group flex items-center" key={index} onClick={pick[3]}>
                         <div className={"group-hover:bg-["+pick[2]+"]/[.2] p-1 transition-all duration-300 rounded-full pointer-events-none"}>
                             {pick[0]}
                         </div>

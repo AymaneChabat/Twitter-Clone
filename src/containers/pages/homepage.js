@@ -5,6 +5,7 @@ import Explore from '../homepage/explore';
 import Messages from '../homepage/messages';
 import Profile from '../homepage/profile';
 import Template from '../homepage/template';
+import Post from '../homepage/post';
 
 function HomePage() {
   const [opened,setOpened] = useState(false)
@@ -21,7 +22,8 @@ function HomePage() {
     ["/home", <Main opened={opened} setOpened={setOpened} w={w}/>],
     ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
     ["/messages/:chat?", <Messages w={w}/>],
-    ["/profile/:username", <Profile />]
+    ["/profile/:username", <Profile />],
+    ["/:username/post/*", <Post />]
   ]
 
   return (

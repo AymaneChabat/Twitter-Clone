@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function ChoiceButtons({choices}) {
+function ChoiceButtons({choices, setChosen}) {
 
   const [picked,setChoice] = useState(0)
+
+  useEffect(()=>{
+    if (setChosen !== undefined) {
+      setChosen(choices[picked])
+    }
+  }, [picked])
 
     return (
         <div className="border-b pb-0.5 border-[#1d9bf0]/[.1]">

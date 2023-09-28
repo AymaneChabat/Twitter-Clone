@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import SearchIcon from '../../components/icons/menu/search';
 import FollowProfileList from '../../components/profiles/profilesList';
-import TrendingList from '../../components/trends/trendsList';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from '../../redux/actions/userActions';
+import { getUsers, resetUsers } from '../../redux/actions/userActions';
 
 function LastContainer({w,page}) {
 
@@ -48,7 +47,12 @@ function LastContainer({w,page}) {
   ];
 
   useEffect(()=>{
-    dispatch(getUsers(undefined, search, undefined, "home"))
+    if (search !== "") {
+      dispatch(getUsers(undefined, search, undefined, "search", 5))
+    } else if (users.users.length > 0) {
+      console.log("hey")
+      dispatch(resetUsers())
+    }
   }, [search])
 
   const SearchResults = ({user}) => {
@@ -89,7 +93,6 @@ function LastContainer({w,page}) {
       <div className='ml-2 w-[22rem] overflow-auto h-screen'>
           {page === "home" || page === "profile" ? searchDiv : ""}
           <FollowProfileList profiles={profiles}/>
-          {page === "home" || page === "profile" ? <TrendingList /> : ""}
           <ul className='w-full flex flex-wrap justify-center pb-4'>
             {footerLinks.map((link, index)=>(
               <li key={index} className='text-[11px] mx-1 hover:underline cursor-pointer text-[#000000]/[.7]'>

@@ -14,7 +14,7 @@ function App() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true)
   const [slide, setSlide] = useState(true)
-  const users = useSelector(state => state.users)
+  const posts = useSelector(state => state.posts)
   const dispatch = useDispatch()
   const location = useLocation();
 

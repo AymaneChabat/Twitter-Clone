@@ -81,8 +81,19 @@ async function retrieveMessages(token, chatId) {
     })
 }
 */
+
+async function checkChat(token, participant) {
+    return await fetch("http://localhost:9001/api/chat?participant=" + participant, {
+        headers: {
+            'Authorization': token
+        }
+    }).then(async (res)=>{
+        return await res.json()
+    })
+}
+
 async function createChats(token, user) {
-    return await fetch("https://xclone-api.vercel.app/api/chat", {
+    return await fetch("http://localhost:9001/api/chat", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -166,6 +177,7 @@ async function retrieveMessages(token, chatId) {
     createChats,
     deleteChat,
     getChats,
+    checkChat,
     sendMessage,
     retrieveMessages
 }

@@ -25,7 +25,7 @@ async function login(email, password) {
 }
 
 // Function to register a new user with the provided email and password
-async function register(email, password, name, username) {
+async function register(email, password, name) {
   return await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
             // Successfully registered a new user, now create their profile
@@ -37,7 +37,6 @@ async function register(email, password, name, username) {
               },
               body: JSON.stringify({
                   name: name,
-                  username: username.toLowerCase()
               })
           }).then(async (res) => {
               return {status: response(true, "Account has been created successfully!"), user: userCredential, token: (await userCredential.user.getIdTokenResult()).token}

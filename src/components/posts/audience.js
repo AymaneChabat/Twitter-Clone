@@ -43,7 +43,7 @@ function PickAudience() {
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setActive(1);setAudience(false)}}>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setAudience(false)}}>
                         <div className='bg-[#00BA7C] mr-2 p-2 rounded-full'>
                             <CloseCircle />
                         </div>

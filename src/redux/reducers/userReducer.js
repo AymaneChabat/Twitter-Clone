@@ -1,7 +1,8 @@
 
 const initialState = {
     activeprofiles: [],
-    users: []
+    users: [],
+    explore: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -10,8 +11,9 @@ const userReducer = (state = initialState, action) => {
         case 'GET_USERS':
             return  {
                 ...state,
-               users : payload.tab !== "profile" ?  payload.res : state.users,
-               activeprofiles: payload.tab === "profile" && state.activeprofiles.find(profile => profile.info.username === payload.res.info.username) === undefined ? [...state.activeprofiles, payload.res] : state.activeprofiles
+                users : payload.tab === "search" ?  payload.res : state.users,
+                activeprofiles: payload.tab === "profile" && state.activeprofiles.find(profile => profile.info.username === payload.res.info.username) === undefined ? [...state.activeprofiles, payload.res] : state.activeprofiles,
+                explore : payload.tab === "explore" ? [...state.explore, ...payload.res] : state.explore
             };
         case 'UPDATE_USER':
             return  {
@@ -21,6 +23,15 @@ const userReducer = (state = initialState, action) => {
                 payload.res
                 ]
             };
+        case 'UPDATE_LIKES':
+            var i = state.activeprofiles.findIndex(user => user.id === payload.user)
+            if (state.activeprofiles[i].info.likes.includes(payload.postId)) {
+                var newLikes = state.activeprofiles[i].info.likes.filter(like => like !== payload.postId)                
+            } else {
+                var newLikes = [payload.postId, ...state.activeprofiles[i].info.likes]
+            }
+            state.activeprofiles[i].info.likes = newLikes
+            return state;
         default:
             return state
     }

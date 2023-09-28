@@ -21,8 +21,8 @@ async function addPost(data, token) {
 }
 
 // Function to get a list of posts
-async function getPost(userId, tab, last, username) {
-    return await fetch("http://localhost:9001/api/post?tab="+tab+(last !== undefined ? "&last="+last : "")+(userId !== undefined ? "&user="+userId : "")+(username !== undefined ? "&username="+username : ""), {
+async function getPost(post, tab, last, username) {
+    return await fetch("http://localhost:9001/api/post?tab="+tab+(last !== undefined ? "&last="+last : "")+(post !== undefined ? "&post="+post : "")+(username !== undefined ? "&username="+username : ""), {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'
@@ -63,9 +63,45 @@ async function updatePost(token, postId) {
     })
 }
 
+// Function to add a reply
+async function postReply(data, token, post, username) {
+    const formData = new FormData();
+
+    formData.append("content", data["content"])
+
+    data.images.forEach(element => {
+        formData.append("images", element);
+    });
+
+    return await fetch("http://localhost:9001/api/"+username+"/post/"+post, {
+        method: "POST",
+        headers: {
+            'Authorization': token
+        },
+        body: formData
+    }).then(async (res)=>{
+        // Successfully added a new post, return the JSON response
+        return await res.json()
+    })
+}
+
+async function getReplies(token, post, username) {
+    return await fetch("http://localhost:9001/api/"+username+"/replies/"+post, {
+        method: "GET",
+        headers: {
+            'Authorization': token
+        }
+    }).then(async (res)=>{
+        // Successfully added a new post, return the JSON response
+        return await res.json()
+    })
+}
+
 export {
     addPost,
     deletePost,
     getPost,
-    updatePost
+    updatePost,
+    postReply,
+    getReplies
 }

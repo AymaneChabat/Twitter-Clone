@@ -4,16 +4,30 @@ const chatReducer = (state = initialState, action) => {
     const payload = action.payload
     switch(action.type){
         case "GET_CHATS":
+            const chats = []
+            payload.chats[0].forEach((chat)=>{
+                let exist = false
+                state.chats.forEach((savedChat)=>{
+                    if (chat.id === savedChat.id) {
+                        exist = true
+                    }
+                })
+                if (exist === false) {
+                    chats.push(chat)
+                }
+            })
             return {
                 ...state,
-                chats: payload.snapshot === true ? payload.chats[0] : [...state.chats, ...payload.chats[0]],
+                chats: [...state.chats, ...chats],
                 activeChat: state.activeChat,
                 last: payload.chats[1] === null ? state.last : payload.chats[1]
             }
         case "CREATE_CHAT":
+            const i = state.chats.findIndex(chat => chat.id === payload.sample)
+            state.chats[i] = payload.newChat.chat
             return {
                 ...state,
-                chats: [payload.newChat.chat, ...state.chats],
+                chats: state.chats,
                 activeChat: payload.newChat.chat.id
             }
         case "SELECT_CHAT":

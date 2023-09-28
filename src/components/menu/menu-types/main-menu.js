@@ -45,11 +45,11 @@ function MainMenu({setPostOpen, tab}) {
 
   const verify = (e,n) => {
     if (n === 1) {
-      if (e === "Home" || e === "Messages" || e === "Profile" || e === "Bookmarks") {
+      if (e === "Home" || e === "Messages" || e === "Profile" || e === "Explore") {
         setActive(e)
       }
     } else if (n === 2) {
-      if (e !== "Home" && e !== "Messages" & e !== "Profile" && e !== "Bookmarks") {
+      if (e !== "Home" && e !== "Messages" & e !== "Profile" && e !== "Explore") {
         return 'pointer-events-none opacity-20'
       }
     }

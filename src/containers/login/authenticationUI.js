@@ -12,7 +12,6 @@ const AuthUI = () => {
     const email = useRef("")
     const password = useRef("")
     const name = useRef("")
-    const username = useRef("")
 
     const dispatch = useDispatch()
 
@@ -45,15 +44,14 @@ const AuthUI = () => {
 
     const SignUp = () => (
         <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between'>
-            <div className='h-[30%] flex flex-col justify-between min-h-[360px]'>
+            <div className='h-[30%] flex flex-col justify-between min-h-[250px]'>
                 <h1 className='font-bold font-chirp text-[27px]'>Create your account</h1>
                 <CredentialInput placeholder="Name" reff={name}/>
-                <CredentialInput placeholder="Username" reff={username}/>
                 <CredentialInput placeholder="Email" reff={email}/>
                 <CredentialInput placeholder="Password" password={true} reff={password}/>
             </div>
             <div className='h-[15%]'>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value,username.current.value))}}>Sign up</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value))}}>Sign up</div>
             </div>
         </div>
     )

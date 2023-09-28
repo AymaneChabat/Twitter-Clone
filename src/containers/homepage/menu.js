@@ -21,7 +21,7 @@ function FinalMenu({w}) {
     <>
         {postOpen ? (
             <div className='absolute w-full h-full s7:bg-[#000000]/[.4] z-50 s7:pt-[200px] bg-[#ffffff]' onClick={()=>{setPostOpen(false)}}>
-              <div className="px-4 py-2" onClick={()=>{setPostOpen(false)}}>
+              <div className="px-4 py-2 s7:hidden" onClick={()=>{setPostOpen(false)}}>
                 <BackArrowIcon w={20} />
               </div>
               <div className='w-100% s7:w-[650px] rounded-lg mx-auto bg-[#ffffff]' onClick={(e)=>e.stopPropagation()}>
