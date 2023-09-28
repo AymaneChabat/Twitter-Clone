@@ -44,7 +44,7 @@ export const updatePost = (post, token, user, action) => (dispatch) => {
     })
     dispatch({
         type: "LIKE_POST",
-        payload: {postId: post, action, user}
+        payload: {postId: post, user, action}
     })
 }
 
@@ -57,6 +57,13 @@ export const getPost = (post, tab, last, username) => (dispatch) => {
                     payload: {res}
                 })
             case "likes":
+                res.posts.forEach(element => {
+                    dispatch({
+                        type: "GET_USERS",
+                        payload: {res: element.user, tab: "profile"}
+                    })
+                    delete element.user
+                });
                 return dispatch({
                     type: "LIKES_GET_POSTS",
                     payload: {res}

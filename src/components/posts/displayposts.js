@@ -9,7 +9,6 @@ function DisplayPosts({posts, users, postid}) {
     if (postid !== undefined) {
         postList = (postList.find(replies => replies.postId === postid)).replies
     }
-    console.log(postList)
     return (
     <div>
         {posts !== undefined ? posts.map((postId, index)=>{
@@ -41,7 +40,7 @@ function DisplayPosts({posts, users, postid}) {
                                 ) : ""}
                             </div>
                         </p>
-                        <InteractionButtons data={{comments: post.post.comments, likes: post.post.likes, reposts: post.post.reports, impressions: post.post.impressions, post: post.postPath}}/>
+                        <InteractionButtons data={{comments: post.post.comments, likes: post.post.likes, reposts: post.post.reposts, impressions: post.post.impressions, post: post.postPath}}/>
                     </div>
                 </div>
             </Link>

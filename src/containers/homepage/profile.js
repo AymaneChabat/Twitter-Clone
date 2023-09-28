@@ -25,12 +25,15 @@ function Profile() {
   const users = useSelector(state=>state.users)
   const username = params.username
   const user = users.activeprofiles.find(user => user.info.username === username) !== undefined ? users.activeprofiles.find(user => user.info.username === username) : {}
-  var postsFound = chosen.toLowerCase() !== "likes" ? posts[chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase()].find(posts => posts.user === user.id) : {posts: user.info.likes}
+  var postsFound = posts[chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase()].find(posts => posts.user === user.id)
   const sampleChat = Math.floor(100000 + Math.random() * 900000)
+
+
 
   const goBack = () => {
     navigate(-1); // This function takes you back to the previous URL
   };
+
   
   useEffect(()=>{
     if (JSON.stringify(user) === '{}') {
@@ -61,7 +64,6 @@ function Profile() {
         ? 
         <>
           { updating ? <UpdateUser setUpdating={setUpdating} user={user.info}/> : "" }
-          <button onClick={()=>{console.log(posts)}}>show</button>
           <div className='box-border s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto relative mb-[60px] s5:mb-0'>
             <div className="w-full box-border px-3 h-[60px] border-b flex items-center justify-between bg-[#ffffff] z-50">
               <div className="p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer" onClick={goBack}>

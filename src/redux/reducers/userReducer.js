@@ -28,7 +28,8 @@ const userReducer = (state = initialState, action) => {
             if (state.activeprofiles[i].info.likes.includes(payload.postId)) {
                 var newLikes = state.activeprofiles[i].info.likes.filter(like => like !== payload.postId)                
             } else {
-                var newLikes = [payload.postId, ...state.activeprofiles[i].info.likes]
+                var newLikes = state.activeprofiles[i].info.likes
+                newLikes.push(payload.postId)
             }
             state.activeprofiles[i].info.likes = newLikes
             return state;

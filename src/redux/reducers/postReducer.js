@@ -93,17 +93,25 @@ const PostReducer = (state = initialState, action) => {
                 // likes: state.likes.filter(post => post.id != payload.id)
             }
         case "LIKE_POST":
-            var i = state.posts.findIndex(post => post.postId === payload.postId)
+            var i1 = state.likes.findIndex(post => post.user === payload.user)
+            var i2 = state.posts.findIndex(post => post.postId === payload.postId)
+            if (i1 !== -1) {
+                if (state.likes[i1].posts.includes(payload.postId)) {
+                    var newLikes = state.likes[i1].posts.filter(like => like !== payload.postId)
+                } else {
+                    var newLikes = [payload.postId, ...state.likes[i1].posts]
+                }
+                state.likes[i1].posts = newLikes
+            }
             if (payload.action === "decrement") {
-                state.posts[i].post.likes -= 1
-                // if (state.profile.findIndex(post => post))
-                
+                state.posts[i2].post.likes -= 1 
             } else {
-                state.posts[i].post.likes += 1
+                state.posts[i2].post.likes += 1 
             }
             return {
                 ...state,
-                posts: state.posts
+                posts: state.posts,
+                likes: state.likes
             }
         case "COMMENT_POST":
             var i1 = state.replies.findIndex(post => post.postPath === payload.postPath)

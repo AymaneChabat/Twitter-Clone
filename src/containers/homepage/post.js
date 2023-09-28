@@ -35,8 +35,6 @@ function Post() {
         }
     },[posts, params])
 
-    console.log(posts)
-
 
     const goBack = () => {
         navigate(-1); // This function takes you back to the previous URL
@@ -79,7 +77,7 @@ function Post() {
                                 </div>
                             </p>
                         </div>
-                        <InteractionButtons data={{comments: post.post.comments, likes: post.post.likes, reposts: post.post.reports, impressions: post.post.impressions, post: post.postPath}}/>
+                        <InteractionButtons data={{comments: post.post.comments, likes: post.post.likes, reposts: post.post.reposts, impressions: post.post.impressions, post: post.postPath}}/>
                     </div>
                     <div className='border-[#1d9bf0]/[.1] border-b-0.5 border-t-0.5'>
                         <HomePost floating={false} type={"reply"} postId={params["*"]} username={params.username}/>
