@@ -20,7 +20,7 @@ export const logIn = (email, password) => (dispatch) => {
     })
 }
 
-export const signUp = (email, password, name, navigate) => (dispatch) => {
+export const signUp = (email, password, name) => (dispatch) => {
     register(email, password, name).then(async(res)=>{
         if (res.status.success === true) {
             if (res) {
