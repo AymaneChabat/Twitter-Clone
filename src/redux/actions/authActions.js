@@ -20,10 +20,9 @@ export const logIn = (email, password) => (dispatch) => {
     })
 }
 
-export const signUp = (email, password, name) => (dispatch) => {
+export const signUp = (email, password, name, navigate) => (dispatch) => {
     register(email, password, name).then(async(res)=>{
         if (res.status.success === true) {
-            window.location.href = "http://localhost:3000/home"
             if (res) {
                 dispatch({
                     type: "SIGN_UP",
@@ -47,7 +46,6 @@ export const resetPass = (email) => (dispatch) => {
 
 export const signOut = () => (dispatch) => {
     logout().then(()=>{
-        window.location.href = "http://localhost:3000/i"
         dispatch({
             type: "RESET_PASS",
             payload: {}

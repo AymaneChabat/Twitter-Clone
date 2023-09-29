@@ -51,7 +51,7 @@ const AuthUI = () => {
                 <CredentialInput placeholder="Password" password={true} reff={password}/>
             </div>
             <div className='h-[15%]'>
-                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value))}}>Sign up</div>
+                <div className='text-[#ffffff] bg-[#000000]/[.9] text-[20px] hover:bg-[#000000]/[.8] text-center font-bold font-twitterchirp py-3.5 rounded-full cursor-pointer transition-all duration-300' onClick={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value, navigate))}}>Sign up</div>
             </div>
         </div>
     )
