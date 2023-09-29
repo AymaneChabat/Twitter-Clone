@@ -83,9 +83,23 @@ async function updateUser(updatedData, token) {
     })
 }
 
+// Function to update user data with the provided information
+async function updateFollows(token, user) {
+    return await fetch("http://localhost:9001/api/follow/?username="+user, {
+        method: "POST",
+        headers: {
+            'Authorization': token
+        }
+    }).then(async (res) => {
+        // Successfully updated user data, return the JSON response
+        return await res.json()
+    })
+}
+
 
 export {
     updateUser,
     updateUserEmail,
-    getUsers
+    getUsers,
+    updateFollows
 }

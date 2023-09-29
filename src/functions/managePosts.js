@@ -21,11 +21,12 @@ async function addPost(data, token) {
 }
 
 // Function to get a list of posts
-async function getPost(post, tab, last, username) {
+async function getPosts(post, tab, last, username, token) {
     return await fetch("http://localhost:9001/api/post?tab="+tab+(last !== undefined ? "&last="+last : "")+(post !== undefined ? "&post="+post : "")+(username !== undefined ? "&username="+username : ""), {
         method: "GET",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': token
         }
     }).then(async (res)=>{
         // Successfully fetched a list of posts, return the JSON response
@@ -47,7 +48,6 @@ async function deletePost(token, postId) {
         return await res.json()
     }))
 }
-
 
 // Function to update a post by its ID
 async function updatePost(token, postId) {
@@ -100,7 +100,7 @@ async function getReplies(token, post, username) {
 export {
     addPost,
     deletePost,
-    getPost,
+    getPosts,
     updatePost,
     postReply,
     getReplies

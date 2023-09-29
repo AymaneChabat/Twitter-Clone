@@ -2,6 +2,7 @@ const initialState = {
     home: [],
     profile: [],
     likes: [],
+    following: [],
     replies: [],
     media: [],
     posts: []
@@ -12,54 +13,69 @@ const PostReducer = (state = initialState, action) => {
     var posts = [];
 
     function cleanPosts () {
-        for (let index = payload.res.posts.length - 1; index >= 0; index--) {
-            const element = payload.res.posts[index];
+        for (let index = payload.posts.length - 1; index >= 0; index--) {
+            const element = payload.posts[index];
             posts.push(element.postId);
           
             if (state.posts.find(post => post.postId === element.postId) !== undefined) {
-              payload.res.posts.splice(index, 1);
+              payload.posts.splice(index, 1);
             }
           }
           
-        return {user: payload.res.user, posts: posts.reverse()}
+        return {user: payload.user, posts: posts.reverse()}
     }
 
     switch(action.type) {
         case "HOME_GET_POSTS":
-            for (let index = payload.res.length - 1; index >= 0; index--) {
-                const element = payload.res[index];
+            for (let index = payload.length - 1; index >= 0; index--) {
+                const element = payload[index];
                 posts.push(element.postId);
               
                 if (state.posts.find(post => post.postId === element.postId) !== undefined) {
-                  payload.res.splice(index, 1);
+                  payload.splice(index, 1);
                 }
               }
               
             return {
                 ...state,
                 home: [...state.home, ...posts.reverse()],
-                posts: [...state.posts, ...payload.res]
+                posts: [...state.posts, ...payload]
+            }
+        case "FOLLOWING_GET_POSTS":
+            for (let index = payload.length - 1; index >= 0; index--) {
+                const element = payload[index];
+                posts.push(element.postId);
+              
+                if (state.posts.find(post => post.postId === element.postId) !== undefined) {
+                  payload.splice(index, 1);
+                }
+              }
+
+            return {
+                ...state,
+                following: [...state.following, ...posts.reverse()],
+                posts: [...state.posts, ...payload]
             }
         case "PROFILE_GET_POSTS":
             posts = cleanPosts()
             return {
                 ...state,
                 profile: [...state.profile, posts],
-                posts: [...state.posts, ...payload.res.posts]
+                posts: [...state.posts, ...payload.posts]
             }
         case "LIKES_GET_POSTS":
             posts = cleanPosts()
             return {
                 ...state,
                 likes: [...state.likes, posts],
-                posts: [...state.posts, ...payload.res.posts]
+                posts: [...state.posts, ...payload.posts]
             }
         case "MEDIA_GET_POSTS":
             posts = cleanPosts()
             return {
                 ...state,
                 media: [...state.media, posts],
-                posts: [...state.posts, ...payload.res.posts]
+                posts: [...state.posts, ...payload.posts]
             }
         case 'REPLIES_GET_POSTS':
             return {
@@ -69,6 +85,7 @@ const PostReducer = (state = initialState, action) => {
         case "CREATE_POST":
             let oldPosts = state.profile.find(posts => posts.user === payload.user)
             let index;
+            console.log(payload)
             if (oldPosts !== undefined) {
                 oldPosts = {...oldPosts, posts: [payload.res.post.postId, ...oldPosts.posts]}
                 index = state.profile.findIndex(posts => posts.user === payload.user)
@@ -94,7 +111,7 @@ const PostReducer = (state = initialState, action) => {
             }
         case "LIKE_POST":
             var i1 = state.likes.findIndex(post => post.user === payload.user)
-            var i2 = state.posts.findIndex(post => post.postId === payload.postId)
+            var i2 = state.posts.findIndex(post => post.postPath === payload.postId)
             if (i1 !== -1) {
                 if (state.likes[i1].posts.includes(payload.postId)) {
                     var newLikes = state.likes[i1].posts.filter(like => like !== payload.postId)
@@ -116,24 +133,17 @@ const PostReducer = (state = initialState, action) => {
         case "COMMENT_POST":
             var i1 = state.replies.findIndex(post => post.postPath === payload.postPath)
             var i2 = state.posts.findIndex(post => post.postPath === payload.postPath)
-            state.posts[i2].post.comments.splice(0, 0, payload.res.postId)
-            state.replies[i1].replies.push(payload.res)
+            state.posts[i2].post.comments.splice(0, 0, payload.postId)
+            state.replies[i1].replies.push(payload)
             return {
                 ...state,
                 posts: state.posts,
                 replies: state.replies
             }
-        case "SAVE_POST":
-            return {
-                ...state,
-                home: state.home.filter(post => post.id !== payload.id),
-                profile: state.profile.filter(post => post.id !== payload.id),
-                // likes: state.likes.filter(post => post.id != payload.id)
-            }
         case "POST":
             return {
                 ...state,
-                posts: [...state.posts, payload.res]
+                posts: [...state.posts, payload]
             }
         default:
             return state

@@ -35,7 +35,7 @@ function InteractionButtons({data}) {
     return (
             <div className="flex justify-between mt-2">
                 {display.map((pick, index)=>(
-                    <div className="group flex items-center" key={index} onClick={pick[3]}>
+                    <div className="group flex items-center cursor-pointer" key={index} onClick={pick[3]}>
                         <div className={"group-hover:bg-["+pick[2]+"]/[.2] p-1 transition-all duration-300 rounded-full pointer-events-none"}>
                             {pick[0]}
                         </div>

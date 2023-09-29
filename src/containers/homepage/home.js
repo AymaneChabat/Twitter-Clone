@@ -1,29 +1,34 @@
 import ChoiceButtons from '../../components/buttons/choice';
 import IconTwitter from '../../components/icons/logos/twitter-icon';
+import LoadingIcon from '../../components/icons/loading';
 import SlideMenu from '../../components/menu/menu-types/slide-menu-sm';
 import HomePost from '../../components/posts/home-post';
 import DisplayPost from '../../components/posts/displayposts';
 import { getPost } from '../../redux/actions/postActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function Main({setOpened, opened, w}) {
 
   const dispatch = useDispatch()
+  const currUser = useSelector(state=>state.currUser)
   const users = useSelector(state=>state.users)
   const posts = useSelector(state=>state.posts)
-
-  // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1] !== undefined ? posts.home[posts.home.length - 1].postId : undefined))
-  // dispatch(getPost(currUser.token, "profile", posts.profile[posts.profile.length - 1] !== undefined ? posts.profile[posts.profile.length - 1].postId : undefined))
-  // dispatch(getPost(currUser.token, "likes", posts.likes.length))
+  const [loading, setLoading] = useState(true)
+  const [tab, setTab] = useState("For you")
 
   useEffect(()=>{
-      if (posts.home.length === 0) {
-        dispatch(getPost(undefined, "home", undefined, undefined))
-        // dispatch(getPost(currUser.token, "home", posts.home[posts.home.length - 1].postId))
+      setLoading(true)
+      if (posts.home.length === 0 && tab === "For you") {
+        dispatch(getPost(undefined, "home", undefined, undefined, currUser.token))
+      } else if (posts.following.length === 0) {
+        dispatch(getPost(undefined, "following", undefined, undefined, currUser.token))
       }
-  },[])
-
+      setTimeout(()=>{
+        setLoading(false)
+      }, 1000)
+  },[tab])
+  
   const localChoices = ["For you", "Following"]
   
   return (
@@ -41,10 +46,10 @@ function Main({setOpened, opened, w}) {
                 </div>
               </div>
             </div>
-            <ChoiceButtons choices={localChoices}/>
+            <ChoiceButtons choices={localChoices} setChosen={setTab}/>
           </div>
           {w >= 500 ? <HomePost/> : ""}
-          {posts.home.length > 0 ? <DisplayPost posts={posts.home} users={users.activeprofiles}/> : ""}
+          {!loading ? posts[tab === "For you" ? "home" : "following"].length > 0 ? posts[tab === "For you" ? "home" : "following"].map((post, index) => <DisplayPost posts={post} users={users.activeprofiles} key={index}/>)  : "" : <LoadingIcon />}
         </div>
   );
 }

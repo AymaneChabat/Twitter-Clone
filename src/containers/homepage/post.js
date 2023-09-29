@@ -6,15 +6,17 @@ import InteractionButtons from '../../components/buttons/model';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getPost, getReplies } from '../../redux/actions/postActions';
 import { getUsers } from '../../redux/actions/userActions';
+import LoadingIcon from '../../components/icons/loading';
 import HomePost from '../../components/posts/home-post';
 
 function Post() {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const params = useParams()
+    const [loading, setLoading] = useState(true)
     const users = useSelector(state => state.users)
     const posts = useSelector(state => state.posts)
     const currUser = useSelector(state => state.currUser)
@@ -26,19 +28,23 @@ function Post() {
         if (post === undefined) {
             dispatch(getPost(params["*"], "", undefined, undefined))
         } else {
-            if (users.activeprofiles.find(user => user.id === post.postId) === undefined) {
+            if (users.activeprofiles.find(user => user.id === post.post.userId) === undefined) {
                 dispatch(getUsers(undefined, params.username, currUser.token, "profile"))
             }
-            if (posts.replies.find(reply => reply.postId === params["*"]) === undefined) {
+            if (posts.replies.find(reply => reply.postPath === params["*"]) === undefined) {
                 dispatch(getReplies(currUser.token, params["*"], params.username))
             }
         }
+        setTimeout(()=>{
+            setLoading(false)
+        }, 1000)
     },[posts, params])
 
 
     const goBack = () => {
         navigate(-1); // This function takes you back to the previous URL
     };
+
 
     return (
             <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s5:mb-0'>
@@ -83,7 +89,7 @@ function Post() {
                         <HomePost floating={false} type={"reply"} postId={params["*"]} username={params.username}/>
                     </div>
                     <div>
-                       {posts.replies.find(reply => reply.postId === params["*"]) !== undefined ? <DisplayPosts posts={post.post.comments} users={users.activeprofiles} postid={params["*"]}/> : ""}
+                       {!loading ? posts.replies.find(reply => reply.postId === params["*"]) !== undefined ? post.post.comments.map((post) => <DisplayPosts posts={post} users={users.activeprofiles} postid={params["*"]}/>) : "" : <LoadingIcon />}
                     </div>
                 </>
                 )

@@ -7,7 +7,7 @@ import SendIcon from '../../components/icons/messages/send';
 import DeleteIcon from '../../components/icons/posts/delete';
 import DetailsIcon from '../../components/icons/messages/details';
 import BackArrowIcon from '../../components/icons/messages/backArrow';
-import IconTwitter from '../../components/icons/logos/twitter-icon';
+import LoadingIcon from '../../components/icons/loading';
 import ReactFileReader from 'react-file-reader';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChats, selectChat, removeChat, createChat } from '../../redux/actions/chatActions';
@@ -55,10 +55,6 @@ function Messages({w}) {
     setImages(files.base64)
   }
 
-  const loadingIcon = (
-      <IconTwitter clas={"w-[30px] mx-auto"}/>
-  )
-
   const scrollDetect = (e) => {
     if (chatOverflow === 0 && e.currentTarget.scrollTop > 0) {
       setChatOverflow(e.currentTarget.scrollTop)
@@ -97,18 +93,18 @@ function Messages({w}) {
   }
 
   useEffect(()=>{
+    setLoading(true)
     if (params.chat !== undefined) {
       dispatch(selectChat(params.chat));
-      setLoading(true)
       if (messages === undefined) {
         dispatch(fetchMessages(currUser.token, params.chat))
       }
-      setTimeout(()=>{
-        setLoading(false)
-      },800)
     } else {
       dispatch(selectChat(null));
     }
+    setTimeout(()=>{
+      setLoading(false)
+    }, 1000)
   }, [params.chat, chats.activeChat])
   
 
@@ -186,7 +182,7 @@ function Messages({w}) {
         </div>
         {!loading ? (messages !== undefined ? messages.messages.map((message, index)=>(
           message.message.sender === currUser.user.uid ? Sent(message, index) : Received(message, index)
-        )): "") : loadingIcon}
+        )): "") : <LoadingIcon />}
       </div>
       <div className='w-full min-h-[5%] bottom-0 flex items-center border-t grow absolute bg-[#ffffff]'>
         <ReactFileReader handleFiles={handleFiles} multipleFiles={true} base64={true}>
@@ -295,7 +291,7 @@ function Messages({w}) {
               const user = users.activeprofiles.find(user => user.id === chat.chat.participants.filter(participant => participant !== currUser.user.uid)[0])
               return(
               <Link to={"/messages/"+chat.id}>
-                <div className={'cursor-pointer w-full border-[#1d9bf0] p-3 flex items-center' + (chat.id === chats.activeChat ? "border-r bg-[#97d0f7]/[.1]" : "")} key={index} id={chat.id}>
+                <div className={'cursor-pointer w-full border-[#1d9bf0] p-3 flex items-center ' + (chat.id === chats.activeChat ? "border-r bg-[#97d0f7]/[.1]" : "")} key={index} id={chat.id}>
                   <div className='mr-2'>
                     <div className='w-[38px] h-[38px] rounded-full bg-cover bg-no-repeat bg-center' style={{backgroundImage: `url("${user.info.profilepicture}")`}}></div>
                   </div>

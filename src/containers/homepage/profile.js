@@ -6,10 +6,11 @@ import DisplayPosts from "../../components/posts/displayposts";
 import UpdateUser from "./updateuser"
 import { useNavigate, useParams } from 'react-router-dom';
 import { Fragment, useEffect, useState } from "react";
-import { getUsers } from "../../redux/actions/userActions";
+import { getUsers, updateFollows } from "../../redux/actions/userActions";
 import { getPost } from "../../redux/actions/postActions";
 import { addSampleChat } from "../../redux/actions/chatActions";
 import { useDispatch, useSelector } from 'react-redux';
+import LoadingIcon from "../../components/icons/loading";
 
 
 function Profile() {
@@ -20,6 +21,7 @@ function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const [updating, setUpdating] = useState(false)
+  const [loading, setLoading] = useState(true)
   const currUser = useSelector(state=>state.currUser)
   const posts = useSelector(state=>state.posts)
   const users = useSelector(state=>state.users)
@@ -36,9 +38,13 @@ function Profile() {
 
   
   useEffect(()=>{
+    setLoading(true)
     if (JSON.stringify(user) === '{}') {
       dispatch(getUsers(undefined, username, currUser.token, "profile"))
     }
+    setTimeout(()=>{
+      setLoading(false)
+    }, 1000)
     switch(chosen) {
       case "Posts":
         if (posts.profile.find(posts => posts.user === user.id) === undefined) {
@@ -86,7 +92,7 @@ function Profile() {
                       <div onClick={()=>{dispatch(addSampleChat(currUser.token, currUser.user.uid, user.id, sampleChat, navigate))}} className="border rounded-full p-2 m-3 cursor-pointer">
                         <MessageIcon picked={"profile"}/>
                       </div>
-                    <div className="border px-4 py-1.5 bg-[#0f1419] rounded-full font-bold font-twitterchirp text-[#ffffff] cursor-pointer text-[0.9rem]">Follow</div>
+                    <div className={"border px-4 py-1.5 bg-[#0f1419] rounded-full font-bold font-twitterchirp cursor-pointer text-[0.9rem] transition-all duration-400 " + (user.info.followers.includes(currUser.user.uid) ? "hover:border-[#f4212e] hover:bg-[#f4212e]/[.3] hover:text-[#f4212e] bg-[#ffffff] border-[#000000]" : "text-[#ffffff]")} onClick={()=>{dispatch(updateFollows(currUser.token, currUser.user.uid, user.info.username))}} onMouseOver={user.info.followers.includes(currUser.user.uid) ? (e)=>{e.currentTarget.innerText = "Unfollow"} : (e)=>{e.currentTarget.innerText = "Follow"}} onMouseOut={user.info.followers.includes(currUser.user.uid) ? (e)=>{e.currentTarget.innerText = "Following"} : (e)=>{e.currentTarget.innerText = "Follow"}}>{user.info.followers.includes(currUser.user.uid) ? "Following" : "Follow"}</div>
                   </div>}
               </div>
               <div className="w-full s5:mt-[100px] mt-[80px] px-3">
@@ -109,7 +115,7 @@ function Profile() {
               <div className="mt-3">
                   <ChoiceButtons choices={choices} setChosen={setChosen}/>
               </div>
-              {postsFound !== undefined ? <DisplayPosts posts={postsFound.posts} users={users.activeprofiles}/> : ""}
+              {!loading ? (postsFound !== undefined ? postsFound.posts.map((post, index) => <DisplayPosts posts={post} users={users.activeprofiles} key={index}/>)  : "") : <LoadingIcon />}
             </div>
           </div>
         </>

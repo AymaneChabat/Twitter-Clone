@@ -89,7 +89,7 @@ function LastContainer({w,page}) {
     )
 
   const show = (
-    <div className='w-[0%] s6:w-[10%] s10:w-[35.5%] h-full'>
+    <aside className='w-[0%] s6:w-[10%] s10:w-[35.5%] h-full'>
       <div className='ml-2 w-[22rem] overflow-auto h-screen'>
           {page === "home" || page === "profile" ? searchDiv : ""}
           <FollowProfileList profiles={profiles}/>
@@ -104,7 +104,7 @@ function LastContainer({w,page}) {
             </li>
           </ul>
       </div>
-    </div>
+    </aside>
   )
 
 

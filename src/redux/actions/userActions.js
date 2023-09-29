@@ -1,4 +1,4 @@
-import { getUsers as fetchUsers, updateUser as updateUserInfo, updateUserEmail } from '../../functions/manageUser';
+import { getUsers as fetchUsers, updateUser as updateUserInfo, updateUserEmail, updateFollows as updateF } from '../../functions/manageUser';
 
 
 export const getUsers = (id, username, token, tab, limit, last) => (dispatch) => {
@@ -14,6 +14,17 @@ export const resetUsers = () => (dispatch) => {
     dispatch({
         type: "GET_USERS",
         payload: {res: [], tab: "search"}
+    })
+}
+
+export const updateFollows = (token, currUser, user) => (dispatch) => {
+    updateF(token, user).then((res) => {
+        if (res.success === true) {
+            dispatch({
+                type: "UPDATE_FOLLOWS",
+                payload: {res, currUser, user}
+            })
+        }
     })
 }
 

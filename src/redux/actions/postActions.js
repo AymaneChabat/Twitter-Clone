@@ -1,4 +1,4 @@
-import { addPost as createPost, deletePost as delPost, getPost as fetchPosts, updatePost as updatepost, postReply, getReplies as fetchReplies } from "../../functions/managePosts";
+import { addPost as createPost, deletePost as delPost, getPosts as fetchPosts, updatePost as updatepost, postReply, getReplies as fetchReplies } from "../../functions/managePosts";
 
 export const addPost = (token, data, user) => (dispatch) => {
     createPost(data, token).then((res)=>{
@@ -48,13 +48,13 @@ export const updatePost = (post, token, user, action) => (dispatch) => {
     })
 }
 
-export const getPost = (post, tab, last, username) => (dispatch) => {    
-    fetchPosts(post, tab, last, username).then((res)=>{
+export const getPost = (post, tab, last, username, token) => (dispatch) => {    
+    fetchPosts(post, tab, last, username, token).then((res)=>{
         switch(tab) {
             case "profile":
                 return dispatch({
                     type: "PROFILE_GET_POSTS",
-                    payload: {res}
+                    payload: res
                 })
             case "likes":
                 res.posts.forEach(element => {
@@ -66,12 +66,12 @@ export const getPost = (post, tab, last, username) => (dispatch) => {
                 });
                 return dispatch({
                     type: "LIKES_GET_POSTS",
-                    payload: {res}
+                    payload: res
                 })
             case "media":
                 return dispatch({
                     type: "MEDIA_GET_POSTS",
-                    payload: {res}
+                    payload: res
                 })
             case "home":
                 res.forEach(element => {
@@ -83,13 +83,25 @@ export const getPost = (post, tab, last, username) => (dispatch) => {
                 });
                 return dispatch({
                     type: "HOME_GET_POSTS",
-                    payload: {res}
+                    payload: res
+                })
+            case "following":
+                res.forEach(element => {
+                    dispatch({
+                        type: "GET_USERS",
+                        payload: {res: element.user, tab: "profile"}
+                    })
+                    delete element.user
+                });
+                return dispatch({
+                    type: "FOLLOWING_GET_POSTS",
+                    payload: res
                 })
             default:
                 if (res.status === undefined) {
                     return dispatch({
                         type: "POST",
-                        payload: {res}
+                        payload: res
                     })
                 } else {
                     console.log("no post has been found")

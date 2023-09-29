@@ -7,6 +7,7 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
     let payload = action.payload
+    var i;
     switch(action.type){
         case 'GET_USERS':
             return  {
@@ -23,8 +24,26 @@ const userReducer = (state = initialState, action) => {
                 payload.res
                 ]
             };
+        case 'UPDATE_FOLLOWS':
+            const index = state.activeprofiles.findIndex(user => user.id === payload.res.user)
+            i = state.activeprofiles.findIndex(user => user.id === payload.currUser)
+            let newFollowers;
+            let newFollowing;
+            if (payload.res.action === "increment") {
+                newFollowers = [payload.currUser, ...state.activeprofiles[index].info.followers]
+                newFollowing = [payload.res.user, ...state.activeprofiles[i].info.following]
+            } else {
+                newFollowers = state.activeprofiles[index].info.followers.filter(user => user !== payload.currUser)
+                newFollowing = state.activeprofiles[i].info.following.filter(user => user !== payload.res.user)
+            }
+            state.activeprofiles[index].info.followers = newFollowers
+            state.activeprofiles[i].info.following = newFollowing
+            return  {
+                ...state,
+                activeprofiles: state.activeprofiles
+            };
         case 'UPDATE_LIKES':
-            var i = state.activeprofiles.findIndex(user => user.id === payload.user)
+            i = state.activeprofiles.findIndex(user => user.id === payload.user)
             if (state.activeprofiles[i].info.likes.includes(payload.postId)) {
                 var newLikes = state.activeprofiles[i].info.likes.filter(like => like !== payload.postId)                
             } else {
