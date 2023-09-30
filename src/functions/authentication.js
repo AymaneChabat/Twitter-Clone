@@ -1,3 +1,4 @@
+// Import necessary modules and configure Firebase auth
 import app from "./config";
 import {
     getAuth,
@@ -6,79 +7,108 @@ import {
     signOut,
 } from "firebase/auth";
 
+// Initialize Firebase authentication
 export const auth = getAuth(app);
 
+// Helper function to create a response object
 const response = (success, message) => {
     return {
         success: success,
         message: message
-    }
+    };
 }
 
 // Function to log in a user with the provided email and password
 async function login(email, password) {
-  return await signInWithEmailAndPassword(auth, email, password).then((res)=>{
-    return res.user
-  }).catch((error)=>{
-    return null
-  })
+    try {
+        // Attempt to sign in the user with email and password
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return userCredential.user;
+    } catch (error) {
+        // Handle login failure and return an error message
+        console.error(error.message);
+        return null;
+    }
 }
 
-// Function to register a new user with the provided email and password
+// Function to register a new user with the provided email, password, and name
 async function register(email, password, name) {
-  return await createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-            // Successfully registered a new user, now create their profile
-            return await fetch("http://localhost:9001/api/user", {
-              method: "POST",
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': userCredential.user.accessToken
-              },
-              body: JSON.stringify({
-                  name: name,
-              })
-          }).then(async (res) => {
-              return {status: response(true, "Account has been created successfully!"), user: userCredential, token: (await userCredential.user.getIdTokenResult()).token}
-          })
-      })
-      .catch((error) => {
-            // Registration failed, return an error message
-            console.log(error.message)
-            return ({status: response(false, error.message)})
-      });
+    try {
+        // Create a new user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+        // Successfully registered a new user, now create their profile
+        const profileResponse = await fetch("http://localhost:9001/api/user", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': userCredential.user.accessToken
+            },
+            body: JSON.stringify({
+                name: name,
+            })
+        });
+
+        return {
+            status: response(true, "Account has been created successfully!"),
+            user: userCredential,
+            token: (await userCredential.user.getIdTokenResult()).token
+        };
+    } catch (error) {
+        // Handle registration failure and return an error message
+        console.error(error.message);
+        return {
+            status: response(false, error.message)
+        };
+    }
 }
 
 // Function to log out the currently signed-in user
 async function logout() {
-  return signOut(auth).then(() => {
-      // Sign-out successful.
-      return {status: response(true, "User has been logged out successfully")}
-  }).catch((error) => {
-      // An error happened during sign-out.
-      return {status: response(false, error.message)}
-  });
+    try {
+        // Sign out the user
+        await signOut(auth);
+        // Sign-out successful.
+        return {
+            status: response(true, "User has been logged out successfully")
+        };
+    } catch (error) {
+        // Handle logout failure and return an error message
+        console.error(error.message);
+        return {
+            status: response(false, error.message)
+        };
+    }
 }
 
 // Function to initiate a password reset request for the given email
 async function resetPassword(email) {
-  return await fetch("http://localhost:9001/api/passwordReset", {
-      method: "POST",
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          email: email
-      })
-  }).then(() => {
-      return {status: response(true, "Email has been successfully sent!")}
-  }).catch((error) => {
-      // Password reset request failed, return an error message
-      return response(false, error.message)
-  })
+    try {
+        // Send a password reset request
+        await fetch("http://localhost:9001/api/passwordReset", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email
+            })
+        });
+
+        return {
+            status: response(true, "Email has been successfully sent!")
+        };
+    } catch (error) {
+        // Handle password reset failure and return an error message
+        console.error(error.message);
+        return {
+            status: response(false, error.message)
+        };
+    }
 }
 
-export  {
+// Export the functions for use in other parts of the application
+export {
     login,
     register,
     logout,

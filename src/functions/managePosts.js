@@ -1,102 +1,148 @@
 // Function to add a new post
 async function addPost(data, token) {
-    const formData = new FormData();
+    try {
+        // Create a FormData object to send the post data
+        const formData = new FormData();
+        formData.append("content", data["content"]);
 
-    formData.append("content", data["content"])
+        // Append images to the FormData object
+        data.images.forEach(element => {
+            formData.append("images", element);
+        });
 
-    data.images.forEach(element => {
-        formData.append("images", element);
-    });
+        // Send a POST request to add a new post
+        const response = await fetch("http://localhost:9001/api/post", {
+            method: "POST",
+            headers: {
+                'Authorization': token
+            },
+            body: formData
+        });
 
-    return await fetch("http://localhost:9001/api/post", {
-        method: "POST",
-        headers: {
-            'Authorization': token
-        },
-        body: formData
-    }).then(async (res)=>{
         // Successfully added a new post, return the JSON response
-        return await res.json()
-    })
+        return await response.json();
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
 // Function to get a list of posts
 async function getPosts(post, tab, last, username, token) {
-    return await fetch("http://localhost:9001/api/post?tab="+tab+(last !== undefined ? "&last="+last : "")+(post !== undefined ? "&post="+post : "")+(username !== undefined ? "&username="+username : ""), {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    }).then(async (res)=>{
+    try {
+        // Construct the URL for fetching posts based on parameters
+        const url = "http://localhost:9001/api/post?tab=" + tab +
+            (last !== undefined ? "&last=" + last : "") +
+            (post !== undefined ? "&post=" + post : "") +
+            (username !== undefined ? "&username=" + username : "");
+
+        // Send a GET request to retrieve a list of posts
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+
         // Successfully fetched a list of posts, return the JSON response
-        return await res.json()
-    })
+        return await response.json();
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
 // Function to delete a post by its ID
 async function deletePost(token, postId) {
-    console.log(await fetch("http://localhost:9001/api/post", {
-        method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        },
-        body: JSON.stringify({id: postId})
-    }).then(async (res)=>{
+    try {
+        // Send a DELETE request to delete a post by its ID
+        const response = await fetch("http://localhost:9001/api/post", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ id: postId })
+        });
+
         // Successfully deleted the post, log and return the JSON response
-        return await res.json()
-    }))
+        return await response.json();
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
 // Function to update a post by its ID
 async function updatePost(token, postId) {
-    return await fetch("http://localhost:9001/api/post/"+postId, {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    }).then(async (res)=>{
-        // Successfully deleted the post, log and return the JSON response
-        return await res.json()
-    })
+    try {
+        // Send a PUT request to update a post by its ID
+        const response = await fetch("http://localhost:9001/api/post/" + postId, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+
+        // Successfully updated the post, log and return the JSON response
+        return await response.json();
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
 // Function to add a reply
 async function postReply(data, token, post, username) {
-    const formData = new FormData();
+    try {
+        // Create a FormData object to send the reply data
+        const formData = new FormData();
+        formData.append("content", data["content"]);
 
-    formData.append("content", data["content"])
+        // Append images to the FormData object
+        data.images.forEach(element => {
+            formData.append("images", element);
+        });
 
-    data.images.forEach(element => {
-        formData.append("images", element);
-    });
+        // Send a POST request to add a reply to a post
+        const response = await fetch("http://localhost:9001/api/" + username + "/post/" + post, {
+            method: "POST",
+            headers: {
+                'Authorization': token
+            },
+            body: formData
+        });
 
-    return await fetch("http://localhost:9001/api/"+username+"/post/"+post, {
-        method: "POST",
-        headers: {
-            'Authorization': token
-        },
-        body: formData
-    }).then(async (res)=>{
         // Successfully added a new post, return the JSON response
-        return await res.json()
-    })
+        return await response.json();
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
+// Function to get replies for a specific post
 async function getReplies(token, post, username) {
-    return await fetch("http://localhost:9001/api/"+username+"/replies/"+post, {
-        method: "GET",
-        headers: {
-            'Authorization': token
-        }
-    }).then(async (res)=>{
-        // Successfully added a new post, return the JSON response
-        return await res.json()
-    })
+    try {
+        // Send a GET request to retrieve replies for a specific post
+        const response = await fetch("http://localhost:9001/api/" + username + "/replies/" + post, {
+            method: "GET",
+            headers: {
+                'Authorization': token
+            }
+        });
+        
+        // Successfully fetched replies, return the JSON response
+        return await response.json();
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
+// Export the post and reply-related functions
 export {
     addPost,
     deletePost,

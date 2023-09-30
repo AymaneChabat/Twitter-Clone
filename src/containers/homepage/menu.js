@@ -31,7 +31,7 @@ function FinalMenu({w}) {
           ) : ""}
         {w < 500 ? <BottomMenuSM /> : <MainMenu setPostOpen={setPostOpen} tab={(page.charAt(0).toUpperCase() + page.slice(1))}/> }
         {w < 500 && page === "home" ? (
-          <div className='fixed right-4 bottom-[70px]' onClick={()=>{setPostOpen(true)}}>
+          <div className='fixed right-4 bottom-[70px] z-20' onClick={()=>{setPostOpen(true)}}>
             <button type="button" class="text-white s13:w-[16rem] px-0.5 s13:px-0 s13:py-3 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md"><PostIcon /></button>
           </div>
         ) : ""}

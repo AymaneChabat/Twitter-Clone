@@ -49,12 +49,12 @@ function Explore({setOpened, opened}) {
               search !== "" 
               ?
               users.users.map(user=>(
-                <FollowProfile data={[user.info.profilepicture, user.info.name, user.info.username]}/>
+                <FollowProfile data={user.info}/>
               ))
               : 
               <>
               {users.explore.map(user=>(
-                <FollowProfile data={[user.info.profilepicture, user.info.name, user.info.username]}/>
+                <FollowProfile data={user.info}/>
               ))}
               <button className='text-center w-full border-t border-b py-3 border-[#7fc9fa]/[.1] hover:bg-[#7fc9fa]/[.1] transition-all duration-300 font-chirp' onClick={()=>{setLoad(true)}}>Load more</button>
               </>

@@ -8,22 +8,12 @@
   @font-face {
     font-family: TwitterChirp;
     font-weight: 400;
-    src: url(components/fonts/twitter-font/chirp-regular-web.woff) format("woff");
-  }
-  @font-face {
-    font-family: TwitterChirp;
-    font-weight: 500;
-    src: url(components/fonts/twitter-font/chirp-medium-web.woff) format("woff");
-  }
-  @font-face {
-    font-family: TwitterChirp;
-    font-weight: 700;
-    src: url(components/fonts/twitter-font/chirp-heavy-web.woff) format("woff");
+    src: url(components/fonts/chirp-regular-web.woff) format("woff");
   }
   @font-face {
     font-family: TwitterChirp;
     font-weight: 900;
-    src: url(components/fonts/twitter-font/chirp-bold-web.woff) format("woff");
+    src: url(components/fonts/chirp-bold-web.woff) format("woff");
   }
   @font-face {
     font-family: TwitterChirpExtendedHeavy;
@@ -32,21 +22,10 @@
     font-display: 'swap';
     src: url(https://abs.twimg.com/fonts/chirp-extended-heavy-web.woff) format("woff");
   }
-  @font-face {
-    font-family: TwitterChirps;
-    font-weight: 500;
-    font-style: 'normal';
-    font-display: 'swap';
-    src: url(https://abs.twimg.com/responsive-web/client-web/Chirp-Medium.20fc288a.woff) format("woff");
-  }
-  @font-face {
-    font-family: TwitterChirps;
-    font-weight: 900;
-    font-style: 'bold';
-    font-display: 'swap';
-    src: url(https://abs.twimg.com/responsive-web/client-web/Chirp-Bold.20fc288a.woff) format("woff");
-  }
+}
 
+* {
+  font-family: 'TwitterChirp' !important;
 }
 
 body {

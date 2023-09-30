@@ -21,9 +21,13 @@ function LastContainer({w,page}) {
   }, [])
 
   const profiles = [
-    ["Ash Crypto", "@Ashcryptoreal"],
-    ["steph", "@spnjxnsen"],
-    ["SaitAlbania", "@thealpha_wolf1"]
+    {
+      info: {
+        name: "五条悟が大好きです",
+        username: "owner",
+        profilepicture: "https://firebasestorage.googleapis.com/v0/b/realchat-4fd5d.appspot.com/o/pp%2F4JUjE5h350cSaL1khXnkbBZ5snk1.jpg?alt=media&token=c948ec21-9ca4-48b4-b3f2-b60696be4a29"
+      }
+    }
   ]
 
   const footerLinks = [

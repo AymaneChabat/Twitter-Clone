@@ -1,9 +1,11 @@
 import { useState } from "react";
 import DownArrow from "../icons/menu/downarrow";
-import DropdownItems from "./dropdownitems";
+import { useDispatch } from "react-redux";
+import { signOut } from "../../redux/actions/authActions";
 
 function DropdownButton({data}) {
   const [active,setActive] = useState(false)
+  const dispatch = useDispatch()
 
   return (
     <div className='w-[90%] mx-auto mt-2 mb-6'>
@@ -13,7 +15,10 @@ function DropdownButton({data}) {
         </div>
         <div className={active ? 'pt-2 block' : 'pt-2 hidden'}>
             {data[1].map((data0, index) => (
-                  <DropdownItems key={index} data={data0}/>
+                  <div className='flex py-2 w-[100%] items-center' onClick={data0[1] === "Log out" ? ()=>{dispatch(signOut())} : ""} key={index}>
+                      {data0[0]}
+                      <span className='font-medium text-[16px] text-[#000000]/[.7] -mb-0.5'>{data0[1]}</span>
+                  </div>  
                 ))}
         </div>
     </div>

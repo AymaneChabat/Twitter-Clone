@@ -16,7 +16,7 @@ function Post() {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const params = useParams()
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const users = useSelector(state => state.users)
     const posts = useSelector(state => state.posts)
     const currUser = useSelector(state => state.currUser)
@@ -26,25 +26,23 @@ function Post() {
 
     useEffect(()=>{
         if (post === undefined) {
-            dispatch(getPost(params["*"], "", undefined, undefined))
+            dispatch(getPost(params["*"], "", undefined, undefined, undefined, setLoading))
         } else {
             if (users.activeprofiles.find(user => user.id === post.post.userId) === undefined) {
-                dispatch(getUsers(undefined, params.username, currUser.token, "profile"))
+                dispatch(getUsers(undefined, params.username, currUser.token, "profile", setLoading))
             }
-            if (posts.replies.find(reply => reply.postPath === params["*"]) === undefined) {
-                dispatch(getReplies(currUser.token, params["*"], params.username))
+            if (posts.postReplies.find(reply => reply.postPath === params["*"]) === undefined) {
+                dispatch(getReplies(currUser.token, params["*"], params.username, setLoading))
             }
         }
-        setTimeout(()=>{
-            setLoading(false)
-        }, 1000)
-    },[posts, params])
+    },[params, posts])
+
+    console.log(posts)
 
 
     const goBack = () => {
         navigate(-1); // This function takes you back to the previous URL
     };
-
 
     return (
             <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s5:mb-0'>
@@ -89,7 +87,7 @@ function Post() {
                         <HomePost floating={false} type={"reply"} postId={params["*"]} username={params.username}/>
                     </div>
                     <div>
-                       {!loading ? posts.replies.find(reply => reply.postId === params["*"]) !== undefined ? post.post.comments.map((post) => <DisplayPosts posts={post} users={users.activeprofiles} postid={params["*"]}/>) : "" : <LoadingIcon />}
+                       {!loading ? posts.postReplies.find(reply => reply.postPath === params["*"]) !== undefined ? posts.postReplies.find(reply => reply.postPath === params["*"]).replies.map((post, index) => <DisplayPosts key={index} postPath={post} users={users.activeprofiles} postid={params["*"]} postList={posts.posts}/>) : "" : <LoadingIcon />}
                     </div>
                 </>
                 )

@@ -11,11 +11,12 @@ import MoreIcon from '../../icons/menu/more';
 import PostIcon from '../../icons/menu/post';
 import Menu from "../items";
 import Dots from '../../icons/menu/dots';
-import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../redux/actions/authActions';
+import { useEffect } from 'react';
 
 function MainMenu({setPostOpen, tab}) {
   
@@ -72,6 +73,14 @@ function MainMenu({setPostOpen, tab}) {
     }
   }
 
+  useEffect(()=>{
+    window.document.addEventListener("click", ()=>{
+      if (logout) {
+        setLogout(false)
+      }
+    })
+  }, [])
+
   return (
     <>
       <div className='s13:w-[34.5%] pt-1 max-s13:max-w-[15%] s8:pr-2 px-1' onClick={showLogout}>
@@ -81,7 +90,7 @@ function MainMenu({setPostOpen, tab}) {
                 <a href='#' className='p-2.5 inline-flex hover:bg-[#0f1419]/[.1] rounded-full transition-all duration-200 cursor-pointer'>
                     <IconTwitter clas={"w-[28px]"}/>
                 </a>
-                <div className='h-[100%] flex flex-col justify-around mt-2 s13:items-start items-center'>
+                <nav className='h-[100%] flex flex-col justify-around mt-2 s13:items-start items-center'>
                   <div className='mb-4'>
                     {menu.map((pick, index) => (
                         <Link key={index} to={ "/" + pick[1].toLowerCase() + (linkConditions(pick[1].toLowerCase()))} onClick={()=>{verify(pick[1],1)}} className={verify(pick[1],2)}>
@@ -92,24 +101,16 @@ function MainMenu({setPostOpen, tab}) {
                   <div className='inline-flex s13:block w-[100%]' onClick={()=>{setPostOpen(true)}}>
                     <button type="button" class="text-white s13:w-[16rem] px-0.5 s13:px-0 s13:py-3 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md"><span className='hidden s13:block'>Post</span><PostIcon /></button>
                   </div>
-                </div>
+                </nav>
               </div>
             </div>
-            <div className='s8:w-[16rem] flex flex-col s13:items-start items-end mx-auto s8:mx-0 relative' onClick={(e)=>{
+            <div className='s13:w-[16rem] flex s13:items-start items-end mx-auto s13:mx-0 relative' onClick={(e)=>{
               e.stopPropagation(); 
               if (logout) {
                 setLogout(false)
               } else {
                 setLogout(true)
               };}}>
-              {logout === true ?
-              (<div class="z-10 font-twitter bg-white divide-y divide-gray-100 rounded-lg shadow h-auto w-[17rem] border-2 border-solid mb-3" onClick={(e)=>e.stopPropagation()}>
-                <ul class="text-sm text-gray-700 h-[100%] flex flex-col justify-evenly">
-                  <li className='py-4 hover:bg-gray-100' onClick={()=>{dispatch(signOut())}}>
-                    <a href="#" class="block px-4 font-chirp text-[16px]">Log out {currUser.info.username}</a>
-                  </li>
-                </ul>
-              </div>) : ""}
               <div className='s13:w-[100%]'>
                 <button className='flex items-center justify-around rounded-full hover:bg-[#0f1419]/[.1] p-1.5 transition-all duration-300 s13:w-[100%] border' >
                   <div>
@@ -124,6 +125,16 @@ function MainMenu({setPostOpen, tab}) {
                   </div>
                 </button>
               </div>
+              {logout === true ?
+              (
+              <div class="z-10 bg-white rounded-lg h-auto w-[17rem] border-2 border-solid mb-3 absolute bottom-[50px]" onClick={(e)=>e.stopPropagation()}>
+                <ul class="text-sm text-gray-700 h-[100%] flex flex-col justify-evenly">
+                  <li className='py-4 hover:bg-gray-100' onClick={()=>{dispatch(signOut())}}>
+                    <a href="#" class="block px-4 text-[16px]">Log out {currUser.info.username}</a>
+                  </li>
+                </ul>
+              </div>
+              ) : ""}
             </div>
           </div>
         </div>

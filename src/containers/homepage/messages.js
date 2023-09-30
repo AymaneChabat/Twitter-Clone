@@ -93,7 +93,6 @@ function Messages({w}) {
   }
 
   useEffect(()=>{
-    setLoading(true)
     if (params.chat !== undefined) {
       dispatch(selectChat(params.chat));
       if (messages === undefined) {
@@ -104,7 +103,7 @@ function Messages({w}) {
     }
     setTimeout(()=>{
       setLoading(false)
-    }, 1000)
+    }, 500)
   }, [params.chat, chats.activeChat])
   
 
@@ -270,7 +269,7 @@ function Messages({w}) {
 
 
   return (
-    <div className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s5:mb-0'>
+    <div className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s5:mb-0 max-h-[90%] s5:max-h-[100%] s5:h-auto'>
       <div className={'s7:w-[380px] border-r h-full grow s11:grow-0 ' + (chats.activeChat !== null && w < 1100 ? "hidden" : "block")}>
           <div className='flex p-3 justify-between items-center'>
             <span className='text-[18px] font-bold font-chirp'>Messages</span>
@@ -290,7 +289,7 @@ function Messages({w}) {
             {chats.chats.length > 0 ? chats.chats.map((chat, index)=>{
               const user = users.activeprofiles.find(user => user.id === chat.chat.participants.filter(participant => participant !== currUser.user.uid)[0])
               return(
-              <Link to={"/messages/"+chat.id}>
+              <Link to={"/messages/"+chat.id} onClick={chats.activeChat !== chat.id ? ()=>{setLoading(true)} : ""}>
                 <div className={'cursor-pointer w-full border-[#1d9bf0] p-3 flex items-center ' + (chat.id === chats.activeChat ? "border-r bg-[#97d0f7]/[.1]" : "")} key={index} id={chat.id}>
                   <div className='mr-2'>
                     <div className='w-[38px] h-[38px] rounded-full bg-cover bg-no-repeat bg-center' style={{backgroundImage: `url("${user.info.profilepicture}")`}}></div>

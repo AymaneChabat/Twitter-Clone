@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Fragment, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Main from '../homepage/home';
 import Explore from '../homepage/explore';
 import Messages from '../homepage/messages';

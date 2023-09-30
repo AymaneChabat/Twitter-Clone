@@ -5,20 +5,18 @@ import DisplayImages from "./displayImages";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { updateFollows } from "../../redux/actions/userActions";
+import VerifiedIcon from "../icons/profile/verified";
 
-function DisplayPosts({posts, users, postid}) {
-    let postList = useSelector(state => postid !== undefined ? state.posts.replies : state.posts.posts)
+function DisplayPosts({postPath, users, postList, reply}) {
+    
     const currUser = useSelector(state => state.currUser)
     const dispatch = useDispatch()
 
     const [preview, setPreview] = useState(false)
-    if (postid !== undefined) {
-        postList = (postList.find(replies => replies.postId === postid)).replies
-    }
 
-    const post =  postList.find(post => post.postId === posts)
+    
+    const post =  postList.find(post => post.postPath === postPath)
     const user = users.find(user => user.id === post.post.userId)
-
     const showPreview = (e) => {
         setTimeout(()=>{
             if (e.target.matches(":hover")) {
@@ -61,35 +59,42 @@ function DisplayPosts({posts, users, postid}) {
             </div>
             <div className="w-full">
                 <Link className="leading-5" to={"/profile/"+user.info.username}>
-                    <h1 className="font-bold text-[15px] font-chirp hover:underline">{user.info.name}</h1>
-                    <span className="text-[#536471] font-chirp text-[13px]">@{user.info.username}</span>
+                    <h1 className="flex">
+                        <span className="font-bold text-[15px] hover:underline mr-1.5">{user.info.name}</span> 
+                        {user.info.username === "owner" ? <VerifiedIcon /> : ""}
+                    </h1>
+                    <span className="text-[#536471] text-[13px]">@{user.info.username}</span>
                 </Link>
-                <div className="mt-3 font-chirp text-[15px] break-words	">
+                <div className="mt-3 text-[15px] break-words	">
                     {user.info.description}
                 </div>
                 <div className="mt-3">
-                    <span className="text-[#536471] font-chirp ml-1 mt-1 text-sm mx-3"><strong>{user.info.following.length}</strong> Following</span>
-                    <span className="text-[#536471] font-chirp ml-1 mt-1 text-sm mx-3"><strong>{user.info.followers.length}</strong> Followers</span>
+                    <span className="text-[#536471] ml-1 mt-1 text-sm mx-3"><strong>{user.info.following.length}</strong> Following</span>
+                    <span className="text-[#536471] ml-1 mt-1 text-sm mx-3"><strong>{user.info.followers.length}</strong> Followers</span>
                 </div>
             </div>
         </div>
     )}
 
     return (
-    <article className="relative flex border-b border-[#1d9bf0]/[.1] transition-all duration-200" >
+    <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200" + (reply ? "" : " border-b")} >
         {preview ? <UserPreview user={user}/> : ""}
         <Link to={"/"+user.info.username+"/post/"+post.postPath} className="w-full">
-            <div className="px-3 py-2 hover:bg-[#ebebeb]/[.4] cursor-pointer flex">
-                <div>
+            <div className="h-full px-3 py-2 hover:bg-[#ebebeb]/[.4] cursor-pointer flex">
+                <div className="h-full overflow-hidden flex flex-col items-center mr-2">
                     <Link to={"/profile/"+user.info.username}>
-                        <div className="w-[50px] h-[50px] mr-2 bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}  onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}></div>
+                        <div className="w-[50px] h-[50px] bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}  onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}></div>
                     </Link>
+                    {reply ? <div className="h-full w-[2px] bg-[#cfd9de]"></div> : ""}
                 </div>
                 <div className="w-[90%]">
                     <div className="flex w-full items-start justify-between">
-                        <div className="group" >
-                            <span id="name" className="font-bold text-[15px] font-twitterchirp mr-2 group-hover:underline" onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}>{user.info.name}</span>
-                            <span className="text-[15px] font-twitterchirp text-[#536471]"><span className="text-[12px]">@</span>{user.info.username}  {post.post.time}</span>
+                        <div className="group flex flex justify-center items-center">
+                            <h1 className="flex mr-1" onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}>
+                                <span id="name" className="font-bold text-[15px] hover:underline mr-1.5">{user.info.name}</span> 
+                                {user.info.username === "owner" ? <VerifiedIcon /> : ""}
+                            </h1>
+                            <span className="text-[15px] text-[#536471]"><span className="text-[12px]">@</span>{user.info.username}  {post.post.time}</span>
                         </div>
                         <div className="hover:bg-[#1D9BF0]/[.1] p-1.5 rounded-full">
                             <Dots w={12}/>

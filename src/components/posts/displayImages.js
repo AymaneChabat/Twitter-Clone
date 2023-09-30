@@ -6,7 +6,7 @@ function DisplayImages({images, posting, setImages}) {
 
     const imageFS = (
         <div className="fullscreen fixed top-0 left-0 w-screen h-screen object-cover z-50 bg-[#000000]/[.8] flex justify-center items-center cursor-default" onClick={(e)=>{setFullScreen(false)}}>
-            <img className="h-[700px] bg-[#ffffff] rounded-xl" src={fullscreen}/>
+            <img className="w-auto w-[600px] max-w-[90%] bg-[#ffffff] rounded-xl" src={fullscreen} loading="lazy"/>
         </div>
     )
 
