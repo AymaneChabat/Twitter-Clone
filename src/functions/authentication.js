@@ -38,7 +38,7 @@ async function register(email, password, name) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
         // Successfully registered a new user, now create their profile
-        const profileResponse = await fetch("http://localhost:9001/api/user", {
+        const profileResponse = await fetch("http://xclone-api-git-master-aymanechabat.vercel.app/api/user", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ async function logout() {
 async function resetPassword(email) {
     try {
         // Send a password reset request
-        await fetch("http://localhost:9001/api/passwordReset", {
+        await fetch("http://xclone-api-git-master-aymanechabat.vercel.app/api/passwordReset", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
