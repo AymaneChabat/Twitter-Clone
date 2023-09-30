@@ -55,7 +55,7 @@ async function updateUserEmail(password, newEmail) {
 async function getUsers(id, username, token, tab, limit, last) {
     try {
         // Construct the URL for fetching user data
-        const url = "http://localhost:9001/api/users?limit=" + limit +
+        const url = "https://xclone-api-git-master-aymanechabat.vercel.app/api/users?limit=" + limit +
             "&tab=" + tab +
             (id !== undefined ? ("&id=" + id) : ("&username=" + username)) +
             (last !== undefined ? "&last=" + last : "");
@@ -89,7 +89,7 @@ async function updateUser(updatedData, token) {
         })    
 
         // Send a PUT request to update user data
-        const response = await fetch("http://localhost:9001/api/user", {
+        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/user", {
             method: "PUT",
             headers: {
                 'Authorization': token
@@ -109,7 +109,7 @@ async function updateUser(updatedData, token) {
 async function updateFollows(token, user) {
     try {
         // Send a POST request to update user follows
-        const response = await fetch("http://localhost:9001/api/follow/?username=" + user, {
+        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/follow/?username=" + user, {
             method: "POST",
             headers: {
                 'Authorization': token
