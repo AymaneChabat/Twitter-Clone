@@ -10,6 +10,8 @@ import {
 // Initialize Firebase authentication
 export const auth = getAuth(app);
 
+const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+
 // Helper function to create a response object
 const response = (success, message) => {
     return {
@@ -38,7 +40,7 @@ async function register(email, password, name) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
         // Successfully registered a new user, now create their profile
-        const profileResponse = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/user", {
+        await fetch(domain+"/api/user", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +87,7 @@ async function logout() {
 async function resetPassword(email) {
     try {
         // Send a password reset request
-        await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/passwordReset", {
+        await fetch(domain+"/api/passwordReset", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

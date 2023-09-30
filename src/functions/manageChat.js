@@ -1,8 +1,10 @@
+const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+
 // Function to create a new chat with a user
 async function createChats(token, user) {
     try {
         // Send a POST request to create a new chat
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app1/api/chat", {
+        const response = await fetch(domain+"/api/chat", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +27,7 @@ async function createChats(token, user) {
 async function getChats(token, last) {
     try {
         // Send a POST request to fetch a list of user's chats
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/chats", {
+        const response = await fetch(domain+"/api/chats", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +48,7 @@ async function getChats(token, last) {
 async function deleteChat(token, chatId) {
     try {
         // Send a DELETE request to delete a chat by its ID
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/chats", {
+        const response = await fetch(domain+"/api/chats", {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +71,7 @@ async function deleteChat(token, chatId) {
 async function sendMessage(token, message) {
     try {
         // Send a POST request to send a message in a chat
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/message", {
+        const response = await fetch(domain+"/api/message", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +96,7 @@ async function sendMessage(token, message) {
 async function retrieveMessages(token, chatId) {
     try {
         // Send a GET request to retrieve messages for a specific chat
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/message?chat=" + chatId, {
+        const response = await fetch(domain+"/api/message?chat=" + chatId, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ async function retrieveMessages(token, chatId) {
 async function checkChat(token, participant) {
     try {
         // Send a GET request to check if a chat with a specific participant exists
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/chat?participant=" + participant, {
+        const response = await fetch(domain+"/api/chat?participant=" + participant, {
             headers: {
                 'Authorization': token
             }

@@ -1,3 +1,5 @@
+const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+
 // Function to add a new post
 async function addPost(data, token) {
     try {
@@ -11,7 +13,7 @@ async function addPost(data, token) {
         });
 
         // Send a POST request to add a new post
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/post", {
+        const response = await fetch(domain+"/api/post", {
             method: "POST",
             headers: {
                 'Authorization': token
@@ -31,7 +33,7 @@ async function addPost(data, token) {
 async function getPosts(post, tab, last, username, token) {
     try {
         // Construct the URL for fetching posts based on parameters
-        const url = "https://xclone-api-git-master-aymanechabat.vercel.app/api/post?tab=" + tab +
+        const url = domain+"/api/post?tab=" + tab +
             (last !== undefined ? "&last=" + last : "") +
             (post !== undefined ? "&post=" + post : "") +
             (username !== undefined ? "&username=" + username : "");
@@ -57,7 +59,7 @@ async function getPosts(post, tab, last, username, token) {
 async function deletePost(token, postId) {
     try {
         // Send a DELETE request to delete a post by its ID
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/post", {
+        const response = await fetch(domain+"/api/post", {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +80,7 @@ async function deletePost(token, postId) {
 async function updatePost(token, postId) {
     try {
         // Send a PUT request to update a post by its ID
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/post/" + postId, {
+        const response = await fetch(domain+"/api/post/" + postId, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -107,7 +109,7 @@ async function postReply(data, token, post, username) {
         });
 
         // Send a POST request to add a reply to a post
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/" + username + "/post/" + post, {
+        const response = await fetch(domain+"/api/" + username + "/post/" + post, {
             method: "POST",
             headers: {
                 'Authorization': token
@@ -127,7 +129,7 @@ async function postReply(data, token, post, username) {
 async function getReplies(token, post, username) {
     try {
         // Send a GET request to retrieve replies for a specific post
-        const response = await fetch("https://xclone-api-git-master-aymanechabat.vercel.app/api/" + username + "/replies/" + post, {
+        const response = await fetch(domain+"/api/" + username + "/replies/" + post, {
             method: "GET",
             headers: {
                 'Authorization': token
