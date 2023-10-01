@@ -5,16 +5,13 @@ import {
     EmailAuthProvider,
     updateEmail
 } from "firebase/auth";
-import { 
-    getStorage
-} from "firebase/storage";
 
 // Import the Firebase app configuration
 import app from "./config";
 
 // Initialize Firebase storage and authentication instances
 const auth = getAuth(app);
-const domain = "https://xclone-api-git-master-aymanechabat.vercel.app/"
+const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
 
 // Helper function to create a response object
 const response = (success, message) => {

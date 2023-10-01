@@ -37,6 +37,8 @@ function Main({setOpened, opened, w}) {
     setUpdating(false)
   }
 
+  console.log(users)
+
   const UpdateUsername = () => (
     <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s5:bg-[#000000]/[.5] z-40 flex justify-center items-center' onClick={()=>[setUpdating(false)]}>
       <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s5:h-[700px] s5:max-w-[500px] p-4' onClick={(e)=>{e.stopPropagation()}}>
