@@ -1,4 +1,4 @@
-const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+const domain = "https://xclone-api-git-master-aymanechabat.vercel.app/"
 
 // Function to create a new chat with a user
 async function createChats(token, user) {

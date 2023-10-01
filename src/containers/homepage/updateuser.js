@@ -40,7 +40,7 @@ function UpdateUser({setUpdating, user}) {
     }
 
     if (JSON.stringify(updatedData) !== "{}") {
-        dispatch(updateUser(currUser.token, updatedData))
+        dispatch(updateUser(currUser.token, updatedData, currUser.user.uid))
     }
 
     setUpdating(false)

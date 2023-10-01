@@ -25,12 +25,11 @@ const userReducer = (state = initialState, action) => {
 
         // Action to update user information
         case 'UPDATE_USER':
+            i = state.activeprofiles.findIndex(user => user.id === payload.id)
+            state.activeprofiles[i].info = {...state.activeprofiles[i].info, ...payload.updatedData}
             return {
                 ...state,
-                activeprofiles: [
-                    ...state.activeprofiles.filter(user => user.id !== payload.res.id),
-                    payload.res
-                ]
+                activeprofiles: state.activeprofiles
             };
 
         // Action to update followers and following

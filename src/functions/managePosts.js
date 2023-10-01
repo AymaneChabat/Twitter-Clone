@@ -1,5 +1,4 @@
-const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
-
+const domain = "https://xclone-api-git-master-aymanechabat.vercel.app/"
 // Function to add a new post
 async function addPost(data, token) {
     try {

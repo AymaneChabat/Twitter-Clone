@@ -42,14 +42,16 @@ export const updateFollows = (token, currUser, user) => (dispatch) => {
 }
 
 // Action creator to update user information with the provided data
-export const updateUser = (token, updatedData) => (dispatch) => {
+export const updateUser = (token, updatedData, id) => (dispatch) => {
     // Call the updateUserInfo function to update user information
     updateUserInfo(updatedData, token).then((res) => {
-        // Dispatch an action to update the user information in the state
-        dispatch({
-            type: "UPDATE_USER",
-            payload: { res }
-        });
+        if (res.success === true) {
+            // Dispatch an action to update the user information in the state
+            dispatch({
+                type: "UPDATE_USER",
+                payload: {updatedData, id}
+            });
+        }
     });
 }
 

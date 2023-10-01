@@ -8,6 +8,7 @@ import EditIcon from '../../components/icons/edit';
 import { getPost } from '../../redux/actions/postActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
+import { updateUser } from '../../redux/actions/userActions';
 import CredentialInput from '../../components/inputs/credentials';
 import CredentialButton from '../../components/buttons/credentials';
 
@@ -29,6 +30,13 @@ function Main({setOpened, opened, w}) {
       }
   },[tab])
 
+  const updateUsername = () => {
+    if (username.current.value !== users.activeprofiles.find(user => user.id === currUser.user.uid).info.username) {
+      dispatch(updateUser(currUser.token, {username: username.current.value}, currUser.user.uid))
+    }
+    setUpdating(false)
+  }
+
   const UpdateUsername = () => (
     <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s5:bg-[#000000]/[.5] z-40 flex justify-center items-center' onClick={()=>[setUpdating(false)]}>
       <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s5:h-[700px] s5:max-w-[500px] p-4' onClick={(e)=>{e.stopPropagation()}}>
@@ -37,11 +45,11 @@ function Main({setOpened, opened, w}) {
             <IconTwitter clas={"w-[30px]"}/>
             <div className='w-full py-5'>
               <h1 className='text-[20px] mb-2'>Here you can change your username</h1>
-              <CredentialInput placeholder="username" ref={username} defaultVal={users.activeprofiles.find(user => user.id === currUser.user.uid).info.username}/>
+              <CredentialInput placeholder="username" reff={username} defaultVal={users.activeprofiles.find(user => user.id === currUser.user.uid).info.username}/>
             </div>
           </div>
           <div className='h-[100px] flex flex-col justify-between w-full'>
-            <CredentialButton text={"Set username"}/>
+            <CredentialButton text={"Set username"} action={updateUsername}/>
             <CredentialButton text={"Cancel"} light={true} action={()=>{setUpdating(false)}}/>
           </div>
         </div>

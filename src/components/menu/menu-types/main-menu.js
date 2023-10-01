@@ -118,7 +118,7 @@ function MainMenu({setPostOpen, tab}) {
                   </div>
                   <div className='flex-col items-start hidden s13:flex w-[65%]'>
                     <span className='font-bold ml-0.5 -mb-1.5'>{currUser.info.name}</span>
-                    <span className='text-[#536471]'>{currUser.info.username}</span>
+                    <span className='text-[#536471]'>@{currUser.info.username}</span>
                   </div>
                   <div className='hidden s13:block'>
                     <Dots w={18}/>

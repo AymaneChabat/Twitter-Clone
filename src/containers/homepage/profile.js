@@ -136,15 +136,14 @@ function Profile() {
                   <ChoiceButtons choices={choices} setChosen={setChosen}/>
               </div>
               {postsFound !== undefined ?
-                chosen !== "Replies" 
-                  ? 
-                    postsFound.posts.map((post, index) => <DisplayPosts postPath={post} users={users.activeprofiles} key={index} postList={posts.posts}/>) 
-                    : 
                     postsFound.posts.map((post, index) => 
-                    <Fragment>
-                      <DisplayPosts postPath={post.mainPost} users={users.activeprofiles} key={index} postList={posts.posts} reply={true}/>
-                      <DisplayPosts postPath={post.replyPost} users={users.activeprofiles} key={index} postList={posts.posts}/>
-                    </Fragment>
+                    chosen !== "Replies" ? 
+                      <DisplayPosts postPath={post} users={users.activeprofiles} key={index} postList={posts.posts}/> 
+                    :
+                      <Fragment>
+                        <DisplayPosts postPath={post.mainPost} users={users.activeprofiles} key={index} postList={posts.posts} reply={true}/>
+                        <DisplayPosts postPath={post.replyPost} users={users.activeprofiles} key={index} postList={posts.posts}/>
+                      </Fragment>
                     )  
                   : 
                 ""}
