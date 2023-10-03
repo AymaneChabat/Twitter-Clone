@@ -126,7 +126,6 @@ export const getPost = (post, tab, last, username, token, setLoading) => (dispat
                     });
                     delete element.mainPost.user;
                 });
-                console.log(res)
                 return dispatch({
                     type: "REPLIES_GET_POSTS",
                     payload: res

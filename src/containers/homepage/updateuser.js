@@ -40,15 +40,15 @@ function UpdateUser({setUpdating, user}) {
     }
 
     if (JSON.stringify(updatedData) !== "{}") {
-        dispatch(updateUser(currUser.token, updatedData, currUser.user.uid))
+        dispatch(updateUser(currUser.token, updatedData, currUser.user))
     }
 
     setUpdating(false)
   }
 
   return (
-    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center" onClick={()=>{setUpdating(false)}}>
-        <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative" onClick={(e)=>{e.stopPropagation()}}>
+    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center" onMouseDown={()=>{setUpdating(false)}}>
+        <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative" onMouseDown={(e)=>{e.stopPropagation()}}>
             <div className="flex justify-between items-center p-2.5">
                 <button className="hover:bg-[#000000]/[.1] p-2 rounded-full" onClick={()=>{setUpdating(false)}}>
                     <DeleteIcon />

@@ -1,11 +1,21 @@
 // Import authentication functions
 import { login, register, logout, resetPassword } from '../../functions/authentication';
-
+import { 
+    getUser
+} from '../../functions/manageUser';
 // Action creator to check the user and set user data and token in the state
-export const checkUser = (user, token) => (dispatch) => {
-    dispatch({
-        type: "CHECK_USER",
-        payload: { user, token }
+export const checkUser = (token) => (dispatch) => {
+    getUser("me", token).then((res)=>{
+        if (res.success !== false) {
+            dispatch({
+                type: "CHECK_USER",
+                payload: { user: res.id, token }
+            })
+            dispatch({
+                type: "GET_USERS",
+                payload: { res, tab: "profile" }
+            })
+        }
     })
 }
 
@@ -13,8 +23,8 @@ export const checkUser = (user, token) => (dispatch) => {
 export const logIn = (email, password) => (dispatch) => {
     // Call the login function from the authentication module
     login(email, password).then(async (user) => {
+        window.location.pathname = "/home"
         if (user !== null) {
-            window.location.pathname = '/home'
             // If login is successful, dispatch the user data and token to the state
             dispatch({
                 type: "SIGN_IN",
@@ -28,15 +38,13 @@ export const logIn = (email, password) => (dispatch) => {
 export const signUp = (email, password, name) => (dispatch) => {
     // Call the register function from the authentication module
     register(email, password, name).then(async (res) => {
-        if (res.status.success === true) {
-            window.location.pathname = '/home'
-            if (res) {
-                // If registration is successful, dispatch the user data and token to the state
-                dispatch({
-                    type: "SIGN_UP",
-                    payload: { user: res.user, token: res.token }
-                })
-            }
+        if (res.success === true) {
+            window.location.pathname = "/home"
+            // If registration is successful, dispatch the user data and token to the state
+            dispatch({
+                type: "SIGN_UP",
+                payload: { user: res.user, token: res.token }
+            })
         }
     })
 }
@@ -51,6 +59,7 @@ export const resetPass = (email) => {
 export const signOut = () => (dispatch) => {
     // Call the logout function from the authentication module
     logout().then(() => {
+        window.location.pathname = "/i"
         // If logout is successful, dispatch the action
         dispatch({
             type: "SIGN_OUT",

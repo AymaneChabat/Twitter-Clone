@@ -28,7 +28,7 @@ const messageReducer = (state = initialState, action) => {
             // Check if the chat is found in the state
             if (i !== -1) {
                 // Push the sent message to the chat's messages
-                state[i].messages.push(payload.res.message);
+                state[i].messages.push(payload.message);
             }
 
             // Return the updated state

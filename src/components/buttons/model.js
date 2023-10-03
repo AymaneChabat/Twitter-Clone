@@ -9,7 +9,7 @@ import { updatePost } from "../../redux/actions/postActions";
 function InteractionButtons({data}) {
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state => state.users)
-    const currUserInfo = users.activeprofiles.find(user => user.id === currUser.user.uid)
+    const currUserInfo = users.activeprofiles.find(user => user.id === currUser.user)
     const dispatch = useDispatch()
 
     const roundNumberWithSuffix = (num) => {
@@ -29,7 +29,7 @@ function InteractionButtons({data}) {
     const display = [
         [<CommentsIcon />, data.comments.length, "", (e)=>{prevent(e);}],
         [<RepostsIcon />, data.reposts, currUserInfo.info.reposts.includes(data.post) ? "#00ba7c" : "", (e)=>{prevent(e)}],
-        [<LikesIcon fill={currUserInfo.info.likes.includes(data.post) ? "#f91863" : ""}/>, data.likes, currUserInfo.info.likes.includes(data.post) ? "#f91863" : "", (e)=>{prevent(e);dispatch(updatePost(data.post, currUser.token, currUser.user.uid, currUserInfo.info.likes.includes(data.post) ? "decrement" : "increment"))}],
+        [<LikesIcon fill={currUserInfo.info.likes.includes(data.post) ? "#f91863" : ""}/>, data.likes, currUserInfo.info.likes.includes(data.post) ? "#f91863" : "", (e)=>{prevent(e);dispatch(updatePost(data.post, currUser.token, currUser.user, currUserInfo.info.likes.includes(data.post) ? "decrement" : "increment"))}],
         [<ImpressionsIcon />, data.impressions, "", (e)=>{prevent(e)}]
     ]
     return (

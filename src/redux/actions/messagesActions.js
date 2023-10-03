@@ -13,17 +13,20 @@ export const fetchMessages = (token, chat) => (dispatch) => {
             type: "GET_MESSAGES",
             payload: { res, chat }
         });
-    });
+    })
 }
 
 // Action creator to send a message in a chat
-export const sendMessage = (token, message) => (dispatch) => {
-    // Call the sendM function to send the message
-    sendM(token, message).then((res) => {
-        // Dispatch an action to store the sent message in the state
+export const sendMessage = (token, message, type) => (dispatch) => {
+    if (type === "snapshot") {
+        const chat = message.chatId
+        delete message.chatId
         dispatch({
             type: "SEND_MESSAGE",
-            payload: { res, chat: message.chatId }
+            payload: { message, chat: chat }
         });
-    });
+    } else {
+        // Call the sendM function to send the message
+        sendM(token, message)
+    }
 }

@@ -49,7 +49,9 @@ const AuthUI = () => {
                 <CredentialInput placeholder="Email" reff={email}/>
                 <CredentialInput placeholder="Password" password={true} reff={password}/>
             </div>
-            <CredentialButton text={"Sign up"} action={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value, navigate))}}/>
+            <div className='my-4'>
+                <CredentialButton text={"Sign up"} action={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value, navigate))}}/>
+            </div>
         </div>
     )
 
@@ -57,8 +59,8 @@ const AuthUI = () => {
 
 
     return (
-        <div className='w-full h-full absolute bg-[#000000]/[.5] flex justify-center items-center overflow-hidden'>
-            <div className='w-full h-full relative s7:w-[650px] s7:max-h-[700px] s7:h-[60%] s7:min-h-[500px]'>
+        <div className='w-full h-full absolute bg-[#000000]/[.5] flex justify-center items-center overflow-hidden' onMouseDown={()=>{navigate("/i/")}}>
+            <div className='w-full h-full relative s7:w-[650px] s7:max-h-[700px] s7:h-[60%] s7:min-h-[500px]' onMouseDown={(e)=>{e.stopPropagation()}}>
                 <div className='w-full h-full bg-[#ffffff] s7:rounded-xl'>
                     <div className='w-full py-2 h-[10%]'>
                         <IconTwitter clas={"w-[37px] mx-auto"}/>

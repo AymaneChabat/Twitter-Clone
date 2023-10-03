@@ -19,6 +19,7 @@ function Main({setOpened, opened, w}) {
   const posts = useSelector(state=>state.posts)
   const [loading, setLoading] = useState(false)
   const [tab, setTab] = useState("For you")
+  const prevScrollY = useRef(0)
   const username = useRef()
   const [updating, setUpdating] = useState(false)
 
@@ -30,24 +31,36 @@ function Main({setOpened, opened, w}) {
       }
   },[tab])
 
+
+  function handleScroll(e) {
+    const element = e.currentTarget;
+
+    if ((element.scrollTop + element.clientHeight) + 500 >= element.scrollHeight && loading === false && tab === "For you" && prevScrollY.current < element.scrollTop) {
+      dispatch(getPost(undefined, "home", posts.home[posts.home.length - 1], undefined, currUser.token, setLoading))
+      console.log("hey")
+    } else if ((element.scrollTop + element.clientHeight) + 500 >= element.scrollHeight && loading === false && tab === "Following" && prevScrollY.current < element.scrollTop) {
+      dispatch(getPost(undefined, "following", posts.following[posts.following.length - 1], undefined, currUser.token, setLoading))
+    }
+
+    prevScrollY.current = element.scrollTop
+  } 
+
   const updateUsername = () => {
-    if (username.current.value !== users.activeprofiles.find(user => user.id === currUser.user.uid).info.username) {
-      dispatch(updateUser(currUser.token, {username: username.current.value}, currUser.user.uid))
+    if (username.current.value !== users.activeprofiles.find(user => user.id === currUser.user).info.username) {
+      dispatch(updateUser(currUser.token, {username: username.current.value}, currUser.user))
     }
     setUpdating(false)
   }
 
-  console.log(users)
-
   const UpdateUsername = () => (
-    <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s5:bg-[#000000]/[.5] z-40 flex justify-center items-center' onClick={()=>[setUpdating(false)]}>
-      <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s5:h-[700px] s5:max-w-[500px] p-4' onClick={(e)=>{e.stopPropagation()}}>
+    <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s6:bg-[#000000]/[.5] z-40 flex justify-center items-center' onMouseDown={()=>[setUpdating(false)]}>
+      <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s6:h-[700px] s6:max-w-[500px] p-4' onMouseDown={(e)=>{e.stopPropagation()}}>
         <div className='h-[90%] flex flex-col items-center justify-between'>
           <div className='flex flex-col items-center'>
             <IconTwitter clas={"w-[30px]"}/>
             <div className='w-full py-5'>
               <h1 className='text-[20px] mb-2'>Here you can change your username</h1>
-              <CredentialInput placeholder="username" reff={username} defaultVal={users.activeprofiles.find(user => user.id === currUser.user.uid).info.username}/>
+              <CredentialInput placeholder="username" reff={username} defaultVal={users.activeprofiles.find(user => user.id === currUser.user).info.username}/>
             </div>
           </div>
           <div className='h-[100px] flex flex-col justify-between w-full'>
@@ -62,30 +75,30 @@ function Main({setOpened, opened, w}) {
   const localChoices = ["For you", "Following"]
   
   return (
-        <section className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s5:mb-0 s5:h-auto h-[85%]'>
+        <section className='s10:max-w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-auto' onScroll={(e) => handleScroll(e)}>
           {updating ? <UpdateUsername /> : ""}
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
-          <div className='bg-[#ffffff]/[.9] w-[100%]'>
-            <div className='w-full py-2 px-2'>
-              <header className='ml-1 text-[18px] text-400 font-bold hidden items-center mr-4 s5:flex justify-between'>
+          <div className='w-full h-auto bg-[#ffffff]/[.8] bg-blur backdrop-blur-sm sticky top-0 z-20 overflow-hidden'>
+            <div className='py-3 px-2'>
+              <header className='ml-1 text-[18px] text-400 font-bold hidden items-center mr-4 s6:flex justify-between items-center'>
                 <h1>Home</h1>
                 <span onClick={()=>{setUpdating(true)}}>
                   <EditIcon />
                 </span>
               </header>
-              <div className='block s5:hidden px-2 flex items-center pb-2'>
+              <div className='block s6:hidden px-2 flex items-center pb-2'>
                 <div className='w-[46.5%]'>
                   <div className='bg-[#000000] h-[30px] w-[30px] rounded-full' onClick={()=>{setOpened(true)}}></div>
                 </div>
-                <div>
-                  <IconTwitter clas={"w-[25px]"}/>
-                </div>
+                <IconTwitter clas={"w-[25px]"}/>
               </div>
             </div>
             <ChoiceButtons choices={localChoices} setChosen={setTab}/>
           </div>
-          {w >= 500 ? <HomePost/> : ""}
-          {!loading ? posts[tab === "For you" ? "home" : "following"].length > 0 ? posts[tab === "For you" ? "home" : "following"].map((post, index) => <DisplayPost postPath={post} users={users.activeprofiles} key={index} postList={posts.posts}/>)  : "" : <LoadingIcon />}
+          <div className='h-[90.4%]'>
+            {w >= 600 ? <HomePost/> : ""}
+            {posts[tab === "For you" ? "home" : "following"].length > 0 ? posts[tab === "For you" ? "home" : "following"].map((post, index) => <DisplayPost postPath={post} key={index} postList={posts.posts}/>)  : ""}
+          </div>
         </section>
   );
 }

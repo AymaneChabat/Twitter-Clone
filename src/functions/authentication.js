@@ -50,11 +50,8 @@ async function register(email, password, name) {
             })
         });
 
-        return {
-            status: response(true, "Account has been created successfully!"),
-            user: userCredential,
-            token: (await userCredential.user.getIdTokenResult()).token
-        };
+        return userCredential.user
+        
     } catch (error) {
         // Handle registration failure and return an error message
         console.error(error.message);

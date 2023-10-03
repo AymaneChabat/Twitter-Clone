@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPost, getReplies } from '../../redux/actions/postActions';
-import { getUsers } from '../../redux/actions/userActions';
+import { getUser } from '../../redux/actions/userActions';
 import LoadingIcon from '../../components/icons/loading';
 import HomePost from '../../components/posts/home-post';
 
@@ -21,6 +21,8 @@ function Post() {
     const posts = useSelector(state => state.posts)
     const currUser = useSelector(state => state.currUser)
 
+    console.log(posts)
+
     const post = posts.posts.find(post => post.postPath === params["*"])
     var user = post !== undefined ? users.activeprofiles.find(user => user.id === post.post.userId) : undefined
 
@@ -29,7 +31,7 @@ function Post() {
             dispatch(getPost(params["*"], "", undefined, undefined, undefined, setLoading))
         } else {
             if (users.activeprofiles.find(user => user.id === post.post.userId) === undefined) {
-                dispatch(getUsers(undefined, params.username, currUser.token, "profile", setLoading))
+                dispatch(getUser(params.username, currUser.token))
             }
             if (posts.postReplies.find(reply => reply.postPath === params["*"]) === undefined) {
                 dispatch(getReplies(currUser.token, params["*"], params.username, setLoading))
@@ -37,15 +39,13 @@ function Post() {
         }
     },[params, posts])
 
-    console.log(posts)
-
 
     const goBack = () => {
         navigate(-1); // This function takes you back to the previous URL
     };
 
     return (
-            <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s5:mb-0'>
+            <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s6:mb-0'>
                 <div className="w-full box-border px-3 h-[60px] flex items-center justify-between bg-[#ffffff] z-50">
                     <div className="p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer" onClick={goBack}>
                         <BackArrowIcon w={20}/>

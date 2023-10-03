@@ -35,21 +35,76 @@ function Messages({w}) {
   const [newMessage, setNewMessage] = useState("")
   const [chatOverflow, setChatOverflow] = useState(0)
   const [convoInfo,setConvoInfo] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const currUser = useSelector(state=>state.currUser)
   const chats = useSelector(state=> state.chats)
   const users = useSelector(state => state.users)
   const currMessages = useSelector(state=>state.message)
-  const activeUser = chats.chats.find(chat => chat.id === chats.activeChat) !== undefined ? users.activeprofiles.find(user => user.id === (chats.chats.find(chat => chat.id === chats.activeChat)).chat.participants.filter(participant => participant !== currUser.user.uid)[0]) : ""
+  const activeUser = chats.chats.find(chat => chat.id === chats.activeChat) !== undefined ? users.activeprofiles.find(user => user.id === (chats.chats.find(chat => chat.id === chats.activeChat)).chat.participants.filter(participant => participant !== currUser.user)[0]) : ""
   const messages = chats.activeChat !== null ? currMessages.find(messages => messages.chat === chats.activeChat) : undefined
 
   useEffect(()=>{
-    const q = query(collection(db, "chats"), where("participants", "array-contains", currUser.user.uid));
+    const messageDiv = document.querySelector("#newMessage")
+    if (messageDiv) {
+      messageDiv.addEventListener('keydown', (event) => {
+        const sendButton = document.querySelector("#sendM");
+        const keyCode = event.keyCode ? event.keyCode : event.which;
+      
+        if (keyCode === 13) {
+          event.preventDefault();
+          event.textContent +=
+
+          sendButton.click()
+        }
+      });
+    }
+    
+    const q = query(collection(db, "chats"), where("participants", "array-contains", currUser.user));
     onSnapshot(q, () => {
-            dispatch(fetchChats(currUser.token, undefined, true))
-        }); 
+        dispatch(fetchChats(currUser.token, undefined, true))
+    });
   }, [])
+
+  useEffect(() => {
+    let initialSnapshot = true; // Initialize the flag
+  
+    if (chats.activeChat !== null) {
+      if (chats.activeChat.slice(0, 6) !== "sample") {
+        const q = query(collection(db, "chats/" + chats.activeChat + "/messages"));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (initialSnapshot) {
+              // Ignore initial snapshot changes
+              return;
+            }
+            if (change.type === "added") {
+              dispatch(
+                sendMessage(
+                  undefined,
+                  {
+                    chatId: chats.activeChat,
+                    message: { ...change.doc.data() },
+                    id: change.doc.id,
+                  },
+                  "snapshot"
+                )
+              );
+            }
+          });
+      
+          // After processing the initial snapshot, set the flag to false
+          initialSnapshot = false;
+        });
+  
+        // Cleanup function
+        return () => {
+          unsubscribe(); // Unsubscribe when the component unmounts
+        };
+      }
+    }
+  }, [chats.activeChat]);
+  
 
   const handleFiles = files => {
     setImages(files.base64)
@@ -95,20 +150,15 @@ function Messages({w}) {
   useEffect(()=>{
     if (params.chat !== undefined) {
       dispatch(selectChat(params.chat));
-      if (messages === undefined) {
-        dispatch(fetchMessages(currUser.token, params.chat))
-      }
     } else {
       dispatch(selectChat(null));
     }
-    setTimeout(()=>{
-      setLoading(false)
-    }, 500)
+    if (messages === undefined && chats.activeChat !== null) {
+      dispatch(fetchMessages(currUser.token, chats.activeChat))
+    }
   }, [params.chat, chats.activeChat])
   
-
-  const Sent = (messageInfo, index) => 
-    (
+  const Sent = (messageInfo, index) => (
     <div key={index} className='group w-auto flex flex-col items-end mb-2'>
       <div className='inline-flex w-auto max-w-[70%] items-center'>
         <div className='mr-2 p-2 hover:bg-[#0a95f2]/[.2] rounded-full hidden group-hover:block cursor-pointer'>
@@ -143,7 +193,6 @@ function Messages({w}) {
       </div>
     </div>
   )
-
 
   const conversation = (data) => (
     <Fragment>  
@@ -180,7 +229,7 @@ function Messages({w}) {
           <span className='text-[#536471] font-chirp text-[14px] tracking-tighter mt-2'>Joined May 2018 · 3,551 Followers</span>
         </div>
         {!loading ? (messages !== undefined ? messages.messages.map((message, index)=>(
-          message.message.sender === currUser.user.uid ? Sent(message, index) : Received(message, index)
+          message.message.sender === currUser.user ? Sent(message, index) : Received(message, index)
         )): "") : <LoadingIcon />}
       </div>
       <div className='w-full min-h-[5%] bottom-0 flex items-center border-t grow absolute bg-[#ffffff]'>
@@ -202,19 +251,23 @@ function Messages({w}) {
               ) : ""}
               {newMessage === "" && images === "" ? (<div className='text-[#000000]/[.6] text-sm font-chirp absolute pointer-events-none top-0'>Start a new message</div>) : ""}
           </div>
-          <div className={newMessage === "" ? 'pointer-events-none cursor-not-allowed ml-2' : "cursor-pointer ml-2"} onClick={
-            chats.activeChat.slice(0, 6) === "sample" ? 
-            () => {
-              dispatch(createChat(currUser.token, activeUser.id, chats.activeChat, navigate, {chatId: chats.activeChat, content: newMessage, media: []})); 
-              setNewMessage(""); 
-              document.querySelector("#newMessage").innerHTML = "";
-            } 
-            : 
-            () => {
-              dispatch(sendMessage(currUser.token, {chatId: chats.activeChat, content: newMessage, media: []})); 
-              setNewMessage(""); 
-              document.querySelector("#newMessage").innerHTML = "";
-            }}>
+          <div id='sendM' className={newMessage === "" ? 'pointer-events-none cursor-not-allowed ml-2' : "cursor-pointer ml-2"} onClick={()=>{
+            const chatId = chats.activeChat;
+            const messageData = {
+              chatId,
+              content: newMessage,
+              media: [],
+            };
+          
+            if (chatId.slice(0, 6) === "sample") {
+              dispatch(createChat(currUser.token, activeUser.id, chatId, navigate, messageData));
+            } else {
+              dispatch(sendMessage(currUser.token, messageData));
+            }
+          
+            setNewMessage("");
+            document.querySelector("#newMessage").innerHTML = "";
+          }}>
             <SendIcon w={18}/>
           </div>
         </div>
@@ -269,7 +322,7 @@ function Messages({w}) {
 
 
   return (
-    <div className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s5:mb-0 max-h-[90%] s5:max-h-[100%] s5:h-auto'>
+    <div className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s6:mb-0 max-h-[93%] s6:max-h-[100%] s6:h-auto'>
       <div className={'s7:w-[380px] border-r h-full grow s11:grow-0 ' + (chats.activeChat !== null && w < 1100 ? "hidden" : "block")}>
           <div className='flex p-3 justify-between items-center'>
             <span className='text-[18px] font-bold font-chirp'>Messages</span>
@@ -287,9 +340,9 @@ function Messages({w}) {
           </div>
           <div className='messages'>
             {chats.chats.length > 0 ? chats.chats.map((chat, index)=>{
-              const user = users.activeprofiles.find(user => user.id === chat.chat.participants.filter(participant => participant !== currUser.user.uid)[0])
+              const user = users.activeprofiles.find(user => user.id === chat.chat.participants.filter(participant => participant !== currUser.user)[0])
               return(
-              <Link to={"/messages/"+chat.id} onClick={chats.activeChat !== chat.id ? ()=>{setLoading(true)} : ""}>
+              <Link to={"/messages/"+chat.id}>
                 <div className={'cursor-pointer w-full border-[#1d9bf0] p-3 flex items-center ' + (chat.id === chats.activeChat ? "border-r bg-[#97d0f7]/[.1]" : "")} key={index} id={chat.id}>
                   <div className='mr-2'>
                     <div className='w-[38px] h-[38px] rounded-full bg-cover bg-no-repeat bg-center' style={{backgroundImage: `url("${user.info.profilepicture}")`}}></div>

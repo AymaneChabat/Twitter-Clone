@@ -10,7 +10,7 @@ import DisplayImages from './displayImages';
 function HomePost({floating, setPostOpen, type, postId, username}) {
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state => state.users)
-    const user = users.activeprofiles.find(user => user.id === currUser.user.uid)
+    const user = users.activeprofiles.find(user => user.id === currUser.user)
     const [content,setContent] = useState('')
     const [images,setImages] = useState([])
     const dispatch = useDispatch()
@@ -19,24 +19,23 @@ function HomePost({floating, setPostOpen, type, postId, username}) {
         setImages([...images, {image: files.fileList[0], base64: files.base64}])
     }
 
-    const post = () => {
-        dispatch(addPost(currUser.token, {content: content, images: images.map(image => image.image)}, currUser.user.uid)); 
+    const resetDiv = () => {
         document.querySelector("#contentDiv").innerHTML = ""
         setContent("")
         setImages([])
         if (floating) {
             setPostOpen(false)
-        }           
+        }  
+    }
+
+    const post = () => {
+        dispatch(addPost(currUser.token, {content: content, images: images.map(image => image.image)}, currUser.user)); 
+        resetDiv()   
     }
 
     const reply = () => {
         dispatch(addReply(currUser.token, {content: content, images: images.map(image => image.image)}, postId, username))
-        document.querySelector("#contentDiv").innerHTML = ""
-        setContent("")
-        setImages([])
-        if (floating) {
-            setPostOpen(false)
-        }   
+        resetDiv()
     }
 
   return (

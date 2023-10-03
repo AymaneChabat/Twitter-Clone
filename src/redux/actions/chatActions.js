@@ -3,10 +3,9 @@ import {
     createChats,
     deleteChat,
     getChats,
-    checkChat,
-    retrieveMessages
+    checkChat
 } from "../../functions/manageChat";
-import { createMessages, sendMessage } from "./messagesActions";
+import { sendMessage } from "./messagesActions";
 
 // Action creator to fetch chats
 export const fetchChats = (token, last, snapshot) => (dispatch) => {
@@ -88,7 +87,7 @@ export const createChat = (token, user, sample, navigate, message) => (dispatch)
 }
 
 // Action creator to select an active chat
-export const selectChat = (active) => (dispatch) => {
+export const selectChat = (active, ) => (dispatch) => {
     dispatch({
         type: "SELECT_CHAT",
         payload: { active }

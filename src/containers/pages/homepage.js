@@ -6,12 +6,14 @@ import Messages from '../homepage/messages';
 import Profile from '../homepage/profile';
 import Template from '../homepage/template';
 import Post from '../homepage/post';
+import { useSelector } from 'react-redux';
 
 function HomePage() {
   const [opened,setOpened] = useState(false)
   const [w,setW] = useState(window.innerWidth)
   window.addEventListener('resize', ()=>{setW(window.innerWidth)})
-   
+  const currUser = useSelector(state => state.currUser)
+  const users = useSelector(state => state.users)
 
 
   function NotFound() {
@@ -28,12 +30,14 @@ function HomePage() {
 
   return (
       <Fragment>
-        <Routes>
-          {elements.map((element, index)=>(
-            <Route key={index} path={element[0]} exact element={<Template w={w} element={element[1]}/>} />
-          ))}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+          {users.activeprofiles.find((user) => user.id === currUser.user) !== undefined ? 
+            <Routes>
+            {elements.map((element, index)=>(
+              <Route key={index} path={element[0]} exact element={<Template w={w} element={element[1]}/>} />
+            ))}
+            <Route path="*" element={<NotFound />} />
+            </Routes>
+          : ""}
       </Fragment>
   );
 }

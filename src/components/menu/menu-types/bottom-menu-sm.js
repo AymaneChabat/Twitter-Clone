@@ -25,7 +25,7 @@ function BottomMenuSM() {
   ]
 
   return (
-        <div className='fixed w-full bottom-0 border-t z-10 bg-[#ffffff] h-[10%]'>
+        <div className='fixed w-full bottom-0 border-t z-10 bg-[#ffffff] h-[7%]'>
             <div className='flex justify-evenly items-center h-full'>
                 {menu.map((pick, index) => (
                     pick[1].toLowerCase() !== "notifications" ? (<Link to={"/"+pick[1].toLowerCase()} onClick={()=>{setActive(pick[1].toLowerCase())}}><Menu key={index} data={pick} picked={active}/></Link>) : (<a href='#' className='pointer-events-none'><Menu key={index} data={pick} picked={active}/></a>)

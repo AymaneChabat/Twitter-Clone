@@ -2,20 +2,39 @@
 import { 
     getUsers as fetchUsers,          // Rename the imported function for clarity
     updateUser as updateUserInfo,   // Rename the imported function for clarity
-    updateUserEmail,                // Keep the original name
-    updateFollows as updateF        // Rename the imported function for clarity
+    updateFollows as updateF,        // Rename the imported function for clarity
+    getUser as getUserData
 } from '../../functions/manageUser';
 
 // Action creator to fetch a list of users based on optional parameters
-export const getUsers = (id, username, token, tab, limit, last) => (dispatch) => {
+export const getUsers = (username, token, tab, limit, last) => (dispatch) => {
     // Call the fetchUsers function to fetch a list of users
-    fetchUsers(id, username, token, tab, limit, last).then((res) => {
+    fetchUsers(username, token, limit, last).then((res) => {
+        console.log(res)
+        if (tab === "explore") {
+            res.forEach(element => {
+                const copy = {...element}
+                dispatch({
+                    type: "GET_USERS",
+                    payload: { res: copy, tab: "profile" }
+                });
+                delete element.info
+            });}
         // Dispatch an action to store the retrieved users in the state
         dispatch({
             type: "GET_USERS",
             payload: { res, tab }
         });
     });
+}
+
+export const getUser = (username, token) => (dispatch) => {
+    getUserData(username, token).then((res)=>{
+        dispatch({
+            type: "GET_USERS",
+            payload: {res, tab: "profile"}
+        })
+    })
 }
 
 // Action creator to reset the list of users (used for clearing search results)
@@ -49,17 +68,8 @@ export const updateUser = (token, updatedData, id) => (dispatch) => {
             // Dispatch an action to update the user information in the state
             dispatch({
                 type: "UPDATE_USER",
-                payload: {updatedData, id}
+                payload: {updatedData: res.updatedData, id}
             });
         }
-    });
-}
-
-// Action creator to update a user's email address
-export const updateEmail = (password, newEmail) => {
-    // Call the updateUserEmail function to update the email address
-    updateUserEmail(password, newEmail).then((res) => {
-        // Log the response (you can add additional actions here as needed)
-        console.log(res);
     });
 }

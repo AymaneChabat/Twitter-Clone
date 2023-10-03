@@ -6,13 +6,13 @@ import ProfileIcon from '../../icons/menu/profile';
 import Dropdowns from '../../../components/menu/dropdowns';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-function SlideMenu({opened,setOpened}) {
+function SlideMenu({setOpened}) {
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state => state.users)
-    const user = users.activeprofiles.find(user => user.id === currUser.user.uid)
-
+    const user = users.activeprofiles.find(user => user.id === currUser.user)
+    const [slide, setSlide] = useState("-translate-x-full")
     const menu = [
         [<ProfileIcon picked={["",null]}/>,"Profile"],
         [<IconTwitter clas={"w-[26px]"}/>,"Verified"],
@@ -21,9 +21,17 @@ function SlideMenu({opened,setOpened}) {
         [<CommunityIcon picked={["",null]}/>,"Communities"],
     ]
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSlide('');
+        }, 100);
+    
+        return () => clearTimeout(timer);  // Cleanup function to clear the timeout
+    }, []);
+
     const DisplayMenuItems = ({data}) => (
         <div className='py-0.5'>
-            <span className='h-[56px] inline-flex items-center text-[#000000] text-[17px] font-twitterchirp'>
+            <span className='h-[56px] inline-flex items-center text-[#000000] text-[17px]'>
                 <div className="pl-0 pr-2">{data[0]}</div>
                 <span className="font-bold mr-4">{data[1]}</span>
             </span>
@@ -31,27 +39,20 @@ function SlideMenu({opened,setOpened}) {
     )
 
     return (
-        <div className={opened ? 'absolute h-full w-full bg-[#000000]/[.4] transition-all transition-300 z-[100] block' : 'absolute h-full w-full bg-[#000000]/[.4] transition-all transition-300 -translate-x-full z-[100] block'} onClick={()=>{setOpened(false)}}>
-            <div className='flex flex-col h-[100%] w-[280px] bg-[#ffffff] overflow-y-auto' onClick={(e)=>{e.stopPropagation()}}>
+        <div className={'absolute h-full w-full bg-[#000000]/[.4] z-[100] block'} onClick={()=>{setOpened(false)}}>
+            <div className={'flex flex-col h-[100%] w-[280px] bg-[#ffffff] overflow-y-auto transition-all transition-500 ' + (slide)} onClick={(e)=>{e.stopPropagation()}}>
                 <div className='w-[90%] mx-auto mt-5'>
-                    <div>
-                        <div className='flex justify-between'>
-                            <div className='bg-[#000000] rounded-full h-[40px] w-[40px]'></div>
-                            <div className='border-solid border rounded-full text-center h-[30px] w-[30px]'>
-                                <span>+</span>
-                            </div>
-                        </div>
-                        <div className='h-[30%] mb-[8px] mt-[8px]'>
-                            <strong className='block text-[17px]'>{user.info.name}</strong>
-                            <span className='text-[#536471] text-[15px] font-semibold'>@{user.info.username}</span>
-                        </div>
+                    <div className='bg-[#000000] rounded-full h-[40px] w-[40px]'></div>
+                    <div className='h-[30%] my-[8px]'>
+                        <strong className='block text-[17px]'>{user.info.name}</strong>
+                        <span className='text-[#536471] text-[15px]'>@{user.info.username}</span>
                     </div>
-                    <div className='flex'>
+                    <div className='flex mt-5'>
                         <div className='text-[15px] w-[38%]'>
-                            <strong className='mr-[3px]'>{user.info.following.length}</strong><span className='text-[#536471] font-semibold'>Following</span>
+                            <strong className='mr-[3px]'>{user.info.following.length}</strong><span className='text-[#536471]'>Following</span>
                         </div>
                         <div className='text-[15px] w-[38%]'>
-                            <strong className='mr-[3px]'>{user.info.followers.length}</strong><span className='text-[#536471] font-semibold'>Followers</span>
+                            <strong className='mr-[3px]'>{user.info.followers.length}</strong><span className='text-[#536471]'>Followers</span>
                         </div>
                     </div>    
                 </div>

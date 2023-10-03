@@ -210,7 +210,6 @@ const PostReducer = (state = initialState, action) => {
         // Action to comment on a post
         case "COMMENT_POST":
             var i1 = state.postReplies.findIndex(post => post.postPath === payload.postPath);
-            console.log(state.postReplies)
 
             // Add the comment to the post's comments list
             state.posts.push(payload.res);
