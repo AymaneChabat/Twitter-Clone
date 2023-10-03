@@ -1,4 +1,4 @@
-# Twitter Clone with ReactJS, Firebase, ExpressJS, Redux and Rest APIs
+# X Clone with ReactJS, Firebase, ExpressJS, Redux and Rest APIs
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
