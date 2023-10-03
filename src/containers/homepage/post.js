@@ -21,8 +21,6 @@ function Post() {
     const posts = useSelector(state => state.posts)
     const currUser = useSelector(state => state.currUser)
 
-    console.log(posts)
-
     const post = posts.posts.find(post => post.postPath === params["*"])
     var user = post !== undefined ? users.activeprofiles.find(user => user.id === post.post.userId) : undefined
 

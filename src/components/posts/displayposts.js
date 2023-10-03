@@ -14,7 +14,48 @@ function DisplayPosts({postPath, postList, reply}) {
     const user = users.find(user => user.id === post.post.userId)
     const returnPostContent = (content) =>{
         return content.replace(/<div>(.*?)<\/div>/g, '\n$1');
+    }
 
+    function timeAgo(timestampInMilliseconds) {
+        const millisecondsPerSecond = 1000;
+        const secondsPerMinute = 60;
+        const minutesPerHour = 60;
+        const hoursPerDay = 24;
+        const daysPerMonth = 30;  // an average number
+        const monthsPerYear = 12;
+    
+        let secondsElapsed = Math.floor((Date.now() - timestampInMilliseconds) / millisecondsPerSecond);
+        
+        if (secondsElapsed === -1) {
+            return 'Now'
+        }
+        if (secondsElapsed < secondsPerMinute) {
+            return `${secondsElapsed} seconds ago`;
+        }
+    
+        let minutesElapsed = Math.floor(secondsElapsed / secondsPerMinute);
+        if (minutesElapsed < minutesPerHour) {
+            return `${minutesElapsed} minutes ago`;
+        }
+    
+        let hoursElapsed = Math.floor(minutesElapsed / minutesPerHour);
+        if (hoursElapsed < hoursPerDay) {
+            return `${hoursElapsed} hours ago`;
+        }
+    
+        let daysElapsed = Math.floor(hoursElapsed / hoursPerDay);
+        if (daysElapsed < daysPerMonth) {
+            return `${daysElapsed} days ago`;
+        }
+    
+        let monthsElapsed = Math.floor(daysElapsed / daysPerMonth);
+        if (monthsElapsed < monthsPerYear) {
+            return `${monthsElapsed} months ago`;
+        }
+
+    
+        let yearsElapsed = Math.floor(monthsElapsed / monthsPerYear);
+        return `${yearsElapsed} years ago`;
     }
 
     const showPreview = (e) => {
@@ -60,7 +101,7 @@ function DisplayPosts({postPath, postList, reply}) {
                                 <span id="name" className="font-bold text-[15px] hover:underline mr-1.5">{user.info.name}</span> 
                                 {user.info.username === "owner" ? <VerifiedIcon /> : ""}
                             </h1>
-                            <span className="text-[15px] text-[#536471]"><span className="text-[12px]">@</span>{user.info.username}  {post.post.time}</span>
+                            <span className="text-[15px] text-[#536471]"><span className="text-[12px]">@</span>{user.info.username} · {timeAgo(post.post.postedAt)}</span>
                         </div>
                         <div className="hover:bg-[#1D9BF0]/[.1] p-1.5 rounded-full">
                             <Dots w={12}/>
