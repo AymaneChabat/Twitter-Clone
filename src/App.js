@@ -30,12 +30,6 @@ function App() {
     });
   }, [])
 
-  const loadingIcon = (
-    <div className={'w-full h-screen flex justify-center items-center transition-all duration-[800ms] absolute bg-[#ffffff] z-30'}>
-      <IconTwitter clas={"w-[50px]"}/>
-    </div>
-  )
-
   return (
       <div className="App">
         <Routes>
