@@ -1,6 +1,6 @@
-# 🐦 X Clone: A Twitter Replica
+# 🐦 Twitter Clone: A Twitter Replica
 
-Welcome to X Clone! This project replicates the core features of Twitter, using ReactJS, Firebase, ExpressJS, Redux, and Rest APIs. Whether you're looking to learn how such a platform is built or you'd like to contribute, you're in the right place.
+Welcome to X / Twitter Clone! This project replicates the core features of Twitter, using ReactJS, Firebase, ExpressJS, Redux, and Rest APIs. Whether you're looking to learn how such a platform is built or you'd like to contribute, you're in the right place.
 
 ![Screenshot of X Clone in action](https://firebasestorage.googleapis.com/v0/b/realchat-4fd5d.appspot.com/o/Screenshot%202023-10-04%20133109.png?alt=media&token=93bc733c-975c-48a8-b36c-c79d916fb680)
 ## 📂 Repositories
