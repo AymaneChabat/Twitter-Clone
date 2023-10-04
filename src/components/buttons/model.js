@@ -27,7 +27,7 @@ function InteractionButtons({data}) {
         e.stopPropagation();
     }
     const display = [
-        [<CommentsIcon />, data.comments.length, "", (e)=>{prevent(e);}],
+        [<CommentsIcon />, data.comments, "", (e)=>{prevent(e);}],
         [<RepostsIcon />, data.reposts, currUserInfo.info.reposts.includes(data.post) ? "#00ba7c" : "", (e)=>{prevent(e)}],
         [<LikesIcon fill={currUserInfo.info.likes.includes(data.post) ? "#f91863" : ""}/>, data.likes, currUserInfo.info.likes.includes(data.post) ? "#f91863" : "", (e)=>{prevent(e);dispatch(updatePost(data.post, currUser.token, currUser.user, currUserInfo.info.likes.includes(data.post) ? "decrement" : "increment"))}],
     ]
