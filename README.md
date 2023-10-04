@@ -1,70 +1,72 @@
-# X Clone with ReactJS, Firebase, ExpressJS, Redux and Rest APIs
+# 🐦 Twitter Clone: A Twitter Replica
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to X / Twitter Clone! This project replicates the core features of Twitter, using ReactJS, Firebase, ExpressJS, Redux, and Rest APIs. Whether you're looking to learn how such a platform is built or you'd like to contribute, you're in the right place.
 
-## Available Scripts
+![Screenshot of X Clone in action](https://firebasestorage.googleapis.com/v0/b/realchat-4fd5d.appspot.com/o/Screenshot%202023-10-04%20133109.png?alt=media&token=93bc733c-975c-48a8-b36c-c79d916fb680)
+## 📂 Repositories
 
-In the project directory, you can run:
+This repository contains the frontend code for X Clone. For the backend code, please visit the [X Clone Backend Repository](https://github.com/AymaneChabat/xclone-backend).
+## ✨ Features
 
-### `npm start`
+- 🔐 **User Authentication**: Sign up, login, and log out using firestore authentication.
+- 🗨️ **Tweeting**: Users can post tweets with a character limit, images, and GIFs using firebase firestore and firebase storage to store the files (images, GIFs...).
+- 👥 **Follow/Unfollow**: Users can follow or unfollow other users.
+- 📡 **Feed**: See the latest tweets made by all users or from those you follow.
+- 📰 **Personal Feed**: See the latest posts, replies, likes and media posts made by any user in their profile.
+- 👤 **Profile Management**: Update personal details, profile, and cover photos.
+- 🔍 **Search**: Allows users to easily search for and navigate to other user profiles.
+- ✉️ **Real-Time Messaging**: Send and Receive messages with other users in real-time.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🔧 Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This project was developed with a combination of technologies to ensure an optimal user experience and efficient performance. The following main technologies were used:
 
-### `npm test`
+- **[ReactJS](https://reactjs.org/)**: A JavaScript library for building user interfaces.
+- **[Firebase](https://firebase.google.com/)**: A platform offering a variety of tools and infrastructure needed to build better web and mobile apps.
+- **[ExpressJS](https://expressjs.com/)**: A minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+- **[Redux](https://redux.js.org/)**: A predictable state container for JavaScript apps.
+- **[Tailwind CSS](https://tailwindcss.com/docs/installation)**: A predictable state container for JavaScript apps.
+- **[Create React App](https://github.com/facebook/create-react-app)**: A tool to set up a new React project with a good default configuration.
+- **REST APIs**: To communicate with backend services and get/send data.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Setup
 
-### `npm run build`
+To run the project locally, follow these steps:
+1. Clone the project:
+```
+    git clone https://github.com/AymaneChabat/X-Clone.git
+```
+2. Navigate to project directory and Install dependencies:
+```
+    cd X-Clone && npm i
+```
+> Following steps are for users who want to run the project with their own firebase app.
+3.  Visit **[Firebase](https://console.firebase.google.com/)**
+4.  Create an App
+5.  Go to project settings and copy configs which will look something like this:
+```
+     const firebaseConfig = {
+      apiKey: ...,
+      authDomain: ...,
+      databaseURL: ...,
+      projectId: ...,
+      storageBucket: ...,
+      messagingSenderId: ...,
+      appId: ... 
+    };
+```
+6.  Access the file config inside folder functions and update the firebaseConfig constant and the domain to expressJs server we will start in next steps
+7.  Clone the backend repo:
+```
+  git clone https://github.com/AymaneChabat/xclone-backend.git
+```
+8.  Open the Backend folder and access config.js file
+9.  Change the firebaseConfig to the one linked to your App
+10. Now go to index.js, choose your port or leave it as 9001
+11. Go back to Frontnd folder and update domain to http://localhost: + the port you picked
+12. You are all set, all that is left is to run ```npm start``` in both folders
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📜 License
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the [LICENSE.md](URL_TO_LICENSE.md) file for details.
