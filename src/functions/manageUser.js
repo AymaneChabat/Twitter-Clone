@@ -1,5 +1,6 @@
-const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
-
+import { 
+    domain
+ } from "./config";
 
 // Function to fetch a list of users based on optional parameters
 async function getUsers(username, token, limit, last) {

@@ -1,4 +1,7 @@
-const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+import { 
+    domain
+ } from "./config";
+ 
 // Function to add a new post
 async function addPost(data, token) {
     try {
@@ -67,8 +70,11 @@ async function deletePost(token, postId) {
             body: JSON.stringify({ id: postId })
         });
 
+        const res = await response.json()
+        console.log(res)
+
         // Successfully deleted the post, log and return the JSON response
-        return await response.json();
+        return res;
     } catch (error) {
         console.error(error.message);
         return null;

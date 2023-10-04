@@ -76,7 +76,6 @@ function Profile() {
     }
   }, [username, chosen])
 
-  
   return (
       <Fragment>
         {JSON.stringify(user) !== "{}" 
@@ -129,7 +128,7 @@ function Profile() {
                       <span className="relative group flex text-[#536471] hover:underline text-[15px] ml-1 cursor-default">
                         <CalendarIcon w={21}/>
                         Joined October 2020
-                        <div class="absolute left-1/2 transform -translate-x-1/2 translate-y-[100%] bg-black text-white rounded-md px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-300 text-[13px] w-full">20 / 05 / 2003</div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 translate-y-[100%] bg-black text-white rounded-md px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-300 text-[13px] w-full pointer-events-none">20 / 05 / 2003</div>
                       </span>
                   </div>
                   <div className="mt-3">

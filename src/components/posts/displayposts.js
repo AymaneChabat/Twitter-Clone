@@ -2,16 +2,32 @@ import Dots from "../icons/menu/dots";
 import InteractionButtons from "../buttons/model";
 import { Link } from "react-router-dom";
 import DisplayImages from "./displayImages";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import VerifiedIcon from "../icons/profile/verified";
 import UserPreview from "../profiles/userPreview";
+import DeleteIcon from "../icons/posts/delete";
+import { deletePost } from "../../redux/actions/postActions";
+import { useEffect } from "react";
 
 function DisplayPosts({postPath, postList, reply}) {
     const [preview, setPreview] = useState(false)
+    const dispatch = useDispatch()
+    const currUser = useSelector(state => state.currUser)
     const users = useSelector(state=>state.users.activeprofiles)
     const post = postList.find(post => post.postPath === postPath)
     const user = users.find(user => user.id === post.post.userId)
+    const [options, setOptions] = useState(false)
+
+    useEffect(()=>{
+        window.document.addEventListener("click", () => {
+            if (options !== false) {
+                setOptions(false)
+            }
+        })
+        
+    }, [options])
+
     const returnPostContent = (content) =>{
         return content.replace(/<div>(.*?)<\/div>/g, '\n$1');
     }
@@ -103,8 +119,16 @@ function DisplayPosts({postPath, postList, reply}) {
                             </h1>
                             <span className="text-[15px] text-[#536471]"><span className="text-[12px]">@</span>{user.info.username} · {timeAgo(post.post.postedAt)}</span>
                         </div>
-                        <div className="hover:bg-[#1D9BF0]/[.1] p-1.5 rounded-full">
-                            <Dots w={12}/>
+                        <div onClick={(e)=>{e.stopPropagation(); e.preventDefault()}}>
+                            <div className="p-1.5 hover:bg-[#1D9BF0]/[.1] rounded-full" onClick={!options ? () => {setOptions(true)} : () => {setOptions(false)}}>
+                                <Dots w={12}/>
+                            </div>
+                            <div className={"absolute bg-[#ffffff] w-[60%] border z-40 rounded-2xl px-2 opacity-0 transition-all duration-500 " + (options ? "-translate-x-[90%] opacity-100" : "pointer-events-none")}>
+                                <button className="flex justify-around w-full items-center py-2 hover:bg-[#ffffff]/[.8]" onClick={()=>{dispatch(deletePost(currUser.token, post.postPath)); setOptions(false)}}>
+                                    <DeleteIcon color={"#f4212e"}/>
+                                    <span className="text-[#f4212e] text-[18px] font-semibold w-[85%] text-left -mb-[4px]">Delete</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <p className="text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">

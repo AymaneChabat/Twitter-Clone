@@ -1,5 +1,5 @@
 import UploadImage from "../../components/icons/profile/image";
-import DeleteIcon from "../../components/icons/posts/delete";
+import DeleteIcon from "../../components/icons/posts/close";
 import CredentialInput from '../../components/inputs/credentials';
 import ReactFileReader from 'react-file-reader';
 import { useRef, useState } from "react";

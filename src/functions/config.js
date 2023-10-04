@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 
+export const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+
 const firebaseConfig = {
     apiKey: "AIzaSyAtTWWX097PvnlRXBBYXXivJqwp9r1Byy4",
     authDomain: "realchat-4fd5d.firebaseapp.com",

@@ -4,7 +4,7 @@ import SearchIcon from '../../components/icons/menu/search';
 import Dots from '../../components/icons/menu/dots';
 import FileIcon from '../../components/icons/posts/files';
 import SendIcon from '../../components/icons/messages/send';
-import DeleteIcon from '../../components/icons/posts/delete';
+import DeleteIcon from '../../components/icons/posts/close';
 import DetailsIcon from '../../components/icons/messages/details';
 import BackArrowIcon from '../../components/icons/messages/backArrow';
 import LoadingIcon from '../../components/icons/loading';

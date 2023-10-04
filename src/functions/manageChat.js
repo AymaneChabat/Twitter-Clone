@@ -1,4 +1,6 @@
-const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+import { 
+    domain
+ } from "./config";
 
 // Function to create a new chat with a user
 async function createChats(token, user) {

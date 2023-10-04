@@ -24,11 +24,13 @@ export const addPost = (token, data, user) => (dispatch) => {
 export const deletePost = (token, postId) => (dispatch) => {
     // Call the delPost function to delete a post
     delPost(token, postId).then((res) => {
-        // Dispatch an action to remove the deleted post from the state
-        dispatch({
-            type: "DEL_POST",
-            payload: { res }
-        });
+        if (res.success === true) {
+            // Dispatch an action to remove the deleted post from the state
+            dispatch({
+                type: "DEL_POST",
+                payload: {postId}
+            });
+        }
     });
 }
 

@@ -97,11 +97,13 @@ export const selectChat = (active, ) => (dispatch) => {
 // Action creator to remove a chat
 export const removeChat = (token, id) => (dispatch) => {
     // Delete the chat
-    deleteChat(token, id).then((newLast) => {
-        // Dispatch an action to update the state with the deleted chat
-        dispatch({
-            type: "DELETE_CHAT",
-            payload: { newLast }
-        });
+    deleteChat(token, id).then((res) => {
+        if (res.success === true) {
+            // Dispatch an action to update the state with the deleted chat
+            dispatch({
+                type: "DELETE_CHAT",
+                payload: { id }
+            });
+        }
     });
 }

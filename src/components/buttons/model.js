@@ -30,7 +30,6 @@ function InteractionButtons({data}) {
         [<CommentsIcon />, data.comments.length, "", (e)=>{prevent(e);}],
         [<RepostsIcon />, data.reposts, currUserInfo.info.reposts.includes(data.post) ? "#00ba7c" : "", (e)=>{prevent(e)}],
         [<LikesIcon fill={currUserInfo.info.likes.includes(data.post) ? "#f91863" : ""}/>, data.likes, currUserInfo.info.likes.includes(data.post) ? "#f91863" : "", (e)=>{prevent(e);dispatch(updatePost(data.post, currUser.token, currUser.user, currUserInfo.info.likes.includes(data.post) ? "decrement" : "increment"))}],
-        [<ImpressionsIcon />, data.impressions, "", (e)=>{prevent(e)}]
     ]
     return (
             <div className="flex justify-between mt-2">

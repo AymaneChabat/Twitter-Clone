@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './functions/authentication';
 import { checkUser } from './redux/actions/authActions';
-import IconTwitter from './components/icons/logos/twitter-icon';
 
 function App() {
   const navigate = useNavigate();

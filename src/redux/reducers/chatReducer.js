@@ -58,17 +58,18 @@ const chatReducer = (state = initialState, action) => {
         case "DELETE_CHAT":
             // Define a helper function to conditionally return values
             const res = (r1, r2) =>
-                payload.id === state.activeChat && payload.newLast.status.success === true ? r1 : r2;
+                payload.id === state.activeChat ? r1 : r2;
 
             // Filter out the chat with the specified ID from the chats
             const newChats = state.chats.filter((chat) => chat.id !== payload.id);
 
+
             // Update the state based on the conditionally returned values
             return {
                 ...state,
-                chats: res(newChats, state.chats),
-                activeChat: res(newChats[0].id, state.activeChat),
-                last: res(newChats[newChats.length - 1].id, state.last),
+                chats: newChats,
+                activeChat: res(null, state.activeChat),
+                last: res(newChats.length > 0 ? newChats[newChats.length - 1].id : undefined, state.last),
             };
 
         default:

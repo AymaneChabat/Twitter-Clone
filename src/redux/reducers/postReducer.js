@@ -43,6 +43,25 @@ const PostReducer = (state = initialState, action) => {
         }
     }
 
+    function deletePost(list, defaultState) {
+        if (defaultState === undefined) {
+            state[list].forEach((user)=>{
+                user.posts = user.posts.filter(post => post !== payload.postId)
+            })
+        } else if (defaultState === "postReplies") {
+            const newPostReplies = state[list].filter(post => post.postPath !== payload.postId)
+            newPostReplies.forEach((reply)=>{
+                reply.replies = reply.replies.filter(rep => rep !== payload.postId)
+            })
+            state[list] = newPostReplies
+        } else if (defaultState === "Replies") {
+            state[list].forEach((replies)=>{
+                replies.posts = replies.posts.filter(post => post.replyPost !== payload.postId || post.mainPost !== payload.postId)
+            })
+        }
+        return state[list]
+    }
+
     // Switch statement to handle different action types
     switch (action.type) {
         // Action to get posts for the home page
@@ -171,11 +190,25 @@ const PostReducer = (state = initialState, action) => {
 
         // Action to delete a post
         case "DEL_POST":
+            const home = state.home.filter(post => post !== payload.postId)
+            const following = state.following.filter(post => post !== payload.postId) 
+            const newPosts = state.posts.filter(post => post.postPath !== payload.postId)
+            const likes = deletePost("likes")
+            const media = deletePost("media")
+            const profile = deletePost("profile")
+            const postReplies = deletePost("postReplies", "postReplies")
+            const replies = deletePost("replies", "Replies")
             return {
                 ...state,
-                home: state.home.filter(post => post.id !== payload.id),      // Remove from home
-                profile: state.profile.filter(post => post.id !== payload.id),  // Remove from profile
-                // likes: state.likes.filter(post => post.id != payload.id)    // Remove from liked posts (if needed)
+                home: home,      // Remove from home
+                profile: profile,  // Remove from profile
+                likes: likes,    // Remove from liked posts
+                media: media,
+                posts: newPosts,
+                following: following,
+                postReplies: postReplies,
+                replies: replies
+
             };
 
         // Action to like or unlike a post
