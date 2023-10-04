@@ -64,7 +64,7 @@ To run the project locally, follow these steps:
 9.  Change the firebaseConfig to the one linked to your App
 10. Now go to index.js, choose your port or leave it as 9001
 11. Go back to Frontnd folder and update domain to http://localhost: + the port you picked
-12. You are all set, all that is left is to run ````npm start``` in both folders
+12. You are all set, all that is left is to run ```npm start``` in both folders
 
 
 ## 📜 License
