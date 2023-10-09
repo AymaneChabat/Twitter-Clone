@@ -187,7 +187,7 @@ const PostReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                home: [payload.res.post.postPath, ...state.home],  // Add the new post to home
+                home: state.home.length > 0 ? [payload.res.post.postPath, ...state.home] : state.home,  // Add the new post to home
                 profile: state.profile,                            // Update user's profile posts
                 posts: [payload.res.post, ...state.posts],        // Add the new post to all posts
                 media: state.media                                 // Update media posts

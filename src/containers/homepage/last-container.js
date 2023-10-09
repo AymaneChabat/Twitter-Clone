@@ -13,7 +13,7 @@ function LastContainer({w,page}) {
   const users = useSelector(state => state.users)
   const dispatch = useDispatch()
   const currUser = useSelector(state => state.currUser)
-  const color = useSelector(state => state.color)
+  const color = useSelector(state => state.color.color)
   const colors = {"#1d9bf0":"focus-within:border-[#1d9bf0]", "#ffd400":"focus-within:border-[#ffd400]", "#f91880":"focus-within:border-[#f91880]", "#7856ff":"focus-within:border-[#7856ff]", "#ff7a00":"focus-within:border-[#ff7a00]", "#00ba7c":"focus-within:border-[#00ba7c]"}
 
   useEffect(()=>{

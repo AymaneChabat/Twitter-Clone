@@ -5,15 +5,16 @@ import HomePost from "../../components/posts/home-post";
 import { PostIcon } from "../../components/icons/menu";
 import { BackArrowIcon } from "../../components/icons/messages";
 import { useLocation } from "react-router";
+import { useSelector } from "react-redux";
 
 function FinalMenu({w}) {
-
+  const theme = useSelector(state => state.color.theme)
   const [postOpen, setPostOpen] = useState(false)
   const location = useLocation();
   const [page, setPage] = useState(location.pathname.slice(1,))
 
   const bg = () => {
-    switch (localStorage.theme) {
+    switch (theme) {
       case "dim":
         return "bg-[#15202b]"
       case "dark":
@@ -34,7 +35,7 @@ function FinalMenu({w}) {
               <div className="px-4 py-2 s7:hidden" onClick={()=>{setPostOpen(false)}}>
                 <BackArrowIcon w={20} />
               </div>
-              <div className='w-100% s7:w-[650px] rounded-lg border border-[#ffffff]/[.1] mx-auto bg-transparent' onMouseDown={(e)=>e.stopPropagation()}>
+              <div className={'w-100% s7:w-[650px] rounded-lg border border-[#ffffff]/[.1] mx-auto ' + (bg())} onMouseDown={(e)=>e.stopPropagation()}>
                 <HomePost floating={true} setPostOpen={setPostOpen}/>
               </div>
             </div>
