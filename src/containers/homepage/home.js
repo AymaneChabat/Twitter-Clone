@@ -1,5 +1,5 @@
 import ChoiceButtons from '../../components/buttons/choice';
-import IconTwitter from '../../components/icons/logos/twitter-icon';
+import { IconTwitter } from '../../components/icons/logos';
 import LoadingIcon from '../../components/icons/loading';
 import SlideMenu from '../../components/menu/menu-types/slide-menu-sm';
 import HomePost from '../../components/posts/home-post';
@@ -13,6 +13,19 @@ import CredentialInput from '../../components/inputs/credentials';
 import CredentialButton from '../../components/buttons/credentials';
 
 function Main({setOpened, opened, w}) {
+  const [color, setColor] = useState(localStorage.getItem('btnColor') || "#1d9bf0")
+    
+  useEffect(() => {
+      const interval = setInterval(() => {
+          const currentStorageValue = localStorage.getItem('btnColor');
+          if (currentStorageValue !== color) {
+              setColor(currentStorageValue);
+          }
+      }, 1000);  // Check every second. Adjust as needed.
+
+      return () => clearInterval(interval);  // Clear the interval on component unmount.
+  }, [color]);
+
   const dispatch = useDispatch()
   const currUser = useSelector(state=>state.currUser)
   const users = useSelector(state=>state.users)
@@ -22,6 +35,7 @@ function Main({setOpened, opened, w}) {
   const prevScrollY = useRef(0)
   const username = useRef()
   const [updating, setUpdating] = useState(false)
+
 
   useEffect(()=>{
       if (posts.home.length === 0 && tab === "For you") {
@@ -37,7 +51,6 @@ function Main({setOpened, opened, w}) {
 
     if ((element.scrollTop + element.clientHeight) + 500 >= element.scrollHeight && loading === false && tab === "For you" && prevScrollY.current < element.scrollTop) {
       dispatch(getPost(undefined, "home", posts.home[posts.home.length - 1], undefined, currUser.token, setLoading))
-      console.log("hey")
     } else if ((element.scrollTop + element.clientHeight) + 500 >= element.scrollHeight && loading === false && tab === "Following" && prevScrollY.current < element.scrollTop) {
       dispatch(getPost(undefined, "following", posts.following[posts.following.length - 1], undefined, currUser.token, setLoading))
     }
@@ -53,13 +66,13 @@ function Main({setOpened, opened, w}) {
   }
 
   const UpdateUsername = () => (
-    <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s6:bg-[#000000]/[.5] z-40 flex justify-center items-center' onMouseDown={()=>[setUpdating(false)]}>
-      <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s6:h-[700px] s6:max-w-[500px] p-4' onMouseDown={(e)=>{e.stopPropagation()}}>
+    <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s6:bg-[#000000]/[.5] z-40 flex justify-center items-center dark:bg-[#ffffff]/[.4]' onMouseDown={()=>[setUpdating(false)]}>
+      <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s6:h-[700px] s6:max-w-[500px] p-4 dark:bg-[#000000] rounded-xl' onMouseDown={(e)=>{e.stopPropagation()}}>
         <div className='h-[90%] flex flex-col items-center justify-between'>
           <div className='flex flex-col items-center'>
             <IconTwitter clas={"w-[30px]"}/>
             <div className='w-full py-5'>
-              <h1 className='text-[20px] mb-2'>Here you can change your username</h1>
+              <h1 className='text-[20px] mb-2 dark:text-[#ffffff]'>Here you can change your username</h1>
               <CredentialInput placeholder="username" reff={username} defaultVal={users.activeprofiles.find(user => user.id === currUser.user).info.username}/>
             </div>
           </div>
@@ -73,15 +86,14 @@ function Main({setOpened, opened, w}) {
   )
   
   const localChoices = ["For you", "Following"]
-  
   return (
-        <section className='s10:max-w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-auto' onScroll={(e) => handleScroll(e)}>
+        <section className='s10:max-w-[32%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-y-auto overflow-x-hidden' onScroll={(e) => handleScroll(e)}>
           {updating ? <UpdateUsername /> : ""}
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
-          <div className='w-full h-auto bg-[#ffffff]/[.8] bg-blur backdrop-blur-sm sticky top-0 z-20 overflow-hidden'>
+          <div className='w-full h-auto bg-transparent bg-blur backdrop-blur-md sticky top-0 z-20 overflow-hidden'>
             <div className='py-3 px-2'>
               <header className='ml-1 text-[18px] text-400 font-bold hidden items-center mr-4 s6:flex justify-between items-center'>
-                <h1>Home</h1>
+                <h1 className='dark:text-[#ffffff]'>Home</h1>
                 <span onClick={()=>{setUpdating(true)}}>
                   <EditIcon />
                 </span>
@@ -93,10 +105,10 @@ function Main({setOpened, opened, w}) {
                 <IconTwitter clas={"w-[25px]"}/>
               </div>
             </div>
-            <ChoiceButtons choices={localChoices} setChosen={setTab}/>
+            <ChoiceButtons color={color} choices={localChoices} setChosen={setTab}/>
           </div>
           <div className='h-[90.4%]'>
-            {w >= 600 ? <HomePost/> : ""}
+            {w >= 600 ? <HomePost color={color}/> : ""}
             {posts[tab === "For you" ? "home" : "following"].length > 0 ? posts[tab === "For you" ? "home" : "following"].map((post, index) => <DisplayPost postPath={post} key={index} postList={posts.posts}/>)  : ""}
           </div>
         </section>

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import SocialButton from '../../components/buttons/thirdparty';
-import IconApple from '../../components/icons/logos/apple-icon';
-import IconGoogle from '../../components/icons/logos/google-icon';
+import { IconGoogle, IconApple } from "../../components/icons/logos"
+import SocialButton from "../../components/buttons/thirdparty"
 import CredentialInput from '../../components/inputs/credentials';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '../../redux/actions/authActions';

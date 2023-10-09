@@ -1,10 +1,9 @@
-import EarthIcon from '../icons/dropdowns/earth';
-import CloseCircle from '../icons/dropdowns/circlePersons';
-import DownArrow from '../icons/menu/downarrow';
+import { EarthIcon, CloseCircle } from '../icons/dropdowns';
+import { DownArrow } from '../icons/menu';
 import { useState } from 'react';
 
-function PickAudience() {
-
+function PickAudience({color}) {
+    const colors = {"#1d9bf0":"text-[#1d9bf0]", "#ffd400":"text-[#ffd400]", "#f91880":"text-[#f91880]", "#7856ff":"text-[#7856ff]", "#ff7a00":"text-[#ff7a00]", "#00ba7c":"text-[#00ba7c]"}
     const [audiencePick,setAudience] = useState(false)
     const [active,setActive] = useState(0)
     const [animate,setAnimate] = useState(' opacity-0')
@@ -59,7 +58,7 @@ function PickAudience() {
 
   return (
         <div className='mb-4' onClick={(e)=>{e.stopPropagation()}}>
-            <button className={'text-[13px] font-bold px-2 border rounded-full flex items-center w-[100px] justify-around' + (active === 1 ? " text-[#00ba7c] border-[#00ba7c]" : " text-[#37A6F1]")} onClick={audienceAnimate}>{active === 0 ? "Everyone" : "Circle"} <DownArrow size={12}/></button>
+            <button className={'text-[13px] font-bold px-2 border rounded-full flex items-center w-[100px] justify-around ' + (colors[color])} onClick={audienceAnimate}>{active === 0 ? "Everyone" : "Circle"} <DownArrow size={12}/></button>
             {audiencePick ? dropdown : ""}
         </div>
   );

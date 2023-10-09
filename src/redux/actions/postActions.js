@@ -35,14 +35,16 @@ export const deletePost = (token, postId) => (dispatch) => {
 }
 
 // Action creator to add a reply to a post
-export const addReply = (token, data, postId, username) => (dispatch) => {
+export const addReply = (token, data, postId, username, userId) => (dispatch) => {
     // Call the postReply function to add a reply to a post
     postReply(data, token, postId, username).then((res) => {
-        // Dispatch an action to store the newly added reply in the state
-        dispatch({
-            type: "COMMENT_POST",
-            payload: { res, postPath: postId }
-        });
+        if (res.success !== false) {
+            // Dispatch an action to store the newly added reply in the state
+            dispatch({
+                type: "COMMENT_POST",
+                payload: { res, postPath: postId, user: userId }
+            });
+        }
     });
 }
 
@@ -122,11 +124,13 @@ export const getPost = (post, tab, last, username, token, setLoading) => (dispat
                 });
             case "replies":
                 res.posts.forEach(element => {
-                    dispatch({
-                        type: "GET_USERS",
-                        payload: { res: element.mainPost.user, tab: "profile" }
-                    });
-                    delete element.mainPost.user;
+                    if (element.mainPost !== "Deleted") {
+                        dispatch({
+                            type: "GET_USERS",
+                            payload: { res: element.mainPost.user, tab: "profile" }
+                        });
+                        delete element.mainPost.user;
+                    }
                 });
                 return dispatch({
                     type: "REPLIES_GET_POSTS",

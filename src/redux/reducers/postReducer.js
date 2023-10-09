@@ -56,7 +56,12 @@ const PostReducer = (state = initialState, action) => {
             state[list] = newPostReplies
         } else if (defaultState === "Replies") {
             state[list].forEach((replies)=>{
-                replies.posts = replies.posts.filter(post => post.replyPost !== payload.postId || post.mainPost !== payload.postId)
+                replies.posts = replies.posts.filter(post => post.replyPost !== payload.postId)
+                replies.posts.forEach((post, index)=>{
+                    if (post.mainPost === payload.postId) {
+                        replies.posts[index].mainPost = undefined
+                    }
+                })
             })
         }
         return state[list]
@@ -243,17 +248,22 @@ const PostReducer = (state = initialState, action) => {
         // Action to comment on a post
         case "COMMENT_POST":
             var i1 = state.postReplies.findIndex(post => post.postPath === payload.postPath);
+            var i2 = state.posts.findIndex(post => post.postPath === payload.postPath)
+            var i3 = state.profile.findIndex(posts => posts.user === payload.user);
 
+            state.replies[i3] = {...state.replies[i3], posts:[{replyPost: payload.res.postPath, mainPost: payload.postPath}, ...state.replies[i3].posts]}
             // Add the comment to the post's comments list
             state.posts.push(payload.res);
-
+            // Increment comment list
+            state.posts[i2].post.comments += 1 
             // Add the comment to the replies
             state.postReplies[i1].replies = [payload.res.postPath, ...state.postReplies[i1].replies]
 
             return {
                 ...state,
                 posts: state.posts,    // Update posts
-                postReplies: state.postReplies  // Update replies
+                postReplies: state.postReplies,  // Update replies
+                replies: state.replies
             };
 
         // Action to add a single post

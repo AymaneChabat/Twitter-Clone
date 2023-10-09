@@ -1,5 +1,5 @@
-import BackArrowIcon from '../../components/icons/messages/backArrow';
-import Dots from '../../components/icons/menu/dots';
+import { BackArrowIcon } from '../../components/icons/messages';
+import { Dots } from '../../components/icons/menu';
 import DisplayImages from '../../components/posts/displayImages';
 import DisplayPosts from "../../components/posts/displayposts"
 import InteractionButtons from '../../components/buttons/model';
@@ -44,12 +44,12 @@ function Post() {
 
     return (
             <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s6:mb-0'>
-                <div className="w-full box-border px-3 h-[60px] flex items-center justify-between bg-[#ffffff] z-50">
+                <div className="w-full box-border px-3 h-[60px] flex items-center justify-between z-50">
                     <div className="p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer" onClick={goBack}>
                         <BackArrowIcon w={20}/>
                     </div>
                     <div className="leading-6 w-[90%]">
-                        <h1 className="font-bold text-[20px] font-twitterchirp">Post</h1>
+                        <h1 className="font-bold text-[20px] dark:text-[#ffffff]">Post</h1>
                     </div>
                 </div>
                 {post !== undefined && user !== undefined ?
@@ -61,8 +61,8 @@ function Post() {
                             </Link>
                             <div className="flex w-full items-start justify-between mb-3">
                                 <div className='flex flex-col leading-6'>
-                                    <span className="font-bold text-[15px] font-twitterchirp mr-2">{user.info.name}</span>
-                                    <span className="text-[15px] font-twitterchirp text-[#536471]"><span className="text-[12px]">@</span>{user.info.username}</span>
+                                    <span className="font-bold text-[15px] mr-2 dark:text-[#ffffff]">{user.info.name}</span>
+                                    <span className="text-[15px] text-[#536471]"><span className="text-[12px]">@</span>{user.info.username}</span>
                                 </div>
                                 <div className="hover:bg-[#1D9BF0]/[.1] p-2 rounded-full">
                                     <Dots w={15}/>
@@ -70,12 +70,12 @@ function Post() {
                             </div>
                         </div>
                         <div className='border-b border-[#1d9bf0]/[.1]'>
-                            <p className="text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">
+                            <p className="text-[#0f1419]/[.8] text-[15px] leading-[20px] break-words dark:text-[#ffffff]">
                                 {post.post.content}
                                 <div className="mt-4">
-                                    {post.post.media.length > 0 ? (
+                                    {post.post.media.length > 0 && (
                                         <DisplayImages images={post.post.media} posting={false}/>
-                                    ) : ""}
+                                    )}
                                 </div>
                             </p>
                         </div>
@@ -85,11 +85,15 @@ function Post() {
                         <HomePost floating={false} type={"reply"} postId={params["*"]} username={params.username}/>
                     </div>
                     <div>
-                       {!loading ? posts.postReplies.find(reply => reply.postPath === params["*"]) !== undefined ? posts.postReplies.find(reply => reply.postPath === params["*"]).replies.map((post, index) => <DisplayPosts key={index} postPath={post} users={users.activeprofiles} postid={params["*"]} postList={posts.posts}/>) : "" : <LoadingIcon />}
+                       {!loading ? posts.postReplies.find(reply => reply.postPath === params["*"]) && posts.postReplies.find(reply => reply.postPath === params["*"]).replies.map((post, index) => <DisplayPosts key={index} postPath={post} users={users.activeprofiles} postid={params["*"]} postList={posts.posts}/>) : <LoadingIcon />}
                     </div>
                 </>
-                )
-                : ""}
+                ) : <pre className='w-full h-[40%] flex flex-col justify-center items-center'>
+                        <span className='text-[#536471]'>Hmm...this page doesn't exist. Try browsing your feed for something else</span>
+                        <Link to={"/home"}>
+                            <button type="button" class="text-white w-[7rem] px-0.5 py-1.5 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md mt-3">Browse</button>
+                        </Link>
+                    </pre>}
             </div>
     );
 }

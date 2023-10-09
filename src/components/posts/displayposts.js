@@ -1,22 +1,23 @@
-import Dots from "../icons/menu/dots";
+import { Dots } from "../icons/menu";
 import InteractionButtons from "../buttons/model";
 import { Link } from "react-router-dom";
 import DisplayImages from "./displayImages";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import VerifiedIcon from "../icons/profile/verified";
+import { VerifiedIcon } from "../icons/profile";
 import UserPreview from "../profiles/userPreview";
-import DeleteIcon from "../icons/posts/delete";
+import { DeleteIcon } from "../icons/posts";
 import { deletePost } from "../../redux/actions/postActions";
 import { useEffect } from "react";
 
-function DisplayPosts({postPath, postList, reply}) {
+function DisplayPosts({postPath, postList, reply, main}) {
     const [preview, setPreview] = useState(false)
     const dispatch = useDispatch()
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state=>state.users.activeprofiles)
     const post = postList.find(post => post.postPath === postPath)
-    const user = users.find(user => user.id === post.post.userId)
+
+    const user = post !== "Deleted" ? users.find(user => user.id === post.post.userId) : undefined
     const [options, setOptions] = useState(false)
 
     useEffect(()=>{
@@ -100,24 +101,25 @@ function DisplayPosts({postPath, postList, reply}) {
     }
 
     return (
-    <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200" + (reply ? "" : " border-b")} >
+    post !== "Deleted" ? <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200" + (reply ? "" : " border-b")} >
         {preview ? <UserPreview user={user} action={hidePreview}/> : ""}
         <Link to={"/"+user.info.username+"/post/"+post.postPath} className="w-full">
-            <div className="h-full px-3 py-2 hover:bg-[#ebebeb]/[.4] cursor-pointer flex">
-                <div className="h-full overflow-hidden flex flex-col items-center mr-2">
-                    <Link to={"/profile/"+user.info.username}>
+            <div className="h-full px-3 py-3 hover:bg-[#ebebeb]/[.4] cursor-pointer flex transition-all duration-300 dark:hover:bg-[#000000]/[.1]">
+                <div className="h-full flex flex-col items-center mr-2">
+                    {reply ? <div className="h-2 -mt-3 w-[2px] bg-[#cfd9de]"></div> : ""}
+                    <Link to={"/"+user.info.username}>
                         <div className="w-[45px] h-[45px] bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}  onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}></div>
                     </Link>
-                    {reply ? <div className="h-full w-[2px] bg-[#cfd9de]"></div> : ""}
+                    {main ? <div className="h-full -mb-2 w-[2px] bg-[#cfd9de]"></div> : ""}
                 </div>
                 <div className="w-[88%]">
                     <div className="flex w-full items-start justify-between">
                         <div className="group flex flex justify-center items-center">
                             <h1 className="flex mr-1" onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}>
-                                <span id="name" className="font-bold text-[15px] hover:underline mr-1.5">{user.info.name}</span> 
+                                <span id="name" className="font-bold text-[15px] hover:underline mr-1.5 dark:text-[#ffffff]">{user.info.name}</span> 
                                 {user.info.username === "owner" ? <VerifiedIcon /> : ""}
                             </h1>
-                            <span className="text-[15px] text-[#536471]"><span className="text-[12px]">@</span>{user.info.username} · {timeAgo(post.post.postedAt)}</span>
+                            <span className="text-[15px] text-[#71767b]"><span className="text-[12px]">@</span>{user.info.username} · {timeAgo(post.post.postedAt)}</span>
                         </div>
                         <div onClick={(e)=>{e.stopPropagation(); e.preventDefault()}}>
                             <div className="p-1.5 hover:bg-[#1D9BF0]/[.1] rounded-full" onClick={!options ? () => {setOptions(true)} : () => {setOptions(false)}}>
@@ -131,7 +133,7 @@ function DisplayPosts({postPath, postList, reply}) {
                             </div>
                         </div>
                     </div>
-                    <p className="text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">
+                    <p className="dark:text-[#ffffff] text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">
                         {returnPostContent(post.post.content).split("\n").map((line,index)=>(
                             <div key={index}>{line}</div>
                         ))}
@@ -145,7 +147,7 @@ function DisplayPosts({postPath, postList, reply}) {
                 </div>
             </div>
         </Link>
-    </article>
+    </article> : <div className="py-2 px-3"><span className="border rounded-2xl block px-3 py-1 bg-transparent text-[#000000]/[.6] dark:text-[#ffffff]">Post has been deleted</span></div>
   );
 }
 

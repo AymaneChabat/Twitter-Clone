@@ -1,5 +1,5 @@
-import UploadImage from "../../components/icons/profile/image";
-import DeleteIcon from "../../components/icons/posts/close";
+import { UploadImage } from "../../components/icons/profile";
+import { DeleteIcon } from "../../components/icons/posts";
 import CredentialInput from '../../components/inputs/credentials';
 import ReactFileReader from 'react-file-reader';
 import { useRef, useState } from "react";
@@ -47,16 +47,16 @@ function UpdateUser({setUpdating, user}) {
   }
 
   return (
-    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center" onMouseDown={()=>{setUpdating(false)}}>
-        <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative" onMouseDown={(e)=>{e.stopPropagation()}}>
+    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center dark:bg-[#ffffff]/[.2]" onMouseDown={()=>{setUpdating(false)}}>
+        <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative dark:bg-[#000000]" onMouseDown={(e)=>{e.stopPropagation()}}>
             <div className="flex justify-between items-center p-2.5">
                 <button className="hover:bg-[#000000]/[.1] p-2 rounded-full" onClick={()=>{setUpdating(false)}}>
                     <DeleteIcon />
                 </button>
-                <span className="text-[20px] w-[60%] font-chirp font-bold py-2">
+                <span className="text-[20px] w-[75%] font-chirp font-bold py-2 dark:text-[#ffffff]">
                     Edit profile
                 </span>
-                <button className="bg-[#000000] text-[#ffffff] py-1 px-4 rounded-full font-chirp" onClick={updateUserData}>
+                <button className="bg-[#000000] text-[#ffffff] py-1 px-4 rounded-full dark:border dark:hover:bg-[#ffffff]/[.1]" onClick={updateUserData}>
                     Save
                 </button>
             </div>
@@ -73,7 +73,7 @@ function UpdateUser({setUpdating, user}) {
                 ) : ""}
             </div>
             <div className="absolute top-[195px] w-full">
-                <div className="w-[130px] h-[130px] rounded-full border-4 mx-5 flex justify-center items-center border-[#ffffff] bg-no-repeat bg-cover bg-center" style={{backgroundImage:`url("${pp.url}")`}}>
+                <div className="w-[130px] h-[130px] rounded-full border-4 mx-5 flex justify-center items-center border-[#ffffff] bg-no-repeat bg-cover bg-center dark:border-[#000000]" style={{backgroundImage:`url("${pp.url}")`}}>
                     <ReactFileReader handleFiles={handleFilesPP} multipleFiles={false} base64={true}>
                         <div className="p-3 hover:bg-[#000000]/[.2] rounded-full cursor-pointer bg-[#000000]/[.5] transition duration-300">
                             <UploadImage w={20}/>

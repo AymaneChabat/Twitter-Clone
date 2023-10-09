@@ -23,7 +23,6 @@
     src: url(https://abs.twimg.com/fonts/chirp-extended-heavy-web.woff) format("woff");
   }
 }
-
 *, *::before, *::after {
   box-sizing: border-box;
 }

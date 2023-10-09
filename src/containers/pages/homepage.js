@@ -1,45 +1,68 @@
-import { Fragment, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, useLocation, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { IconTwitter } from '../../components/icons/logos';
+import FinalMenu from '../../containers/homepage/menu';
+import LastContainer from '../homepage/last-container';
 import Main from '../homepage/home';
 import Explore from '../homepage/explore';
 import Messages from '../homepage/messages';
 import Profile from '../homepage/profile';
-import Template from '../homepage/template';
 import Post from '../homepage/post';
-import { useSelector } from 'react-redux';
 
-function HomePage() {
+function Template() {
+  const currUser = useSelector(state => state.currUser)
+  const users = useSelector(state => state.users)
+  const [page, setPage] = useState("home");
+  const location = useLocation();
   const [opened,setOpened] = useState(false)
   const [w,setW] = useState(window.innerWidth)
   window.addEventListener('resize', ()=>{setW(window.innerWidth)})
-  const currUser = useSelector(state => state.currUser)
-  const users = useSelector(state => state.users)
+
+  useEffect(()=>{
+    const body = document.body
+    if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
+      body.classList.add('dark');
+      body.classList.add('bg-[#000000]');
+    } else if (localStorage.theme === 'dim') {
+      body.classList.add('dark');
+      body.classList.add('bg-[#15202b]');
+    } else {
+      // Default to light if neither 'dark' nor 'dim'
+      body.classList.add('light');
+    }
+  }, [])
+
+  useEffect(() => {
+      setPage(location.pathname.slice(1,))
+    }, [location]);
+
+  const elements = [
+      ["/home", <Main opened={opened} setOpened={setOpened} w={w}/>],
+      ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
+      ["/messages/:chat?", <Messages w={w}/>],
+      ["/:username", <Profile />],
+      ["/:username/post/*", <Post />]
+  ]
 
 
   function NotFound() {
-    return <Navigate to="/home" />;
-  }
-
-  const elements = [
-    ["/home", <Main opened={opened} setOpened={setOpened} w={w}/>],
-    ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
-    ["/messages/:chat?", <Messages w={w}/>],
-    ["/profile/:username", <Profile />],
-    ["/:username/post/*", <Post />]
-  ]
+      return <Navigate to="/home" />;
+    }
+  
 
   return (
-      <Fragment>
-          {users.activeprofiles.find((user) => user.id === currUser.user) !== undefined ? 
-            <Routes>
-            {elements.map((element, index)=>(
-              <Route key={index} path={element[0]} exact element={<Template w={w} element={element[1]}/>} />
-            ))}
-            <Route path="*" element={<NotFound />} />
-            </Routes>
-          : ""}
-      </Fragment>
-  );
+    users.activeprofiles.find((user) => user.id === currUser.user) !== undefined &&
+      <div className='flex h-screen overflow-hidden'>
+          <FinalMenu w={w}/>
+          <Routes>
+              {elements && elements.map((element, index)=>(
+                  <Route path={element[0]} element={element[1]} index={index}/>
+              ))}
+          </Routes>
+          <LastContainer w={w} page={page}/>
+      </div>
+  )
 }
 
-export default HomePage;
+export default Template;

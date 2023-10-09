@@ -1,12 +1,5 @@
+import { AnalyticsIcon, AdsIcon, SettingsIcon, HelpIcon, DataIcon, DisplayIcon, KeyboardIcon, LogoutIcon } from '../icons/menu';
 import DropdownButton from '../buttons/dropdown';
-import AnalyticsIcon from '../icons/menu/analytics';
-import AdsIcon from '../icons/menu/ads';
-import SettingsIcon from '../icons/menu/settings';
-import HelpIcon from '../icons/menu/help';
-import DataIcon from '../icons/menu/data';
-import DisplayIcon from '../icons/menu/display';
-import KeyboardIcon from '../icons/menu/keyboard';
-import LogoutIcon from '../icons/menu/logout';
 
 function Dropdowns() {
 

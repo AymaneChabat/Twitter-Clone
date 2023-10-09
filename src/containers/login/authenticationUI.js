@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import LoginForm from './loginForm';
-import IconTwitter from '../../components/icons/logos/twitter-icon';
-import DeleteIcon from '../../components/icons/posts/close';
+import { IconTwitter } from '../../components/icons/logos';
+import { DeleteIcon } from '../../components/icons/posts';
 import CredentialInput from '../../components/inputs/credentials';
 import { Routes, Route, useNavigate } from 'react-router';
 import { resetPass, signUp } from '../../redux/actions/authActions';

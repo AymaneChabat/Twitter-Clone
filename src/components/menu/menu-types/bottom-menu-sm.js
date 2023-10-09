@@ -1,8 +1,5 @@
-import BellIcon from '../../../components/icons/menu/bell';
-import HouseIcon from '../../../components/icons/menu/home';
-import SearchIcon from '../../../components/icons/menu/search';
-import MessageIcon from '../../../components/icons/menu/message';
-import Menu from "../../../components/menu/items";
+import { MessageIcon, SearchIcon, HouseIcon, BellIcon } from "../../icons/menu"
+import Menu from "../items";
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
@@ -25,7 +22,7 @@ function BottomMenuSM() {
   ]
 
   return (
-        <div className='fixed w-full bottom-0 border-t z-10 bg-[#ffffff] h-[7%]'>
+        <div className='fixed w-full bottom-0 border-t z-10 bg-[#ffffff] h-[7%] dark:bg-transparent dark:border-0'>
             <div className='flex justify-evenly items-center h-full'>
                 {menu.map((pick, index) => (
                     pick[1].toLowerCase() !== "notifications" ? (<Link to={"/"+pick[1].toLowerCase()} onClick={()=>{setActive(pick[1].toLowerCase())}}><Menu key={index} data={pick} picked={active}/></Link>) : (<a href='#' className='pointer-events-none'><Menu key={index} data={pick} picked={active}/></a>)

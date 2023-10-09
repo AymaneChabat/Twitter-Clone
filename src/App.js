@@ -3,8 +3,8 @@ import HomePage from './containers/pages/homepage';
 import Login from './containers/pages/loginpage';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { auth } from './functions/authentication';
 import { checkUser } from './redux/actions/authActions';
 
@@ -28,6 +28,8 @@ function App() {
           }
     });
   }, [])
+
+
 
   return (
       <div className="App">

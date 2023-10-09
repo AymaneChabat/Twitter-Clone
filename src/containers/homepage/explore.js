@@ -1,7 +1,6 @@
 import SlideMenu from '../../components/menu/menu-types/slide-menu-sm';
 import { useEffect, useState } from 'react';
-import SearchIcon from '../../components/icons/menu/search';
-import SettingsIcon from '../../components/icons/menu/settings';
+import { SearchIcon, SettingsIcon } from '../../components/icons/menu';
 import ChoiceButtons from '../../components/buttons/choice';
 import FollowProfile from "../../components/profiles/whotofollow"
 import { useSelector, useDispatch } from 'react-redux';
@@ -47,9 +46,9 @@ function Explore({setOpened, opened}) {
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
           <div className='overflow-auto h-full'>
             <div className='flex justify-around items-center w-[100%]'>
-                <div className={'flex py-2 w-[85%] my-2 items-center rounded-full border-2 px-4 bg-['+(!focused ? "#EFF3F4] border-transparent" : "#ffffff] border border-[#1d9bf0]")}>
+                <div className={'flex py-2 w-[85%] my-2 items-center rounded-full border-2 px-4 dark:bg-[#16181c] bg-['+(!focused ? "#EFF3F4] border-transparent" : "#ffffff] border border-[#1d9bf0]")}>
                     <SearchIcon picked={[false,"Explore"]} color={focused ? "#1d9bf0" : "#808080"} size={"20"}/>
-                    <input onChange={(e)=>{setSearch(e.target.value)}} value={search} onFocus={()=>{setFocused(true)}} onBlur={()=>{setFocused(false)}} placeholder='Search' className='bg-transparent w-full ml-3 focus:outline-none font-chirp'/>
+                    <input onChange={(e)=>{setSearch(e.target.value)}} value={search} onFocus={()=>{setFocused(true)}} onBlur={()=>{setFocused(false)}} placeholder='Search' className='dark:text-[#ffffff] bg-transparent w-full ml-3 focus:outline-none font-chirp'/>
                 </div>
                 <div className='p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer'>
                     <SettingsIcon />

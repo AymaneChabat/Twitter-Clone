@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./src/**/*.{js,jsx,ts,tsx}"
   ],
@@ -46,10 +47,18 @@ module.exports = {
         'twitterchirp': ['TwitterChirps', 'sans-serif'],
         'chirpextended': ['TwitterChirpExtendedHeavy', 'sans-serif'],
       },
+      backgroundColor: ['dim'],  // Add other utilities like textColor, borderColor, etc. as needed
+      textColor: ['dim'],
     },
   },
   plugins: [
-
-  ]
+    function ({ addVariant, e }) {
+      addVariant('dim', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.dim .${e(`dim${separator}${className}`)}`
+        });
+      });
+    },
+  ],
 }
 

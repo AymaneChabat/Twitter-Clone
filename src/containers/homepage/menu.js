@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import BottomMenuSM from "../../components/menu/menu-types/bottom-menu-sm";
 import MainMenu from "../../components/menu/menu-types/main-menu";
 import HomePost from "../../components/posts/home-post";
-import PostIcon from "../../components/icons/menu/post";
-import BackArrowIcon from "../../components/icons/messages/backArrow";
+import { PostIcon } from "../../components/icons/menu";
+import { BackArrowIcon } from "../../components/icons/messages";
 import { useLocation } from "react-router";
 
 function FinalMenu({w}) {
@@ -12,7 +12,17 @@ function FinalMenu({w}) {
   const location = useLocation();
   const [page, setPage] = useState(location.pathname.slice(1,))
 
-  
+  const bg = () => {
+    switch (localStorage.theme) {
+      case "dim":
+        return "bg-[#15202b]"
+      case "dark":
+        return "bg-[#000000]"
+      default:
+        return "bg-[#ffffff]"
+    }
+  }
+
   useEffect(() => {
     setPage(location.pathname.slice(1,));
     }, [location]);
@@ -20,11 +30,11 @@ function FinalMenu({w}) {
   return (
     <>
         {postOpen ? (
-            <div className='absolute w-full h-full s7:bg-[#000000]/[.4] z-50 s7:pt-[200px] bg-[#ffffff]' onMouseDown={()=>{setPostOpen(false)}}>
+            <div className={'absolute w-full h-full s7:bg-[#000000]/[.4] z-50 s7:pt-[200px] bg-[#ffffff] ' + (bg())} onMouseDown={()=>{setPostOpen(false)}}>
               <div className="px-4 py-2 s7:hidden" onClick={()=>{setPostOpen(false)}}>
                 <BackArrowIcon w={20} />
               </div>
-              <div className='w-100% s7:w-[650px] rounded-lg mx-auto bg-[#ffffff]' onMouseDown={(e)=>e.stopPropagation()}>
+              <div className='w-100% s7:w-[650px] rounded-lg border border-[#ffffff]/[.1] mx-auto bg-transparent' onMouseDown={(e)=>e.stopPropagation()}>
                 <HomePost floating={true} setPostOpen={setPostOpen}/>
               </div>
             </div>

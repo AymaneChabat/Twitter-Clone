@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import VerifiedIcon from "../icons/profile/verified";
+import { VerifiedIcon } from "../icons/profile";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFollows } from "../../redux/actions/userActions";
 import UserPreview from "./userPreview";
@@ -38,16 +38,16 @@ function FollowProfile({data}) {
     }
 
   return (
-        <Link to={"/profile/"+ data.info.username}>
+        <Link to={"/"+ data.info.username}>
             <div className='flex items-center hover:bg-[#7fc9fa]/[.1] cursor-pointer px-4 py-3 duration-300 transition-all relative'>
                 {preview ? <UserPreview user={data} action={hidePreview}/> : ""}
                 <div className='w-[50px] h-[50px] mr-2 rounded-full bg-no-repeat bg-cover'  style={{backgroundImage: `url("${data.info.profilepicture}")`}} onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}></div>
                 <div className='flex flex-col leading-6'>
                     <span id="name" className="flex" onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}>
-                        <span className='font-bold text-[17px] overflow-hidden max-w-[120px] text-ellipsis whitespace-nowrap mr-1.5'>{data.info.name}</span>
+                        <span className='font-bold text-[17px] overflow-hidden max-w-[120px] text-ellipsis whitespace-nowrap mr-1.5 dark:text-[#ffffff]'>{data.info.name}</span>
                         {data.info.username === "owner" ? <VerifiedIcon /> : ""}
                     </span>
-                    <span className='text-[14px] text-[#000000]/[.8]'>@{data.info.username}</span>
+                    <span className='text-[14px] text-[#000000]/[.8] dark:text-[#536471]'>@{data.info.username}</span>
                 </div>
                 {data.id !== currUser.user ? 
                 <div className='px-4 py-1 rounded-full flex justify-center absolute right-0' onClick={(e)=>{e.preventDefault()}}>

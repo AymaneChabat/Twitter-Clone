@@ -1,8 +1,6 @@
 import React from 'react';
 import SocialButton from '../../components/buttons/thirdparty';
-import IconTwitter from '../../components/icons/logos/twitter-icon';
-import IconApple from '../../components/icons/logos/apple-icon';
-import IconGoogle from '../../components/icons/logos/google-icon';
+import { IconTwitter, IconApple, IconGoogle } from '../../components/icons/logos';
 import { useNavigate } from 'react-router';
 
 const Main = () => {

@@ -1,15 +1,13 @@
-import EarthIcon from '../icons/dropdowns/earth';
-import CloseCircle from '../icons/dropdowns/circlePersons';
-import Mentions from '../icons/dropdowns/@';
-import CheckMark from '../icons/dropdowns/check';
+import { CheckMark, Mentions, CloseCircle, EarthIcon } from '../icons/dropdowns';
 import { useState } from 'react';
 
-function PickReplies() {
+function PickReplies({color}) {
 
     const [active,setActive] = useState(false)
     const [animate,setAnimate] = useState(" opacity-0")
     const [selected, setSelected] = useState(0)
-    const choices = [<><EarthIcon color={"#37A6F1"}/><span className='ml-1'>Everyone</span></>, <><CloseCircle color={"#37A6F1"}/><span className='ml-1'>People you follow</span></>, <><Mentions color={"#37A6F1"}/><span className='ml-1'>Only people you mention</span></>]
+    const choices = [<><EarthIcon color={color}/><span className='ml-1'>Everyone</span></>, <><CloseCircle color={color}/><span className='ml-1'>People you follow</span></>, <><Mentions color={"#37A6F1"}/><span className='ml-1'>Only people you mention</span></>]
+    const colors = {"#1d9bf0":"text-[#1d9bf0]", "#ffd400":"text-[#ffd400]", "#f91880":"text-[#f91880]", "#7856ff":"text-[#7856ff]", "#ff7a00":"text-[#ff7a00]", "#00ba7c":"text-[#00ba7c]"}
 
     window.addEventListener("click", ()=>{
         if (active) {
@@ -40,33 +38,33 @@ function PickReplies() {
                 <li>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setSelected(0);setActive(false)}}>
                         <div className='bg-[#1D9BF0] mr-2 p-2 rounded-full'>
-                            <EarthIcon />
+                            <EarthIcon color={color}/>
                         </div>
                         <span className='w-[90%]'>
                             Everyone
                         </span>
                         <div>
-                            {selected === 0 ? <CheckMark /> : ""}
+                            {selected === 0 ? <CheckMark color={color}/> : ""}
                         </div>
                     </a>
                 </li>
                 <li>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setActive(false)}}>
                         <div className='bg-[#1D9BF0] mr-2 p-2 rounded-full'>
-                            <CloseCircle />
+                            <CloseCircle color={color}/>
                         </div>
                         <span className='w-[90%]'>
                             People you follow
                         </span>
                         <div>
-                            {selected === 1 ? <CheckMark /> : ""}
+                            {selected === 1 ? <CheckMark color={color}/> : ""}
                         </div>
                     </a>
                 </li>
                 <li>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100/[.5] font-bold text-[14px] font-twitterchirp flex items-center" onClick={()=>{setActive(false)}}>
                         <div className='bg-[#1D9BF0] mr-2 p-2 rounded-full'>
-                            <Mentions />
+                            <Mentions key={color}/>
                         </div>
                         <span className='w-[90%]'>
                             Only people you mention
@@ -82,7 +80,7 @@ function PickReplies() {
 
   return (
     <div onClick={(e)=>{e.stopPropagation()}} className='py-1'>
-        <button className='text-[#37A6F1] text-[13px] font-bold px-2 rounded-full flex items-end justify-around py-1 hover:bg-[#37A6F1]/[.1] transition transition-300 mb-1' onClick={audienceAnimate}>{choices[selected]}</button>
+        <button className={'text-[13px] font-bold px-2 rounded-full flex items-end justify-around py-1 hover:bg-[#37A6F1]/[.1] transition transition-300 mb-1 ' + (colors[color])} onClick={audienceAnimate}>{choices[selected]}</button>
         {active ? dropdown : ""}
     </div>
   );

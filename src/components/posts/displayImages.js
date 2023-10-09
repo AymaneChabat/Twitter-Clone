@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DeleteIcon from "../icons/posts/close";
+import { DeleteIcon } from "../icons/posts";
 
 function DisplayImages({images, posting, setImages}) {
     const [fullscreen, setFullScreen] = useState(false)
