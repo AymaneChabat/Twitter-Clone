@@ -19,20 +19,6 @@ function Template() {
   const [w,setW] = useState(window.innerWidth)
   window.addEventListener('resize', ()=>{setW(window.innerWidth)})
 
-  useEffect(()=>{
-    const body = document.body
-    if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
-      body.classList.add('dark');
-      body.classList.add('bg-[#000000]');
-    } else if (localStorage.theme === 'dim') {
-      body.classList.add('dark');
-      body.classList.add('bg-[#15202b]');
-    } else {
-      // Default to light if neither 'dark' nor 'dim'
-      body.classList.add('light');
-    }
-  }, [])
-
   useEffect(() => {
       setPage(location.pathname.slice(1,))
     }, [location]);
@@ -42,7 +28,8 @@ function Template() {
       ["/explore", <Explore opened={opened} setOpened={setOpened}/>],
       ["/messages/:chat?", <Messages w={w}/>],
       ["/:username", <Profile />],
-      ["/:username/post/*", <Post />]
+      ["/:username/post/*", <Post />],
+      ["/", <NotFound to="/home"/>]
   ]
 
 
@@ -59,6 +46,7 @@ function Template() {
               {elements && elements.map((element, index)=>(
                   <Route path={element[0]} element={element[1]} index={index}/>
               ))}
+              
           </Routes>
           <LastContainer w={w} page={page}/>
       </div>

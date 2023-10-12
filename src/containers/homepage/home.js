@@ -13,18 +13,7 @@ import CredentialInput from '../../components/inputs/credentials';
 import CredentialButton from '../../components/buttons/credentials';
 
 function Main({setOpened, opened, w}) {
-  const [color, setColor] = useState(localStorage.getItem('btnColor') || "#1d9bf0")
-    
-  useEffect(() => {
-      const interval = setInterval(() => {
-          const currentStorageValue = localStorage.getItem('btnColor');
-          if (currentStorageValue !== color) {
-              setColor(currentStorageValue);
-          }
-      }, 1000);  // Check every second. Adjust as needed.
-
-      return () => clearInterval(interval);  // Clear the interval on component unmount.
-  }, [color]);
+  const color = useSelector(state => state.color.color)
 
   const dispatch = useDispatch()
   const currUser = useSelector(state=>state.currUser)
@@ -87,7 +76,7 @@ function Main({setOpened, opened, w}) {
   
   const localChoices = ["For you", "Following"]
   return (
-        <section className='s10:max-w-[32%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-y-auto overflow-x-hidden' onScroll={(e) => handleScroll(e)}>
+        <section className='s10:max-w-[32%] s10:min-w-[600px] flex-grow border-l border-r dark:border-[#ffffff]/[.3] border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-y-auto overflow-x-hidden' onScroll={(e) => handleScroll(e)}>
           {updating ? <UpdateUsername /> : ""}
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
           <div className='w-full h-auto bg-transparent bg-blur backdrop-blur-md sticky top-0 z-20 overflow-hidden'>
@@ -110,6 +99,7 @@ function Main({setOpened, opened, w}) {
           <div className='h-[90.4%]'>
             {w >= 600 ? <HomePost color={color}/> : ""}
             {posts[tab === "For you" ? "home" : "following"].length > 0 ? posts[tab === "For you" ? "home" : "following"].map((post, index) => <DisplayPost postPath={post} key={index} postList={posts.posts}/>)  : ""}
+            {loading && <LoadingIcon />}
           </div>
         </section>
   );

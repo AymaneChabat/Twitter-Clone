@@ -94,33 +94,95 @@ const PostReducer = (state = initialState, action) => {
         // Action to get posts for a user's profile
         case "PROFILE_GET_POSTS":
             // Clean up and prevent duplicate posts
-            posts = cleanPosts();
+            const profileIndex = state.profile.findIndex(profile => profile.user === payload.user);
 
-            return {
+            if (profileIndex === -1) {
+              // User profile doesn't exist, create a new profile
+              const newProfile = {
+                user: payload.user,
+                posts: cleanPosts().posts,
+              };
+            
+              return {
                 ...state,
-                profile: [...state.profile, posts],        // Add user's posts to profile
-                posts: [...state.posts, ...payload.posts]  // Add new posts to all posts
-            };
+                profile: [...state.profile, newProfile], // Add new profile to profile array
+                posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+              };
+            } else {
+              // User profile exists, update the posts
+              const updatedProfile = {
+                ...state.profile[profileIndex],
+                posts: [...state.profile[profileIndex].posts, ...cleanPosts().posts],
+              };
+            
+              // Update the profile in the profile array
+              const updatedProfileArray = [...state.profile];
+              updatedProfileArray[profileIndex] = updatedProfile;
+            
+              return {
+                ...state,
+                profile: updatedProfileArray, // Update the user's profile
+                posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+              };
+            }
 
         // Action to get liked posts
         case "LIKES_GET_POSTS":
             // Clean up and prevent duplicate posts
-            posts = cleanPosts();
+            const likeIndex = state.likes.findIndex(profile => profile.user === payload.user);
 
-            return {
-                ...state,
-                likes: [...state.likes, posts],          // Add liked posts
-                posts: [...state.posts, ...payload.posts]  // Add new posts to all posts
-            };
+            if (likeIndex === -1) {
+                // User profile doesn't exist, create a new profile
+                const newLikes = {
+                    user: payload.user,
+                    posts: cleanPosts().posts,
+                };
+                
+                return {
+                    ...state,
+                    likes: [...state.likes, newLikes], // Add new profile to profile array
+                    posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+                };
+            } else {
+                // User profile exists, update the posts
+                const updatedLikes = {
+                    ...state.likes[likeIndex],
+                    posts: [...state.likes[likeIndex].posts, ...cleanPosts().posts],
+                };
+                
+                // Update the profile in the profile array
+                const updatedLikesArray = [...state.likes];
+                updatedLikesArray[likeIndex] = updatedLikes;
 
+                return {
+                    ...state,
+                    likes: updatedLikesArray, // Update the user's profile
+                    posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+                };
+            }
         // Action to get media posts
         case "MEDIA_GET_POSTS":
             // Clean up and prevent duplicate posts
             posts = cleanPosts();
-            posts.posts.reverse()
+            posts.posts.reverse();
+
+            const mediaIndex = state.media.findIndex(media => media.user === payload.user)
+
+            if (mediaIndex === -1) {
+                const media = posts;
+
+                return {
+                    ...state,
+                    media: [...state.media, media],  // Add liked posts
+                    posts: state.posts  // Add new posts to all posts
+                };
+            } else {
+                state.media[mediaIndex] = {...state.media[mediaIndex], posts: [...state.media[mediaIndex].posts, ...posts.posts]}
+            }
+
             return {
                 ...state,
-                media: [...state.media, posts],          // Add media posts
+                media: state.media,          // Add media posts
                 posts: [...state.posts, ...payload.posts]  // Add new posts to all posts
             };
 
@@ -138,12 +200,24 @@ const PostReducer = (state = initialState, action) => {
                     state.posts.push(parent)
                 }
             }
-    
-            const reply = {user: payload.user, posts: posts};
+
+            const repliesIndex = state.replies.findIndex(replies => replies.user === payload.user)
+
+            if (repliesIndex === -1) {
+                const reply = {user: payload.user, posts: posts};
+
+                return {
+                    ...state,
+                    replies: [...state.replies, reply],          // Add liked posts
+                    posts: state.posts  // Add new posts to all posts
+                };
+            } else {
+                state.replies[repliesIndex] = {...state.replies[repliesIndex], posts: [...state.replies[repliesIndex].posts, ...posts]}
+            }
 
             return {
                 ...state,
-                replies: [...state.replies, reply],          // Add liked posts
+                replies: state.replies,          // Add liked posts
                 posts: state.posts  // Add new posts to all posts
             };
 
@@ -249,9 +323,12 @@ const PostReducer = (state = initialState, action) => {
         case "COMMENT_POST":
             var i1 = state.postReplies.findIndex(post => post.postPath === payload.postPath);
             var i2 = state.posts.findIndex(post => post.postPath === payload.postPath)
-            var i3 = state.profile.findIndex(posts => posts.user === payload.user);
-
-            state.replies[i3] = {...state.replies[i3], posts:[{replyPost: payload.res.postPath, mainPost: payload.postPath}, ...state.replies[i3].posts]}
+            var i3 = state.replies.findIndex(posts => posts.user === payload.user);
+            
+            console.log(i3)
+            if (i3 !== -1) {
+                state.replies[i3] = {...state.replies[i3], posts:[{replyPost: payload.res.postPath, mainPost: payload.postPath}, ...state.replies[i3].posts]}
+            }
             // Add the comment to the post's comments list
             state.posts.push(payload.res);
             // Increment comment list

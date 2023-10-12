@@ -101,7 +101,7 @@ function DisplayPosts({postPath, postList, reply, main}) {
     }
 
     return (
-    post !== "Deleted" ? <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200" + (reply ? "" : " border-b")} >
+    post !== "Deleted" ? <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200 dark:border-[#ffffff]/[.3]" + (reply ? "" : " border-b")} >
         {preview ? <UserPreview user={user} action={hidePreview}/> : ""}
         <Link to={"/"+user.info.username+"/post/"+post.postPath} className="w-full">
             <div className="h-full px-3 py-3 hover:bg-[#ebebeb]/[.4] cursor-pointer flex transition-all duration-300 dark:hover:bg-[#000000]/[.1]">
@@ -125,12 +125,12 @@ function DisplayPosts({postPath, postList, reply, main}) {
                             <div className="p-1.5 hover:bg-[#1D9BF0]/[.1] rounded-full" onClick={!options ? () => {setOptions(true)} : () => {setOptions(false)}}>
                                 <Dots w={12}/>
                             </div>
-                            <div className={"absolute bg-[#ffffff] w-[60%] border z-40 rounded-2xl px-2 opacity-0 transition-all duration-500 " + (options ? "-translate-x-[90%] opacity-100" : "pointer-events-none")}>
+                            {user.id === currUser.user && <div className={"absolute bg-[#ffffff] w-[60%] border z-40 rounded-2xl px-2 opacity-0 transition-all duration-500 -translate-x-[90%] " + (options ? "opacity-100" : "pointer-events-none")}>
                                 <button className="flex justify-around w-full items-center py-2 hover:bg-[#ffffff]/[.8]" onClick={()=>{dispatch(deletePost(currUser.token, post.postPath)); setOptions(false)}}>
                                     <DeleteIcon color={"#f4212e"}/>
                                     <span className="text-[#f4212e] text-[18px] font-semibold w-[85%] text-left -mb-[4px]">Delete</span>
                                 </button>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                     <p className="dark:text-[#ffffff] text-[#0f1419]/[.8] text-[15px] font-chirp leading-[20px] break-words">

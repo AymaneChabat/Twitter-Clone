@@ -43,7 +43,7 @@ function Post() {
     };
 
     return (
-            <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s6:mb-0'>
+            <div className='s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto mb-[60px] s6:mb-0 dark:border-[#ffffff]/[.3]'>
                 <div className="w-full box-border px-3 h-[60px] flex items-center justify-between z-50">
                     <div className="p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer" onClick={goBack}>
                         <BackArrowIcon w={20}/>
@@ -85,7 +85,8 @@ function Post() {
                         <HomePost floating={false} type={"reply"} postId={params["*"]} username={params.username}/>
                     </div>
                     <div>
-                       {!loading ? posts.postReplies.find(reply => reply.postPath === params["*"]) && posts.postReplies.find(reply => reply.postPath === params["*"]).replies.map((post, index) => <DisplayPosts key={index} postPath={post} users={users.activeprofiles} postid={params["*"]} postList={posts.posts}/>) : <LoadingIcon />}
+                        {posts.postReplies.find(reply => reply.postPath === params["*"]) && posts.postReplies.find(reply => reply.postPath === params["*"]).replies.map((post, index) => <DisplayPosts key={index} postPath={post} users={users.activeprofiles} postid={params["*"]} postList={posts.posts}/>)}
+                        {loading && <LoadingIcon />}
                     </div>
                 </>
                 ) : <pre className='w-full h-[40%] flex flex-col justify-center items-center'>

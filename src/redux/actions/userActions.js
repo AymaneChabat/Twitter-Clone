@@ -7,10 +7,10 @@ import {
 } from '../../functions/manageUser';
 
 // Action creator to fetch a list of users based on optional parameters
-export const getUsers = (username, token, tab, limit, last) => (dispatch) => {
+export const getUsers = (username, token, tab, limit, last, setLoad) => (dispatch) => {
+    setLoad(true)
     // Call the fetchUsers function to fetch a list of users
     fetchUsers(username, token, limit, last).then((res) => {
-        console.log(res)
         if (tab === "explore") {
             res.forEach(element => {
                 const copy = {...element}
@@ -25,6 +25,7 @@ export const getUsers = (username, token, tab, limit, last) => (dispatch) => {
             type: "GET_USERS",
             payload: { res, tab }
         });
+        setLoad(false)
     });
 }
 
@@ -64,7 +65,7 @@ export const updateFollows = (token, currUser, user) => (dispatch) => {
 export const updateUser = (token, updatedData, id) => (dispatch) => {
     // Call the updateUserInfo function to update user information
     updateUserInfo(updatedData, token).then((res) => {
-        if (res.success === true) {
+        if (res.success !== false) {
             // Dispatch an action to update the user information in the state
             dispatch({
                 type: "UPDATE_USER",

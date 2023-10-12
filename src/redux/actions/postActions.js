@@ -9,7 +9,8 @@ import {
 } from "../../functions/managePosts";
 
 // Action creator to add a new post
-export const addPost = (token, data, user) => (dispatch) => {
+export const addPost = (token, data, user, setLoading, resetDiv) => (dispatch) => {
+    setLoading(true)
     // Call the createPost function to add a new post
     createPost(data, token).then((res) => {
         // Dispatch an action to store the newly created post in the state
@@ -17,6 +18,8 @@ export const addPost = (token, data, user) => (dispatch) => {
             type: "CREATE_POST",
             payload: { res, user }
         });
+        resetDiv()
+        setLoading(false)
     });
 }
 
@@ -35,7 +38,9 @@ export const deletePost = (token, postId) => (dispatch) => {
 }
 
 // Action creator to add a reply to a post
-export const addReply = (token, data, postId, username, userId) => (dispatch) => {
+export const addReply = (token, data, postId, username, userId, setLoading, resetDiv) => (dispatch) => {
+    setLoading(true)
+
     // Call the postReply function to add a reply to a post
     postReply(data, token, postId, username).then((res) => {
         if (res.success !== false) {
@@ -44,6 +49,8 @@ export const addReply = (token, data, postId, username, userId) => (dispatch) =>
                 type: "COMMENT_POST",
                 payload: { res, postPath: postId, user: userId }
             });
+            resetDiv()
+            setLoading(false)
         }
     });
 }
@@ -149,7 +156,7 @@ export const getPost = (post, tab, last, username, token, setLoading) => (dispat
                     payload: res
                 });
             default:
-                if (res.status === undefined) {
+                if (res.success !== false) {
                     return dispatch({
                         type: "POST",
                         payload: res

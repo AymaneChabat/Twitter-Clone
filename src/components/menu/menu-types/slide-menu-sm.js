@@ -9,6 +9,7 @@ function SlideMenu({setOpened}) {
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state => state.users)
     const user = users.activeprofiles.find(user => user.id === currUser.user)
+    const theme = useSelector(state => state.color.theme)
     const [slide, setSlide] = useState("-translate-x-full")
     const menu = [
         [<ProfileIcon picked={["",null]}/>,"Profile"],
@@ -35,11 +36,11 @@ function SlideMenu({setOpened}) {
         </div>
     )
 
-    console.log(window.getComputedStyle( document.body ,null).getPropertyValue('background-color'))
+    const bgs = {"dim": "dark:bg-[#15202b]", "dark": "#000000", "light": "#ffffff"}
 
     return (
         <div className='absolute h-full w-full bg-[#000000]/[.4] z-[100] block ' onClick={()=>{setOpened(false)}}>
-            <div className={'flex flex-col h-[100%] w-[280px] bg-[#ffffff] overflow-y-auto transition-all transition-500 '+(localStorage.theme === "dim" ? "dark:bg-[#15202b]" : "dark:bg-[#000000]") + (slide)} onClick={(e)=>{e.stopPropagation()}}>
+            <div className={'flex flex-col h-[100%] w-[280px] overflow-y-auto transition-all transition-500 ' + (bgs[theme])} onClick={(e)=>{e.stopPropagation()}}>
                 <div className='w-[90%] mx-auto mt-5'>
                     <div className='bg-[#000000] rounded-full h-[40px] w-[40px]'></div>
                     <div className='h-[30%] my-[8px]'>

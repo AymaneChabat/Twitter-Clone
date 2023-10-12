@@ -12,15 +12,7 @@ const messageReducer = (state = initialState, action) => {
     // Switch statement to handle different action types
     switch (action.type) {
         case "GET_MESSAGES":
-            // Check if the fetch messages request was successful
-            if (payload.res.status.success === true) {
-                // Append the chat and its messages to the state
-                return [...state, { chat: payload.chat, messages: payload.res.messages }];
-            } else {
-                // If the request was not successful, return the current state
-                return state;
-            }
-
+            return [...state, { chat: payload.chat, messages: payload.res.messages }];
         case "SEND_MESSAGE":
             // Find the index of the chat in the state
             i = state.findIndex((messages) => messages.chat === payload.chat);

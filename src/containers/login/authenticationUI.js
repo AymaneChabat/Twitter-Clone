@@ -5,8 +5,9 @@ import { DeleteIcon } from '../../components/icons/posts';
 import CredentialInput from '../../components/inputs/credentials';
 import { Routes, Route, useNavigate } from 'react-router';
 import { resetPass, signUp } from '../../redux/actions/authActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CredentialButton from '../../components/buttons/credentials';
+import { setError } from '../../redux/actions/errorActions';
 
 const AuthUI = () => {
 
@@ -17,20 +18,57 @@ const AuthUI = () => {
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+    const bg = localStorage.theme
+    const bgs = {"dim": "bg-[#15202b]", "dark": "bg-[#000000]", "light": "bg-[#ffffff]"}
 
     const validateEmail = (email) => {
         return String(email)
           .toLowerCase()
           .match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          );
-      };
+        );
+    };
+
+    const validatePassword = (password) => {
+        // Check for at least one lowercase letter
+        const lowercaseRegex = /[a-z]/;
+        
+        // Check for at least one uppercase letter
+        const uppercaseRegex = /[A-Z]/;
+        
+        // Check for at least one digit
+        const digitRegex = /\d/;
+        
+        // Check for at least one special character (you can customize this character set)
+        const specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
+        
+        // Combine all the checks using the logical AND operator
+        return (
+          lowercaseRegex.test(password) &&
+          uppercaseRegex.test(password) &&
+          digitRegex.test(password) &&
+          specialCharRegex.test(password)
+        );
+      }
+    
+    const createAccount = () => {
+        if (!validateEmail(email.current.value)) {
+            dispatch(setError("Please enter a valid email address. The email address you provided does not appear to be in the correct format (e.g., example@example.com). Please check and try again"))
+        } else if (!validatePassword(password.current.value)) {
+            dispatch(setError("Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (e.g., !@#$%^&*()). Please choose a stronger password"))
+        } else if (name.current.value === "") {
+            dispatch(setError("Please enter your name. This field cannot be left blank"))
+        } else {
+            dispatch(signUp(email.current.value,password.current.value,name.current.value, navigate))
+        }
+    }
+    
     
     const PasswordReset = () => (
-        <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between'>
+        <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between py-5'>
             <div className='h-[20%] flex flex-col justify-between min-h-[150px]'>
                 <div>
-                    <h1 className='font-bold font-chirp text-[27px]'>Enter your password</h1>
+                    <h1 className='font-bold font-chirp text-[27px] dark:text-[#ffffff]'>Enter your password</h1>
                     <span className='text-[#536471] text-[18px] font-chirp leading-3'>Enter the email associated with your account to change your password.</span>
                 </div>
                 <div className='mt-4'>
@@ -44,13 +82,13 @@ const AuthUI = () => {
     const SignUp = () => (
         <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between'>
             <div className='h-[30%] flex flex-col justify-between min-h-[250px]'>
-                <h1 className='font-bold font-chirp text-[27px]'>Create your account</h1>
+                <h1 className='font-bold font-chirp text-[27px] dark:text-[#ffffff]'>Create your account</h1>
                 <CredentialInput placeholder="Name" reff={name}/>
                 <CredentialInput placeholder="Email" reff={email}/>
                 <CredentialInput placeholder="Password" password={true} reff={password}/>
             </div>
             <div className='my-4'>
-                <CredentialButton text={"Sign up"} action={()=>{dispatch(signUp(email.current.value,password.current.value,name.current.value, navigate))}}/>
+                <CredentialButton text={"Sign up"} action={createAccount}/>
             </div>
         </div>
     )
@@ -61,8 +99,8 @@ const AuthUI = () => {
     return (
         <div className='w-full h-full absolute bg-[#000000]/[.5] flex justify-center items-center overflow-hidden' onMouseDown={()=>{navigate("/i/")}}>
             <div className='w-full h-full relative s7:w-[650px] s7:max-h-[700px] s7:h-[60%] s7:min-h-[500px]' onMouseDown={(e)=>{e.stopPropagation()}}>
-                <div className='w-full h-full bg-[#ffffff] s7:rounded-xl'>
-                    <div className='w-full py-2 h-[10%]'>
+                <div className={'w-full h-full s7:rounded-xl ' + (bgs[bg] || "bg-[#ffffff]")}>
+                    <div className='w-full py-5 h-[10%]'>
                         <IconTwitter clas={"w-[37px] mx-auto"}/>
                     </div>
                     <div className='absolute hover:bg-[#000000]/[.1] p-2 rounded-full cursor-pointer left-3 top-3' onClick={()=>{navigate("/i/")}}>

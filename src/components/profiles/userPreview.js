@@ -21,13 +21,13 @@ function UserPreview({user, action}) {
     return (
         <div id="preview" className="absolute h-auto w-[350px] bg-[#ffffff] dark:bg-[#000000] dark:border-[#ffffff]/[.2] transition-all duration-300 z-10 top-12 left-3 p-3 border opacity-0" onMouseOut={action}>
             <div className="w-full flex justify-between items-start mb-2">
-                <Link className="leading-5" to={"/profile/"+user.info.username}>
+                <Link className="leading-5" to={"/"+user.info.username}>
                     <div className="rounded-full w-[80px] h-[80px] bg-cover bg-no-repeat bg-center hover:brightness-75 transition-all duration-300" style={{backgroundImage:`url("${user.info.profilepicture}")`}}></div>
                 </Link>
                 {currUser.user !== user.id ? <div className={"border px-4 py-1.5 bg-[#0f1419] rounded-full font-bold font-twitterchirp cursor-pointer text-[0.9rem] transition-all duration-400 " + (followed ? "hover:border-[#f4212e] hover:bg-[#f4212e]/[.3] hover:text-[#f4212e] bg-[#ffffff] border-[#000000]" : "text-[#ffffff]")} onClick={()=>{dispatch(updateFollows(currUser.token, currUser.user, user.info.username))}} onMouseOver={followed ? (e)=>{e.currentTarget.innerText = "Unfollow"} : (e)=>{e.currentTarget.innerText = "Follow"}} onMouseOut={followed ? (e)=>{e.currentTarget.innerText = "Following"} : (e)=>{e.currentTarget.innerText = "Follow"}}>{followed ? "Following" : "Follow"}</div> : ""}
             </div>
             <div className="w-full">
-                <Link className="leading-5" to={"/profile/"+user.info.username}>
+                <Link className="leading-5" to={"/"+user.info.username}>
                     <h1 className="flex">
                         <span className="font-bold text-[15px] hover:underline mr-1.5 dark:text-[#ffffff]">{user.info.name}</span> 
                         {user.info.username === "owner" ? <VerifiedIcon /> : ""}

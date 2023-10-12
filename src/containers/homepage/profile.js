@@ -3,8 +3,8 @@ import { MessageIcon } from "../../components/icons/menu";
 import ChoiceButtons from "../../components/buttons/choice";
 import DisplayPosts from "../../components/posts/displayposts";
 import UpdateUser from "./updateuser"
-import { json, useNavigate, useParams } from 'react-router-dom';
-import { Fragment, useEffect, useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import { Fragment, useEffect, useRef, useState } from "react";
 import { getUser, updateFollows } from "../../redux/actions/userActions";
 import { getPost } from "../../redux/actions/postActions";
 import { addSampleChat } from "../../redux/actions/chatActions";
@@ -22,6 +22,8 @@ function Profile() {
       </div>
   )
 
+  
+
 
   const choices = ["Posts", "Replies", "Media", "Likes"]
   const [chosen, setChosen] = useState("Posts")
@@ -30,6 +32,8 @@ function Profile() {
   const dispatch = useDispatch()
   const [updating, setUpdating] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [scrollPos, setScrollPos] = useState(0)
+  const prevScroll = useRef(0)
   const currUser = useSelector(state=>state.currUser)
   const posts = useSelector(state=>state.posts)
   const users = useSelector(state=>state.users)
@@ -50,31 +54,17 @@ function Profile() {
   }, [])
 
   useEffect(()=>{
-    if (id !== undefined) {
-      switch(chosen) {
-        case "Posts":
-          if (posts.profile.find(posts => posts.user === id) === undefined) {
-            dispatch(getPost(undefined, "profile", undefined, username, currUser.token, setLoading))
-          }
-        case "Likes":
-          if (posts.likes.find(posts => posts.user === id) === undefined) {
-            dispatch(getPost(undefined, "likes", 0, username, currUser.token, setLoading))
-          }
-        case "Replies":
-          if (posts.replies.find(posts => posts.user === id) === undefined) {
-            dispatch(getPost(undefined, "replies", 0, username, currUser.token, setLoading))
-          }
-        case "Media":
-          if (posts.media.find(posts => posts.user === id) === undefined) {
-            dispatch(getPost(undefined, "media", 0, username, currUser.token, setLoading))
-          }
+    const element = document.querySelector("#profile")
+    if (id !== undefined && loading === false) {
+      const userPosts = posts[chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase()].find(posts => posts.user === id)
+      if (userPosts === undefined) {
+        dispatch(getPost(undefined, chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase(), chosen.toLowerCase() !== "replies" && chosen.toLowerCase() !== "likes" ? undefined : 0, username, currUser.token, setLoading))
+      } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight === element.scrollHeight) {
+        dispatch(getPost(undefined, chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase(), chosen.toLowerCase() !== "replies" && chosen.toLowerCase() !== "likes" ? userPosts.posts[userPosts.posts.length - 1] : userPosts.posts.length + 1, username, currUser.token, setLoading))
       }
     }
-  }, [username, chosen])
-
-  const NoUserFound = ({element, but}) => (
-    id !== undefined ? element : but
-  )
+    prevScroll.current = scrollPos
+  }, [username, chosen, scrollPos, id])
 
   const UserActions = () => (
     currUser.user === id 
@@ -95,17 +85,12 @@ function Profile() {
         <span className="text-[#536471] font-chirp ml-1 mt-1 text-sm mx-3"><strong>{id === currUser.user ? info.followers.length : info.followers}</strong> Followers</span>
     </div>
   )
-
-  const checkUserForImages = (tab) => (
-    id !== undefined ? tab === "profile" ? info.profilepicture : info.banner : tab === "profile" ? "https://firebasestorage.googleapis.com/v0/b/realchat-4fd5d.appspot.com/o/default-profile.png?alt=media&token=38761a1a-ce9c-4356-9589-96a70069e795" : "https://firebasestorage.googleapis.com/v0/b/realchat-4fd5d.appspot.com/o/default-banner.png?alt=media&token=9c871edd-35ca-43c2-8e2f-4076775e7135"
-  )
-
   return (
     id !== undefined ? 
       <Fragment>
           {updating && <UpdateUser setUpdating={setUpdating} user={info}/>}
           {fullscreen && imageFS}
-          <div className='box-border s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto relative mb-[60px] s6:mb-0'>
+          <div id="profile" className='box-border s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto relative mb-[60px] s6:mb-0 dark:border-[#ffffff]/[.3]' onScroll={(e)=>{setScrollPos(e.currentTarget.scrollTop)}}>
             <div className="w-full box-border px-3 h-[60px] flex items-center justify-between bg-transparent z-50">
               <div className="p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer" onClick={goBack}>
                   <BackArrowIcon w={20}/>
@@ -160,7 +145,7 @@ function Profile() {
                   </Fragment>
                 )  
               }
-              {loading ? <LoadingIcon /> : ""}
+              {loading && <LoadingIcon />}
             </div>
           </div>
       </Fragment>

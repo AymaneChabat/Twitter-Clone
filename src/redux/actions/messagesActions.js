@@ -8,11 +8,18 @@ import {
 export const fetchMessages = (token, chat) => (dispatch) => {
     // Call the retrieveMessages function to fetch messages for the specified chat
     retrieveMessages(token, chat).then((res) => {
-        // Dispatch an action to store the retrieved messages in the state
-        dispatch({
-            type: "GET_MESSAGES",
-            payload: { res, chat }
-        });
+            // Check if the fetch messages request was successful
+            if (res.success !== false) {
+                dispatch({
+                    type: "GET_MESSAGES",
+                    payload: { res, chat }
+                });
+            } else {
+                dispatch({
+                    type: "SET_ERROR",
+                    payload: "An error has occured while trying to retrieve messages!"
+                })
+            }
     })
 }
 

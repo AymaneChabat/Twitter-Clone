@@ -183,8 +183,8 @@ function Messages({w}) {
 
   const conversation = (data) => (
     <Fragment>  
-      <div className='h-[95%] overflow-auto shrink transition-all duration-300' id='chat' onScroll={scrollDetect}>
-        <div className='w-full px-3 py-2 h-[5%] sticky top-0 bg-transparent bg-blur backdrop-blur-sm'>
+      <div className='h-[95%] overflow-auto shrink transition-all duration-300 px-3' id='chat' onScroll={scrollDetect}>
+        <div className='w-full py-2 h-[5%] sticky top-0 bg-transparent bg-blur backdrop-blur-sm'>
           <div className='flex justify-between w-full h-full items-center'>
             <div className='flex items-center'>
               <Link to={"/messages"}>
@@ -309,8 +309,8 @@ function Messages({w}) {
 
 
   return (
-    <section className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s6:mb-0 max-h-[93%] s6:max-h-[100%] s6:h-auto border-[#1d9bf0]/[.1]'>
-      <div className={'s7:w-[380px] border-r h-full grow s11:grow-0 border-[#1d9bf0]/[.1] ' + (chats.activeChat !== null && w < 1100 ? "hidden" : "block")}>
+    <section className='s8:w-[70%] w-[100%] border-l flex mb-[60px] s6:mb-0 max-h-[93%] s6:max-h-[100%] s6:h-auto border-[#1d9bf0]/[.1] dark:border-[#ffffff]/[.3]'>
+      <div className={'s7:w-[380px] border-r h-full grow s11:grow-0 border-[#1d9bf0]/[.1] dark:border-[#ffffff]/[.3] ' + (chats.activeChat !== null && w < 1100 ? "hidden" : "block")}>
           <div className='flex p-3 justify-between items-center'>
             <span className='text-[18px] font-bold dark:text-[#ffffff]'>Messages</span>
             <div className='flex w-[10%] justify-around'>
@@ -336,10 +336,10 @@ function Messages({w}) {
                   </div>
                   <div className='leading-6 block'>
                     <div className='flex'>
-                      <div className='s7:max-w-[80px] max-w-[140px] overflow-hidden relative block text-ellipsis whitespace-nowrap text-[#ffffff]'>
+                      <div className='s7:max-w-[80px] max-w-[140px] overflow-hidden relative block text-ellipsis whitespace-nowrap dark:text-[#ffffff]'>
                         <span className='text-[#000000] mr-1 tracking-tight dark:text-[#ffffff] '>{user.info.name}</span>
                       </div>
-                      <div className='s7:max-w-[80px] max-w-[140px] overflow-hidden relative block text-ellipsis whitespace-nowrap mr-1'>
+                      <div className='s7:max-w-[80px] max-w-[140px] overflow-hidden relative block text-ellipsis whitespace-nowrap mr-1 dark:text-[#536471]'>
                         <span className='text-[#536471] font-chirp text-md tracking-tighter'>@{user.info.username}</span>
                       </div>
                       <div className='overflow-hidden relative block text-ellipsis whitespace-nowrap'>
@@ -355,7 +355,7 @@ function Messages({w}) {
             )})}
           </div>
       </div>
-      <div className={'s11:w-[590px] w-full border-r h-full relative border-[#1d9bf0]/[.1] ' + (w > 1100 || chats.activeChat !== null ? "block" : "hidden")}>
+      <div className={'s11:w-[590px] w-full border-r h-full relative border-[#1d9bf0]/[.1] dark:border-[#ffffff]/[.3] ' + (w > 1100 || chats.activeChat !== null ? "block" : "hidden")}>
         {activeUser.id !== undefined && (convoInfo ? conversationInfo(activeUser) : chats.activeChat !== null ? conversation(activeUser) : "")}
       </div>
     </section>

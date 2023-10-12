@@ -4,6 +4,7 @@ import messageReducer from "./reducers/messagesReducer";
 import PostReducer from "./reducers/postReducer";
 import userReducer from "./reducers/userReducer";
 import colorReducer from "./reducers/themeReducer";
+import errorReducer from "./reducers/errorReducer";
 import { combineReducers } from "redux";
 
 const allReducers = combineReducers({
@@ -12,7 +13,8 @@ const allReducers = combineReducers({
     message: messageReducer,
     posts: PostReducer,
     users: userReducer,
-    color: colorReducer
+    color: colorReducer,
+    error: errorReducer
 })
 
 export default allReducers

@@ -14,7 +14,7 @@ function ChoiceButtons({choices, setChosen}) {
   }, [picked])
 
     return (
-        <nav className={"border-b pb-0.5 border-[#1d9bf0]/[.1]"}>
+        <nav className={"border-b pb-0.5 border-[#1d9bf0]/[.1] dark:border-[#ffffff]/[.3]"}>
               <ul className='flex'>
                 {choices.map((choice,index)=>(
                   <li className={'text-center py-3 cursor-pointer dark:hover:bg-[#ffffff]/[.15] hover:bg-[#E6E7E7]/[.6] transition-all duration-300 w-[100%]'} onClick={()=>{

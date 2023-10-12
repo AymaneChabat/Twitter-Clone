@@ -26,7 +26,7 @@ function LastContainer({w,page}) {
     })
   }, [])
 
-  const profiles = [users.activeprofiles.find(user => user.id === '4JUjE5h350cSaL1khXnkbBZ5snk1')]
+  const profiles = [users.activeprofiles.find(user => user.id === 'Ri2E74kPo1dPCUt1nwC7GPy0BR52')]
 
   const footerLinks = [
     'About',

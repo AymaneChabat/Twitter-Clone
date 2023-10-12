@@ -23,12 +23,17 @@ export const checkUser = (token) => (dispatch) => {
 export const logIn = (email, password) => (dispatch) => {
     // Call the login function from the authentication module
     login(email, password).then(async (user) => {
-        window.location.pathname = "/home"
         if (user !== null) {
+            window.location.pathname = "/home"
             // If login is successful, dispatch the user data and token to the state
             dispatch({
                 type: "SIGN_IN",
                 payload: { user, token: (await user.getIdTokenResult()).token }
+            })
+        } else {
+            dispatch({
+                type: "SET_ERROR",
+                payload: "Invalid credentials. Please check your username and password and try again."
             })
         }
     })
@@ -44,6 +49,11 @@ export const signUp = (email, password, name) => (dispatch) => {
             dispatch({
                 type: "SIGN_UP",
                 payload: { user: res.user, token: res.token }
+            })
+        } else {
+            dispatch({
+                type: "SET_ERROR",
+                payload: "The provided credentials are already in use. Please choose a different email address"
             })
         }
     })
