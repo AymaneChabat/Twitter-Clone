@@ -300,7 +300,7 @@ function Messages({w}) {
         <span className='text-[#1d9bf0] text-[18px] font-semibold'>Block @{data.info.username}</span>
       </button>
       <Link to={"/messages"}>
-        <button className='text-center py-4 hover:bg-[#f4212e]/[.1] cursor-pointer w-full transition-all duration-300' onClick={()=>{dispatch(removeChat(currUser.token, chats.activeChat))}}>
+        <button className='text-center py-4 hover:bg-[#f4212e]/[.1] cursor-pointer w-full transition-all duration-300' onClick={()=>{setConvoInfo(false);dispatch(removeChat(currUser.token, chats.activeChat))}}>
           <span className='text-[#f4212e] text-[18px] font-semibold text-center'>Leave Conversation</span>
         </button>
       </Link>

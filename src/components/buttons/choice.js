@@ -13,20 +13,20 @@ function ChoiceButtons({choices, setChosen}) {
     }
   }, [picked])
 
-    return (
-        <nav className={"border-b pb-0.5 border-[#1d9bf0]/[.1] dark:border-[#ffffff]/[.3]"}>
-              <ul className='flex'>
-                {choices.map((choice,index)=>(
-                  <li className={'text-center py-3 cursor-pointer dark:hover:bg-[#ffffff]/[.15] hover:bg-[#E6E7E7]/[.6] transition-all duration-300 w-[100%]'} onClick={()=>{
-                    if (picked !== index) {setChoice(index)}
-                  }}>
-                    <span className={picked === index ? ('dark:text-[#ffffff] border-b-4 py-3.5 '+colors[color]+' text-md font-chirp'): 'py-3.5 text-[#7A8791] text-md font-chirp'}>
-                      {choice}
-                    </span> 
-                  </li>
-                ))}
-              </ul>
-            </nav>
+  return (
+      <nav className={"border-b pb-0.5 border-[#1d9bf0]/[.1] dark:border-[#ffffff]/[.3]"}>
+        <ul className='flex'>
+          {choices.map((choice,index)=>(
+            <li index={index} className={'text-center py-3 cursor-pointer dark:hover:bg-[#ffffff]/[.15] hover:bg-[#E6E7E7]/[.6] transition-all duration-300 w-[100%]'} onClick={()=>{
+              if (picked !== index) {setChoice(index)}
+            }}>
+              <span className={picked === index ? ('dark:text-[#ffffff] border-b-4 py-3.5 '+colors[color]+' text-md font-chirp'): 'py-3.5 text-[#7A8791] text-md font-chirp'}>
+                {choice}
+              </span> 
+            </li>
+          ))}
+        </ul>
+      </nav>
     );
   }
   

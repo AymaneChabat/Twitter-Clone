@@ -160,6 +160,7 @@ const PostReducer = (state = initialState, action) => {
                     posts: [...state.posts, ...payload.posts], // Add new posts to all posts
                 };
             }
+            
         // Action to get media posts
         case "MEDIA_GET_POSTS":
             // Clean up and prevent duplicate posts

@@ -41,9 +41,10 @@ export const logIn = (email, password) => (dispatch) => {
 
 // Action creator to sign up a new user
 export const signUp = (email, password, name) => (dispatch) => {
+    
     // Call the register function from the authentication module
     register(email, password, name).then(async (res) => {
-        if (res.success === true) {
+        if (res.success !== false) {
             window.location.reload()
 
             // If registration is successful, dispatch the user data and token to the state

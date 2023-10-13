@@ -71,7 +71,7 @@ const LoginForm = () => {
                     <span className='text-[20px] text-[#536471]/[.6] font-chirp'>{e}</span>
                 </div>
                 <div>
-                    <CredentialInput placeholder="Password" password={true}  ref={credentials} key={"password"}/>
+                    <CredentialInput placeholder="Password" password={true}  ref={credentials} refKey={"password"}/>
                     <button className='text-[#1d9bf0] hover:underline mt-2' onClick={()=>{navigate("/i/flow/resetPassword")}}>Forgot password?</button>
                 </div>
             </div>

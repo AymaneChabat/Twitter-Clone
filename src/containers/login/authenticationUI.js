@@ -19,6 +19,8 @@ const AuthUI = () => {
     const bg = localStorage.theme
     const bgs = {"dim": "bg-[#15202b]", "dark": "bg-[#000000]", "light": "bg-[#ffffff]"}
 
+    
+
     const validateEmail = (email) => {
         return String(email)
           .toLowerCase()
@@ -47,7 +49,7 @@ const AuthUI = () => {
           digitRegex.test(password) &&
           specialCharRegex.test(password)
         );
-      }
+    }
     
     const createAccount = () => {
         if (!validateEmail(credentials.current.email)) {
@@ -57,12 +59,12 @@ const AuthUI = () => {
         } else if (credentials.current.name === "") {
             dispatch(setError("Please enter your name. This field cannot be left blank"))
         } else {
-            dispatch(signUp(credentials.current.email,credentials.current.password,credentials.current.name, navigate))
+            dispatch(signUp(credentials.current.email, credentials.current.password, credentials.current.name))
         }
     }
     
     
-    const PasswordReset = () => (
+    const PasswordReset = React.useMemo(() => (
         <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between py-5'>
             <div className='h-[20%] flex flex-col justify-between min-h-[150px]'>
                 <div>
@@ -75,9 +77,9 @@ const AuthUI = () => {
             </div>
             <CredentialButton text={"Reset password"} action={()=>{dispatch(resetPass(credentials.current.email))}}/>
         </div>
-    )
+    ), [])
 
-    const SignUp = () => (
+    const SignUp = React.useMemo(()=>(
         <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between'>
             <div className='h-[30%] flex flex-col justify-between min-h-[250px]'>
                 <h1 className='font-bold font-chirp text-[27px] dark:text-[#ffffff]'>Create your account</h1>
@@ -89,7 +91,7 @@ const AuthUI = () => {
                 <CredentialButton text={"Sign up"} action={createAccount}/>
             </div>
         </div>
-    )
+    ), [])
 
 
 
@@ -106,8 +108,8 @@ const AuthUI = () => {
                     </div>
                     <Routes>
                         <Route path='/flow/login/' element={<LoginForm />}/>
-                        <Route path='/flow/signup' element={<SignUp />}/>
-                        <Route path='/flow/resetPassword' element={<PasswordReset />}/>
+                        <Route path='/flow/signup' element={SignUp}/>
+                        <Route path='/flow/resetPassword' element={PasswordReset}/>
                     </Routes>
                 </div>
             </div>

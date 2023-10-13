@@ -22,7 +22,6 @@ function Profile() {
       </div>
   )
 
-  
 
 
   const choices = ["Posts", "Replies", "Media", "Likes"]
@@ -44,7 +43,6 @@ function Profile() {
   var postsFound = posts[chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase()].find(posts => posts.user === id)
   const sampleChat = Math.floor(100000 + Math.random() * 900000)
 
-
   const goBack = () => {
     navigate(-1); // This function takes you back to the previous URL
   };
@@ -60,7 +58,7 @@ function Profile() {
       if (userPosts === undefined) {
         dispatch(getPost(undefined, chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase(), chosen.toLowerCase() !== "replies" && chosen.toLowerCase() !== "likes" ? undefined : 0, username, currUser.token, setLoading))
       } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight === element.scrollHeight) {
-        dispatch(getPost(undefined, chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase(), chosen.toLowerCase() !== "replies" && chosen.toLowerCase() !== "likes" ? userPosts.posts[userPosts.posts.length - 1] : userPosts.posts.length + 1, username, currUser.token, setLoading))
+        dispatch(getPost(undefined, chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase(), chosen.toLowerCase() !== "replies" && chosen.toLowerCase() !== "likes" ? userPosts.posts[userPosts.posts.length - 1] : userPosts.posts.length, username, currUser.token, setLoading))
       }
     }
     prevScroll.current = scrollPos
@@ -85,6 +83,7 @@ function Profile() {
         <span className="text-[#536471] font-chirp ml-1 mt-1 text-sm mx-3"><strong>{id === currUser.user ? info.followers.length : info.followers}</strong> Followers</span>
     </div>
   )
+
   return (
     id !== undefined ? 
       <Fragment>

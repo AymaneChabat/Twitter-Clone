@@ -26,12 +26,12 @@ function FinalMenu({w}) {
 
   useEffect(() => {
     setPage(location.pathname.slice(1,));
-    }, [location]);
+  }, [location]);
     
   return (
     <>
         {postOpen ? (
-            <div className={'absolute w-full h-full s7:bg-[#000000]/[.4] z-50 s7:pt-[200px] bg-[#ffffff] ' + (bg())} onMouseDown={()=>{setPostOpen(false)}}>
+            <div className={'absolute w-full  h-full s7:bg-[#000000]/[.4] z-50 s7:pt-[50px] bg-[#ffffff] ' + (bg())} onMouseDown={()=>{setPostOpen(false)}}>
               <div className="px-4 py-2 s7:hidden" onClick={()=>{setPostOpen(false)}}>
                 <BackArrowIcon w={20} />
               </div>

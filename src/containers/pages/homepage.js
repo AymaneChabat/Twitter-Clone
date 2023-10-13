@@ -46,7 +46,6 @@ function Template() {
               {elements && elements.map((element, index)=>(
                   <Route path={element[0]} element={element[1]} index={index}/>
               ))}
-              
           </Routes>
           <LastContainer w={w} page={page}/>
       </div>
