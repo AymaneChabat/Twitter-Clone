@@ -13,8 +13,7 @@ function UpdateUser({setUpdating, user}) {
     const currUser = useSelector(state => state.currUser)
     const [banner, setBanner] = useState({url: user.banner})
     const [pp, setPP] = useState({url: user.profilepicture})
-    const name = useRef()
-    const bio = useRef()
+    const info = useRef({name: "", bio: ""})
 
   const handleFilesPP = files => {
     setPP({file: files.fileList[0], url: files.base64})
@@ -26,11 +25,11 @@ function UpdateUser({setUpdating, user}) {
 
   const updateUserData = () => {
     const updatedData = {}
-    if (name.current.value !== "" && name.current.value !== user.name) {
-        updatedData["name"] = name.current.value
+    if (info.current.name !== "" && info.current.name !== user.name) {
+        updatedData["name"] = info.current.name
     }
-    if (bio.current.value !== user.description) {
-        updatedData["description"] = bio.current.value
+    if (info.current.bio !== user.description) {
+        updatedData["description"] = info.current.bio
     }
     if (banner.file !== undefined) {
         updatedData["banner"] = banner.file
@@ -86,10 +85,10 @@ function UpdateUser({setUpdating, user}) {
                     ) : ""}
                 </div>
                 <div className="mx-5 my-4">
-                    <CredentialInput placeholder="Name" reff={name} defaultVal={user.name}/>
+                    <CredentialInput placeholder="Name" ref={info} refKey={"name"} defaultVal={user.name}/>
                 </div>
                 <div className="mx-5 my-6">
-                    <CredentialInput placeholder="Bio" reff={bio} textarea={true} defaultVal={user.description}/>
+                    <CredentialInput placeholder="Bio" ref={info} refKey={"bio"} textarea={true} defaultVal={user.description}/>
                 </div>
             </div>
         </div>

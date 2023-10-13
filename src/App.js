@@ -17,6 +17,7 @@ function App() {
   const currError = useSelector(state => state.error)
 
   useEffect(()=>{
+
     const body = document.body
     if (localStorage.theme === 'dark') {
       body.classList.add('dark');
@@ -28,11 +29,12 @@ function App() {
       // Default to light if neither 'dark' nor 'dim'
       body.classList.add('light');
     }
+
     onAuthStateChanged(auth, async (user) => {
           if (user) {
               dispatch(checkUser((await user.getIdTokenResult()).token));
               if (location.pathname.split("/")[1] === "i") {
-                  navigate("/home");
+                  navigate("/home")
               }
           } else {
               const links = ["i/flow/login", "i/flow/signup", "i/flow/resetPassword"];

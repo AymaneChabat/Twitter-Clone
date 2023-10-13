@@ -60,8 +60,18 @@ export const getReplies = (token, post, username, setLoading) => (dispatch) => {
     setLoading(true)
     // Call the fetchReplies function to fetch replies for a specific post
     fetchReplies(token, post, username).then((res) => {
+        res.replies.forEach(element => {
+            const copy = element
+            if (copy.user !== undefined) {
+                dispatch({
+                    type: "GET_USERS",
+                    payload: { res: element.user, tab: "profile" }
+                });
+                delete element.user;
+            }
+        });
         // Dispatch an action to store the retrieved replies in the state
-        dispatch({
+        return dispatch({
             type: "POST_GET_REPLIES",
             payload: res
         });

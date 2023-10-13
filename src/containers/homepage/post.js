@@ -56,7 +56,7 @@ function Post() {
                 (<>
                     <div className="px-3 py-2 border-b border-[#1d9bf0]/[.1] transition-all duration-200">
                         <div className='flex'>
-                            <Link to={"/profile/"+user.info.username}>
+                            <Link to={"/"+user.info.username}>
                                 <div className="w-[45px] h-[45px] mr-2 bg-center bg-cover bg-no-repeat bg-origin-padding rounded-full" style={{backgroundImage: `url('${user.info.profilepicture}')`}}></div>
                             </Link>
                             <div className="flex w-full items-start justify-between mb-3">

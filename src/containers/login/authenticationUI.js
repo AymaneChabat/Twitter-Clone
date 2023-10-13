@@ -1,19 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import LoginForm from './loginForm';
 import { IconTwitter } from '../../components/icons/logos';
 import { DeleteIcon } from '../../components/icons/posts';
 import CredentialInput from '../../components/inputs/credentials';
 import { Routes, Route, useNavigate } from 'react-router';
 import { resetPass, signUp } from '../../redux/actions/authActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import CredentialButton from '../../components/buttons/credentials';
 import { setError } from '../../redux/actions/errorActions';
 
 const AuthUI = () => {
 
-    const email = useRef("")
-    const password = useRef("")
-    const name = useRef("")
+    const credentials = useRef({email: "", password: "", name: ""})
 
     const dispatch = useDispatch()
 
@@ -52,14 +50,14 @@ const AuthUI = () => {
       }
     
     const createAccount = () => {
-        if (!validateEmail(email.current.value)) {
+        if (!validateEmail(credentials.current.email)) {
             dispatch(setError("Please enter a valid email address. The email address you provided does not appear to be in the correct format (e.g., example@example.com). Please check and try again"))
-        } else if (!validatePassword(password.current.value)) {
+        } else if (!validatePassword(credentials.current.password)) {
             dispatch(setError("Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (e.g., !@#$%^&*()). Please choose a stronger password"))
-        } else if (name.current.value === "") {
+        } else if (credentials.current.name === "") {
             dispatch(setError("Please enter your name. This field cannot be left blank"))
         } else {
-            dispatch(signUp(email.current.value,password.current.value,name.current.value, navigate))
+            dispatch(signUp(credentials.current.email,credentials.current.password,credentials.current.name, navigate))
         }
     }
     
@@ -72,10 +70,10 @@ const AuthUI = () => {
                     <span className='text-[#536471] text-[18px] font-chirp leading-3'>Enter the email associated with your account to change your password.</span>
                 </div>
                 <div className='mt-4'>
-                <CredentialInput placeholder="Email" reff={email}/>
+                <CredentialInput placeholder="Email" ref={credentials} refKey={"email"}/>
                 </div>
             </div>
-            <CredentialButton text={"Reset password"} action={()=>{dispatch(resetPass(email.current.value))}}/>
+            <CredentialButton text={"Reset password"} action={()=>{dispatch(resetPass(credentials.current.email))}}/>
         </div>
     )
 
@@ -83,9 +81,9 @@ const AuthUI = () => {
         <div className='w-[85%] h-[90%] mx-auto flex flex-col justify-between'>
             <div className='h-[30%] flex flex-col justify-between min-h-[250px]'>
                 <h1 className='font-bold font-chirp text-[27px] dark:text-[#ffffff]'>Create your account</h1>
-                <CredentialInput placeholder="Name" reff={name}/>
-                <CredentialInput placeholder="Email" reff={email}/>
-                <CredentialInput placeholder="Password" password={true} reff={password}/>
+                <CredentialInput placeholder="Name" ref={credentials} refKey={"name"}/>
+                <CredentialInput placeholder="Email" ref={credentials} refKey={"email"}/>
+                <CredentialInput placeholder="Password" password={true} ref={credentials} refKey={"password"}/>
             </div>
             <div className='my-4'>
                 <CredentialButton text={"Sign up"} action={createAccount}/>

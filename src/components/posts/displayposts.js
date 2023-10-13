@@ -99,9 +99,9 @@ function DisplayPosts({postPath, postList, reply, main}) {
             }, 500)
         }
     }
-
+    
     return (
-    post !== "Deleted" ? <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200 dark:border-[#ffffff]/[.3]" + (reply ? "" : " border-b")} >
+    post !== "Deleted" && post !== undefined ? <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200 dark:border-[#ffffff]/[.3]" + (reply ? "" : " border-b")} >
         {preview ? <UserPreview user={user} action={hidePreview}/> : ""}
         <Link to={"/"+user.info.username+"/post/"+post.postPath} className="w-full">
             <div className="h-full px-3 py-3 hover:bg-[#ebebeb]/[.4] cursor-pointer flex transition-all duration-300 dark:hover:bg-[#000000]/[.1]">

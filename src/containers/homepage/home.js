@@ -22,7 +22,7 @@ function Main({setOpened, opened, w}) {
   const [loading, setLoading] = useState(false)
   const [tab, setTab] = useState("For you")
   const prevScrollY = useRef(0)
-  const username = useRef()
+  const credentials = useRef({username: ""})
   const [updating, setUpdating] = useState(false)
 
 
@@ -48,8 +48,8 @@ function Main({setOpened, opened, w}) {
   } 
 
   const updateUsername = () => {
-    if (username.current.value !== users.activeprofiles.find(user => user.id === currUser.user).info.username) {
-      dispatch(updateUser(currUser.token, {username: username.current.value}, currUser.user))
+    if (credentials.current.username !== users.activeprofiles.find(user => user.id === currUser.user).info.username) {
+      dispatch(updateUser(currUser.token, {username: credentials.current.username}, currUser.user))
     }
     setUpdating(false)
   }
@@ -62,7 +62,7 @@ function Main({setOpened, opened, w}) {
             <IconTwitter clas={"w-[30px]"}/>
             <div className='w-full py-5'>
               <h1 className='text-[20px] mb-2 dark:text-[#ffffff]'>Here you can change your username</h1>
-              <CredentialInput placeholder="username" reff={username} defaultVal={users.activeprofiles.find(user => user.id === currUser.user).info.username}/>
+              <CredentialInput placeholder="username" ref={credentials} refKey={"username"} defaultVal={users.activeprofiles.find(user => user.id === currUser.user).info.username}/>
             </div>
           </div>
           <div className='h-[100px] flex flex-col justify-between w-full'>

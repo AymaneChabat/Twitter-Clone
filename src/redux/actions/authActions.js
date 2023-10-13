@@ -24,7 +24,7 @@ export const logIn = (email, password) => (dispatch) => {
     // Call the login function from the authentication module
     login(email, password).then(async (user) => {
         if (user !== null) {
-            window.location.pathname = "/home"
+            window.location.reload()
             // If login is successful, dispatch the user data and token to the state
             dispatch({
                 type: "SIGN_IN",
@@ -44,7 +44,8 @@ export const signUp = (email, password, name) => (dispatch) => {
     // Call the register function from the authentication module
     register(email, password, name).then(async (res) => {
         if (res.success === true) {
-            window.location.pathname = "/home"
+            window.location.reload()
+
             // If registration is successful, dispatch the user data and token to the state
             dispatch({
                 type: "SIGN_UP",
