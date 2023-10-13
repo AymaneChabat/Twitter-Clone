@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 
-export const domain = "https://xclone-api.vercel.app"
+export const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAtTWWX097PvnlRXBBYXXivJqwp9r1Byy4",
