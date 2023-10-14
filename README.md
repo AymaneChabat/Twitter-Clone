@@ -39,11 +39,11 @@ This project was developed with a combination of technologies to ensure an optim
 To run the project locally, follow these steps:
 1. Clone the project:
 ```
-    git clone https://github.com/AymaneChabat/X-Clone.git
+    git clone https://github.com/AymaneChabat/Twitter-Clone.git
 ```
 2. Navigate to project directory and Install dependencies:
 ```
-    cd X-Clone && npm i
+    cd Twitter-Clone && npm i
 ```
 > Following steps are for users who want to run the project with their own firebase app.
 3.  Visit **[Firebase](https://console.firebase.google.com/)**
