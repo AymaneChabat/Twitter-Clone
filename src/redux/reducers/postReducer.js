@@ -15,6 +15,14 @@ const PostReducer = (state = initialState, action) => {
     // Extract the payload from the action
     const payload = action.payload;
     var posts = [];
+    const localStateHome = state.home;
+    const localStateProfile = state.profile;
+    const localStateLikes = state.likes;
+    const localStateFollowing = state.following;
+    const localStateReplies = state.replies;
+    const localStatePostReplies = state.postReplies;
+    const localStateMedia = state.media;
+    const localStatePosts = state.posts;
 
     // Helper function to clean up posts and prevent duplicates
     function cleanPosts() {
@@ -22,7 +30,7 @@ const PostReducer = (state = initialState, action) => {
             const element = payload.posts[index];
             posts.push(element.postPath);
 
-            if (state.posts.find(post => post.postPath === element.postPath) !== undefined) {
+            if (localStatePosts.find(post => post.postPath === element.postPath) !== undefined) {
                 payload.posts.splice(index, 1);
             }
         }
@@ -37,7 +45,7 @@ const PostReducer = (state = initialState, action) => {
             posts.push(element.postPath);
 
             // Remove duplicates from the payload
-            if (state.posts.find(post => post.postPath === element.postPath) !== undefined) {
+            if (localStatePosts.find(post => post.postPath === element.postPath) !== undefined) {
                 payload.splice(index, 1);
             }
         }
@@ -76,8 +84,8 @@ const PostReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                home: [...state.home, ...posts.reverse()],  // Append new posts to home
-                posts: [...state.posts, ...payload]         // Add new posts to all posts
+                home: [...localStateHome, ...posts.reverse()],  // Append new posts to home
+                posts: [...localStatePosts, ...payload]         // Add new posts to all posts
             };
 
         // Action to get posts from users the user is following
@@ -87,14 +95,14 @@ const PostReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                following: [...state.following, ...posts.reverse()],  // Append new posts to following
-                posts: [...state.posts, ...payload]                     // Add new posts to all posts
+                following: [...localStateFollowing, ...posts.reverse()],  // Append new posts to following
+                posts: [...localStatePosts, ...payload]                     // Add new posts to all posts
             };
 
         // Action to get posts for a user's profile
         case "PROFILE_GET_POSTS":
             // Clean up and prevent duplicate posts
-            const profileIndex = state.profile.findIndex(profile => profile.user === payload.user);
+            const profileIndex = localStateProfile.findIndex(profile => profile.user === payload.user);
 
             if (profileIndex === -1) {
               // User profile doesn't exist, create a new profile
@@ -105,31 +113,31 @@ const PostReducer = (state = initialState, action) => {
             
               return {
                 ...state,
-                profile: [...state.profile, newProfile], // Add new profile to profile array
-                posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+                profile: [...localStateProfile, newProfile], // Add new profile to profile array
+                posts: [...localStatePosts, ...payload.posts], // Add new posts to all posts
               };
             } else {
               // User profile exists, update the posts
               const updatedProfile = {
-                ...state.profile[profileIndex],
-                posts: [...state.profile[profileIndex].posts, ...cleanPosts().posts],
+                ...localStateProfile[profileIndex],
+                posts: [...localStateProfile[profileIndex].posts, ...cleanPosts().posts],
               };
             
               // Update the profile in the profile array
-              const updatedProfileArray = [...state.profile];
+              const updatedProfileArray = [...localStateProfile];
               updatedProfileArray[profileIndex] = updatedProfile;
             
               return {
                 ...state,
                 profile: updatedProfileArray, // Update the user's profile
-                posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+                posts: [...localStatePosts, ...payload.posts], // Add new posts to all posts
               };
             }
 
         // Action to get liked posts
         case "LIKES_GET_POSTS":
             // Clean up and prevent duplicate posts
-            const likeIndex = state.likes.findIndex(profile => profile.user === payload.user);
+            const likeIndex = localStateLikes.findIndex(profile => profile.user === payload.user);
 
             if (likeIndex === -1) {
                 // User profile doesn't exist, create a new profile
@@ -140,24 +148,24 @@ const PostReducer = (state = initialState, action) => {
                 
                 return {
                     ...state,
-                    likes: [...state.likes, newLikes], // Add new profile to profile array
-                    posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+                    likes: [...localStateLikes, newLikes], // Add new profile to profile array
+                    posts: [...localStatePosts, ...payload.posts], // Add new posts to all posts
                 };
             } else {
                 // User profile exists, update the posts
                 const updatedLikes = {
-                    ...state.likes[likeIndex],
-                    posts: [...state.likes[likeIndex].posts, ...cleanPosts().posts],
+                    ...localStateLikes[likeIndex],
+                    posts: [...localStateLikes[likeIndex].posts, ...cleanPosts().posts],
                 };
                 
                 // Update the profile in the profile array
-                const updatedLikesArray = [...state.likes];
+                const updatedLikesArray = [...localStateLikes];
                 updatedLikesArray[likeIndex] = updatedLikes;
 
                 return {
                     ...state,
                     likes: updatedLikesArray, // Update the user's profile
-                    posts: [...state.posts, ...payload.posts], // Add new posts to all posts
+                    posts: [...localStatePosts, ...payload.posts], // Add new posts to all posts
                 };
             }
             
@@ -167,24 +175,24 @@ const PostReducer = (state = initialState, action) => {
             posts = cleanPosts();
             posts.posts.reverse();
 
-            const mediaIndex = state.media.findIndex(media => media.user === payload.user)
+            const mediaIndex = localStateMedia.findIndex(media => media.user === payload.user)
 
             if (mediaIndex === -1) {
                 const media = posts;
 
                 return {
                     ...state,
-                    media: [...state.media, media],  // Add liked posts
-                    posts: state.posts  // Add new posts to all posts
+                    media: [...localStateMedia, media],  // Add liked posts
+                    posts: localStatePosts  // Add new posts to all posts
                 };
             } else {
-                state.media[mediaIndex] = {...state.media[mediaIndex], posts: [...state.media[mediaIndex].posts, ...posts.posts]}
+                localStateMedia[mediaIndex] = {...localStateMedia[mediaIndex], posts: [...localStateMedia[mediaIndex].posts, ...posts.posts]}
             }
 
             return {
                 ...state,
-                media: state.media,          // Add media posts
-                posts: [...state.posts, ...payload.posts]  // Add new posts to all posts
+                media: localStateMedia,          // Add media posts
+                posts: [...localStatePosts, ...payload.posts]  // Add new posts to all posts
             };
 
         // Action to get replies made by the user
@@ -194,32 +202,32 @@ const PostReducer = (state = initialState, action) => {
                 const parent = payload.posts[index].mainPost;
                 posts.push({replyPost: reply.postPath, mainPost: parent.postPath});
     
-                if (state.posts.find(post => post.postPath === reply.postPath) === undefined) {
-                    state.posts.push(reply)
+                if (localStatePosts.find(post => post.postPath === reply.postPath) === undefined) {
+                    localStatePosts.push(reply)
                 }
-                if (state.posts.find(post => post.postPath === parent.postPath) === undefined) {
-                    state.posts.push(parent)
+                if (localStatePosts.find(post => post.postPath === parent.postPath) === undefined) {
+                    localStatePosts.push(parent)
                 }
             }
 
-            const repliesIndex = state.replies.findIndex(replies => replies.user === payload.user)
+            const repliesIndex = localStateReplies.findIndex(replies => replies.user === payload.user)
 
             if (repliesIndex === -1) {
                 const reply = {user: payload.user, posts: posts};
 
                 return {
                     ...state,
-                    replies: [...state.replies, reply],          // Add liked posts
-                    posts: state.posts  // Add new posts to all posts
+                    replies: [...localStateReplies, reply],          // Add liked posts
+                    posts: localStatePosts  // Add new posts to all posts
                 };
             } else {
-                state.replies[repliesIndex] = {...state.replies[repliesIndex], posts: [...state.replies[repliesIndex].posts, ...posts]}
+                localStateReplies[repliesIndex] = {...localStateReplies[repliesIndex], posts: [...localStateReplies[repliesIndex].posts, ...posts]}
             }
 
             return {
                 ...state,
-                replies: state.replies,          // Add liked posts
-                posts: state.posts  // Add new posts to all posts
+                replies: localStateReplies,          // Add liked posts
+                posts: localStatePosts  // Add new posts to all posts
             };
 
         // Action to get replies to posts
@@ -231,48 +239,48 @@ const PostReducer = (state = initialState, action) => {
                 posts.push(element.postPath);
     
                 // Remove duplicates from the payload
-                if (state.posts.find(post => post.postPath === element.postPath) !== undefined) {
+                if (localStatePosts.find(post => post.postPath === element.postPath) !== undefined) {
                     payload.replies.splice(index, 1);
                 }
             }
             
             return {
                 ...state,
-                postReplies: [...state.following, {...payload , replies: [...posts.reverse()]}],  // Append new posts to following
-                posts: [...state.posts, ...payload.replies]         // Add new posts to all posts
+                postReplies: [...localStateFollowing, {...payload , replies: [...posts.reverse()]}],  // Append new posts to following
+                posts: [...localStatePosts, ...payload.replies]         // Add new posts to all posts
             };
 
         // Action to create a new post
         case "CREATE_POST":
-            let oldPosts = state.profile.find(posts => posts.user === payload.user);
+            let oldPosts = localStateProfile.find(posts => posts.user === payload.user);
             let index;
 
             // Update the user's profile posts if they exist
             if (oldPosts !== undefined) {
                 oldPosts = { ...oldPosts, posts: [payload.res.post.postPath, ...oldPosts.posts] };
-                index = state.profile.findIndex(posts => posts.user === payload.user);
-                state.profile[index] = oldPosts;
+                index = localStateProfile.findIndex(posts => posts.user === payload.user);
+                localStateProfile[index] = oldPosts;
             }
 
             // Update media posts if the new post has media
-            if (payload.res.post.post.media.length > 0 && state.media.findIndex(posts => posts.user === payload.user) !== -1) {
-                index = state.media.findIndex(posts => posts.user === payload.user);
-                state.media[index].posts = [payload.res.post.postPath, ...state.media[index].posts];
+            if (payload.res.post.post.media.length > 0 && localStateMedia.findIndex(posts => posts.user === payload.user) !== -1) {
+                index = localStateMedia.findIndex(posts => posts.user === payload.user);
+                localStateMedia[index].posts = [payload.res.post.postPath, ...localStateMedia[index].posts];
             }
 
             return {
                 ...state,
-                home: state.home.length > 0 ? [payload.res.post.postPath, ...state.home] : state.home,  // Add the new post to home
-                profile: state.profile,                            // Update user's profile posts
-                posts: [payload.res.post, ...state.posts],        // Add the new post to all posts
-                media: state.media                                 // Update media posts
+                home: localStateHome.length > 0 ? [payload.res.post.postPath, ...localStateHome] : localStateHome,  // Add the new post to home
+                profile: localStateProfile,                            // Update user's profile posts
+                posts: [payload.res.post, ...localStatePosts],        // Add the new post to all posts
+                media: localStateMedia                                 // Update media posts
             };
 
         // Action to delete a post
         case "DEL_POST":
-            const home = state.home.filter(post => post !== payload.postId)
-            const following = state.following.filter(post => post !== payload.postId) 
-            const newPosts = state.posts.filter(post => post.postPath !== payload.postId)
+            const home = localStateHome.filter(post => post !== payload.postId)
+            const following = localStateFollowing.filter(post => post !== payload.postId) 
+            const newPosts = localStatePosts.filter(post => post.postPath !== payload.postId)
             const likes = deletePost("likes")
             const media = deletePost("media")
             const profile = deletePost("profile")
@@ -293,62 +301,61 @@ const PostReducer = (state = initialState, action) => {
 
         // Action to like or unlike a post
         case "LIKE_POST":
-            var i1 = state.likes.findIndex(post => post.user === payload.user);
-            var i2 = state.posts.findIndex(post => post.postPath === payload.postId);
-            console.log(payload)
+            var i1 = localStateLikes.findIndex(post => post.user === payload.user);
+            var i2 = localStatePosts.findIndex(post => post.postPath === payload.postId);
 
             // Update liked posts
             if (i1 !== -1) {
-                if (state.likes[i1].posts.includes(payload.postId)) {
-                    var newLikes = state.likes[i1].posts.filter(like => like !== payload.postId);
+                if (localStateLikes[i1].posts.includes(payload.postId)) {
+                    var newLikes = localStateLikes[i1].posts.filter(like => like !== payload.postId);
                 } else {
-                    var newLikes = [payload.postId, ...state.likes[i1].posts];
+                    var newLikes = [payload.postId, ...localStateLikes[i1].posts];
                 }
-                state.likes[i1].posts = newLikes;
+                localStateLikes[i1].posts = newLikes;
             }
 
             // Update the post's like count
             if (payload.action === "decrement") {
-                state.posts[i2].post.likes -= 1;
+                localStatePosts[i2].post.likes -= 1;
             } else {
-                state.posts[i2].post.likes += 1;
+                localStatePosts[i2].post.likes += 1;
             }
 
             return {
                 ...state,
-                posts: state.posts,  // Update posts
-                likes: state.likes   // Update liked posts
+                posts: localStatePosts,  // Update posts
+                likes: localStateLikes   // Update liked posts
             };
 
         // Action to comment on a post
         case "COMMENT_POST":
-            var i1 = state.postReplies.findIndex(post => post.postPath === payload.postPath);
-            var i2 = state.posts.findIndex(post => post.postPath === payload.postPath)
-            var i3 = state.replies.findIndex(posts => posts.user === payload.user);
+            var i1 = localStatePostReplies.findIndex(post => post.postPath === payload.postPath);
+            var i2 = localStatePosts.findIndex(post => post.postPath === payload.postPath)
+            var i3 = localStateReplies.findIndex(posts => posts.user === payload.user);
             
             console.log(i3)
             if (i3 !== -1) {
-                state.replies[i3] = {...state.replies[i3], posts:[{replyPost: payload.res.postPath, mainPost: payload.postPath}, ...state.replies[i3].posts]}
+                localStateReplies[i3] = {...localStateReplies[i3], posts:[{replyPost: payload.res.postPath, mainPost: payload.postPath}, ...localStateReplies[i3].posts]}
             }
             // Add the comment to the post's comments list
-            state.posts.push(payload.res);
+            localStatePosts.push(payload.res);
             // Increment comment list
-            state.posts[i2].post.comments += 1 
+            localStatePosts[i2].post.comments += 1 
             // Add the comment to the replies
-            state.postReplies[i1].replies = [payload.res.postPath, ...state.postReplies[i1].replies]
+            localStatePostReplies[i1].replies = [payload.res.postPath, ...localStatePostReplies[i1].replies]
 
             return {
                 ...state,
-                posts: state.posts,    // Update posts
-                postReplies: state.postReplies,  // Update replies
-                replies: state.replies
+                posts: localStatePosts,    // Update posts
+                postReplies: localStatePostReplies,  // Update replies
+                replies: localStateReplies
             };
 
         // Action to add a single post
         case "POST":
             return {
                 ...state,
-                posts: [...state.posts, payload]  // Add the new post to all posts
+                posts: [...localStatePosts, payload]  // Add the new post to all posts
             };
 
         default:

@@ -5,7 +5,7 @@ const initialState = { chats: [], activeChat: null, last: undefined };
 const chatReducer = (state = initialState, action) => {
     // Extract the payload from the action
     const payload = action.payload;
-
+    const localStateChats = state.chats
     // Switch statement to handle different action types
     switch (action.type) {
         case "GET_CHATS":
@@ -16,7 +16,7 @@ const chatReducer = (state = initialState, action) => {
             payload.chats[0].forEach((chat) => {
                 // Check if the chat doesn't exist in the state
                 let exist = false;
-                state.chats.forEach((savedChat) => {
+                localStateChats.forEach((savedChat) => {
                     if (chat.id === savedChat.id) {
                         exist = true;
                     }
@@ -29,22 +29,22 @@ const chatReducer = (state = initialState, action) => {
             // Update the state with the new chats and other properties
             return {
                 ...state,
-                chats: [...state.chats, ...chats],
+                chats: [...localStateChats, ...chats],
                 activeChat: state.activeChat,
                 last: payload.chats[1] === null ? state.last : payload.chats[1],
             };
 
         case "CREATE_CHAT":
             // Find the index of the chat with the sample ID
-            const i = state.chats.findIndex((chat) => chat.id === payload.sample);
+            const i = localStateChats.findIndex((chat) => chat.id === payload.sample);
 
             // Update the chat at the found index with the new chat
-            state.chats[i] = payload.newChat.chat;
+            localStateChats[i] = payload.newChat.chat;
 
             // Update the state with the modified chats and set the active chat
             return {
                 ...state,
-                chats: state.chats,
+                chats: localStateChats,
                 activeChat: payload.newChat.chat.id,
             };
 
@@ -61,7 +61,7 @@ const chatReducer = (state = initialState, action) => {
                 payload.id === state.activeChat ? r1 : r2;
 
             // Filter out the chat with the specified ID from the chats
-            const newChats = state.chats.filter((chat) => chat.id !== payload.id);
+            const newChats = localStateChats.filter((chat) => chat.id !== payload.id);
 
 
             // Update the state based on the conditionally returned values

@@ -10,7 +10,7 @@ const userReducer = (state = initialState, action) => {
     // Extract the payload from the action
     let payload = action.payload;
     var i;
-
+    const localState = state.activeprofiles
     // Switch statement to handle different action types
     switch (action.type) {
         // Action to get user profiles or search results
@@ -25,21 +25,22 @@ const userReducer = (state = initialState, action) => {
 
         // Action to update user information
         case 'UPDATE_USER':
-            i = state.activeprofiles.findIndex(user => user.id === payload.id)
-            state.activeprofiles[i].info = {...state.activeprofiles[i].info, ...payload.updatedData}
+            
+            i = localState.findIndex(user => user.id === payload.id)
+            localState[i].info = {...localState[i].info, ...payload.updatedData}
 
             return {
                 ...state,
-                activeprofiles: state.activeprofiles
+                activeprofiles: localState
             };
 
         // Action to update followers and following
         case 'UPDATE_FOLLOWS':
             // Find the index of the user whose followers/following are being updated
-            const index = state.activeprofiles.findIndex(user => user.info.username === payload.user);
+            const index = localState.findIndex(user => user.info.username === payload.user);
 
             // Find the index of the current user who initiated the follow/unfollow action
-            i = state.activeprofiles.findIndex(user => user.id === payload.currUser);
+            i = localState.findIndex(user => user.id === payload.currUser);
 
             // Initialize variables to store new followers and following lists
             let newFollowers;
@@ -48,51 +49,51 @@ const userReducer = (state = initialState, action) => {
             // Check if the action is to increment (follow) or decrement (unfollow)
             if (payload.res.action === "increment") {
                 // If it's a follow action, add the current user to the user's followers
-                newFollowers = state.activeprofiles[index].info.followers + 1 
+                newFollowers = localState[index].info.followers + 1 
 
                 // Add the user to the current user's following list
-                newFollowing = [payload.res.user, ...state.activeprofiles[i].info.following];
+                newFollowing = [payload.res.user, ...localState[i].info.following];
             } else {
                 // If it's an unfollow action, remove the current user from the user's followers
-                newFollowers = state.activeprofiles[index].info.followers - 1
+                newFollowers = localState[index].info.followers - 1
 
                 // Remove the user from the current user's following list
-                newFollowing = state.activeprofiles[i].info.following.filter(user => user !== payload.res.user);
+                newFollowing = localState[i].info.following.filter(user => user !== payload.res.user);
             }
 
             // Update the user's followers and following lists with the new values
-            state.activeprofiles[index].info.followers = newFollowers;
-            state.activeprofiles[i].info.following = newFollowing;
+            localState[index].info.followers = newFollowers;
+            localState[i].info.following = newFollowing;
 
             // Return the updated state
             return {
                 ...state,
-                activeprofiles: state.activeprofiles
+                activeprofiles: localState
             };
 
         // Action to update liked posts
         case 'UPDATE_LIKES':
 
             // Find the index of the user whose likes are being updated
-            i = state.activeprofiles.findIndex(user => user.id === payload.user);
+            i = localState.findIndex(user => user.id === payload.user);
 
             // Check if the user already likes the post
-            if (state.activeprofiles[i].info.likes.includes(payload.postId)) {
+            if (localState[i].info.likes.includes(payload.postId)) {
                 // If the user likes the post, remove the like by filtering it out
-                var newLikes = state.activeprofiles[i].info.likes.filter(like => like !== payload.postId);
+                var newLikes = localState[i].info.likes.filter(like => like !== payload.postId);
             } else {
                 // If the user does not like the post, add the like to the list
-                var newLikes = state.activeprofiles[i].info.likes;
+                var newLikes = localState[i].info.likes;
                 newLikes.push(payload.postId);
             }
 
             // Update the user's liked posts with the new list of likes
-            state.activeprofiles[i].info.likes = newLikes;
+            localState[i].info.likes = newLikes;
 
             // Return the updated state
             return {
                 ...state,
-                activeprofiles: state.activeprofiles
+                activeprofiles: localState
             };
             
         default:
