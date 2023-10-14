@@ -45,7 +45,7 @@ function MainMenu({setPostOpen, tab}) {
     body.classList.remove('dark', 'dim', 'light', 'bg-[#000000]', 'bg-[#15202b]');
 
     // Decide on the theme to set
-    if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
+    if (localStorage.theme === 'dark') {
       body.classList.add('dark');
       body.classList.add('bg-[#000000]');
     } else if (localStorage.theme === 'dim') {
