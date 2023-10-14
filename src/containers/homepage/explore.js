@@ -6,14 +6,13 @@ import FollowProfile from "../../components/profiles/whotofollow"
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from '../../redux/actions/userActions';
 import LoadingIcon from '../../components/icons/loading';
+import SearchBar from '../../components/inputs/searchbar';
 
 function Explore({setOpened, opened}) {
-
-  const [search, setSearch] = useState("")
-  const [focused, setFocused] = useState(false)
   const users = useSelector(state => state.users)
   const currUser = useSelector(user => user.currUser)
   const lastExplore = users.explore[users.explore.length - 1] !== undefined ? users.explore[users.explore.length - 1].id : undefined
+  const search = useRef("")
   const [load, setLoad] = useState(true)
   const [scrollPos, setScrollPos] = useState(0)
   const prevScroll = useRef(0)
@@ -28,11 +27,6 @@ function Explore({setOpened, opened}) {
     })
   },[users.explore])
 
-  useEffect(()=>{
-    if (search !== "") {
-      dispatch(getUsers(search, currUser.token, "search", 10, undefined))
-    }
-  }, [search])
 
   useEffect(()=>{
     if (load) {
@@ -44,9 +38,10 @@ function Explore({setOpened, opened}) {
   useEffect(()=>{
     const element = document.querySelector("#explore")
       if (users.explore.length === 0) {
-        dispatch(getUsers(search, currUser.token, "explore", 12, lastExplore, setLoad))
+        console.log("o")
+        dispatch(getUsers("", currUser.token, "explore", 12, lastExplore, setLoad))
       } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight === element.scrollHeight && load === false) {
-        dispatch(getUsers(search, currUser.token, "explore", 12, lastExplore, setLoad))
+        dispatch(getUsers("", currUser.token, "explore", 12, lastExplore, setLoad))
       }
     prevScroll.current = scrollPos
   }, [scrollPos])
@@ -56,17 +51,14 @@ function Explore({setOpened, opened}) {
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
           <div id='explore' className='overflow-auto h-full' onScroll={(e)=>{setScrollPos(e.currentTarget.scrollTop)}}>
             <div className='flex justify-around items-center w-[100%]'>
-                <div className={'flex py-2 w-[85%] my-2 items-center rounded-full border-2 px-4 dark:bg-[#16181c] bg-['+(!focused ? "#EFF3F4] border-transparent" : "#ffffff] border border-[#1d9bf0]")}>
-                    <SearchIcon picked={[false,"Explore"]} color={focused ? "#1d9bf0" : "#808080"} size={"20"}/>
-                    <input onChange={(e)=>{setSearch(e.target.value)}} value={search} onFocus={()=>{setFocused(true)}} onBlur={()=>{setFocused(false)}} placeholder='Search' className='dark:text-[#ffffff] bg-transparent w-full ml-3 focus:outline-none font-chirp'/>
-                </div>
+                <SearchBar ref={search}/>
                 <div className='p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer'>
                     <SettingsIcon />
                 </div>
             </div>
             <ChoiceButtons choices={localChoices}/>
             {
-              search !== "" 
+              search.current !== ''
               ?
               users.users.map(user=>(
                 <>

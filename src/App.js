@@ -3,7 +3,7 @@ import HomePage from './containers/pages/homepage';
 import Login from './containers/pages/loginpage';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './functions/authentication';
 import { checkUser } from './redux/actions/authActions';
@@ -47,7 +47,7 @@ function App() {
   
   const ErrorPreview = () => {
     return (
-        <div className="error-preview animate-fade-in p-4 mb-4 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 absolute top-5 right-5 transition-all duration-300" role="alert">
+        <div className="z-40 error-preview animate-fade-in p-4 mb-4 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 absolute top-5 right-5 transition-all duration-300" role="alert">
           <span class="font-medium">Error!</span> {currError}.
         </div>
     )
@@ -63,6 +63,7 @@ function App() {
 
   return (
       <div className="App">
+        {}
         {currError !== "" && <ErrorPreview />}
         <Routes>
           <Route path="/i/*" element={<Login />}/>

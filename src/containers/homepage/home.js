@@ -56,7 +56,7 @@ function Main({setOpened, opened, w}) {
 
   const UpdateUsername = () => (
     <div className='absolute left-0 top-0 w-full h-full bg-[#ffffff] s6:bg-[#000000]/[.5] z-40 flex justify-center items-center dark:bg-[#ffffff]/[.4]' onMouseDown={()=>[setUpdating(false)]}>
-      <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s6:h-[700px] s6:max-w-[500px] p-4 dark:bg-[#000000] rounded-xl' onMouseDown={(e)=>{e.stopPropagation()}}>
+      <div className='w-full h-full bg-[#ffffff] flex justify-center items-center s6:h-[700px] s6:max-w-[500px] p-4 dark:bg-[#000000] rounded-xl animate-fade-in' onMouseDown={(e)=>{e.stopPropagation()}}>
         <div className='h-[90%] flex flex-col items-center justify-between'>
           <div className='flex flex-col items-center'>
             <IconTwitter clas={"w-[30px]"}/>
@@ -76,7 +76,7 @@ function Main({setOpened, opened, w}) {
   
   const localChoices = ["For you", "Following"]
   return (
-        <section className='s10:max-w-[32%] s10:min-w-[600px] flex-grow border-l border-r dark:border-[#ffffff]/[.3] border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-y-auto overflow-x-hidden' onScroll={(e) => handleScroll(e)}>
+        <section id='childDiv' className='s10:max-w-[32%] s10:min-w-[600px] flex-grow border-l border-r dark:border-[#ffffff]/[.3] border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-y-auto overflow-x-hidden' onScroll={(e) => handleScroll(e)}>
           {updating ? <UpdateUsername /> : ""}
           {opened ? <SlideMenu opened={opened} setOpened={setOpened}/> : ""}
           <div className='w-full h-auto bg-transparent bg-blur backdrop-blur-md sticky top-0 z-20 overflow-hidden'>

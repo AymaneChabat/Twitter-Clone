@@ -46,8 +46,8 @@ function UpdateUser({setUpdating, user}) {
   }
 
   return (
-    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center dark:bg-[#ffffff]/[.2]" onMouseDown={()=>{setUpdating(false)}}>
-        <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative dark:bg-[#000000]" onMouseDown={(e)=>{e.stopPropagation()}}>
+    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center dark:bg-[#ffffff]/[.2] " onMouseDown={()=>{setUpdating(false)}}>
+        <div className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative dark:bg-[#000000] animate-fade-in" onMouseDown={(e)=>{e.stopPropagation()}}>
             <div className="flex justify-between items-center p-2.5">
                 <button className="hover:bg-[#000000]/[.1] p-2 rounded-full" onClick={()=>{setUpdating(false)}}>
                     <DeleteIcon />

@@ -1,29 +1,21 @@
 import { Link } from 'react-router-dom';
-import { SearchIcon } from '../../components/icons/menu';
 import FollowProfile from "../../components/profiles/whotofollow"
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers, resetUsers } from '../../redux/actions/userActions';
 import { getUser } from '../../redux/actions/userActions';
+import SearchBar from '../../components/inputs/searchbar';
+import { useState } from 'react';
 
 function LastContainer({w,page}) {
-
-  const [search, setSearch] = useState('')
-  const [focused,setFocused] = useState(false)
-  const users = useSelector(state => state.users)
-  const dispatch = useDispatch()
   const currUser = useSelector(state => state.currUser)
   const color = useSelector(state => state.color.color)
-  const colors = {"#1d9bf0":"focus-within:border-[#1d9bf0]", "#ffd400":"focus-within:border-[#ffd400]", "#f91880":"focus-within:border-[#f91880]", "#7856ff":"focus-within:border-[#7856ff]", "#ff7a00":"focus-within:border-[#ff7a00]", "#00ba7c":"focus-within:border-[#00ba7c]"}
+  const users = useSelector(state => state.users)
+  const dispatch = useDispatch()
+  const [focus, setFocus] = useState(false)
+  const search = useRef("")
 
   useEffect(()=>{
     dispatch(getUser("owner", currUser.token))
-
-    window.document.addEventListener("click", ()=>{
-      if (focused === true) {
-        setFocused(false)
-      }
-    })
   }, [])
 
   const profiles = [users.activeprofiles.find(user => user.id === 'Ri2E74kPo1dPCUt1nwC7GPy0BR52')]
@@ -48,18 +40,11 @@ function LastContainer({w,page}) {
     'Settings'
   ];
 
-  useEffect(()=>{
-    if (search !== "") {
-      dispatch(getUsers(search, undefined, "search", 5, undefined))
-    } else if (users.users.length > 0) {
-      dispatch(resetUsers())
-    }
-  }, [search])
 
   const SearchResults = ({user}) => {
     return(
       <Link to={"/profile/"+user.info.username}>
-          <div className='flex py-4 px-7 justify-between items-center hover:bg-[#000000]/[.1] transition-all duration-200 cursor-pointer dark:bg-[#16181c] dark:hover:bg-[#000000]/[.8]' onClick={()=>{setFocused(false); setSearch("")}}>
+          <div className='flex py-4 px-7 justify-between items-center hover:bg-[#000000]/[.1] transition-all duration-200 cursor-pointer dark:bg-[#16181c] dark:hover:bg-[#000000]/[.8]'>
             <div className='w-[45px] h-[45px] rounded-full bg-no-repeat bg-center bg-cover' style={{backgroundImage: `url('${user.info.profilepicture}')`}}></div>
             <div className='w-[80%] flex flex-col justify-center'>
               <div className='max-w-[200px] overflow-hidden relative block text-ellipsis whitespace-nowrap'>
@@ -74,13 +59,10 @@ function LastContainer({w,page}) {
   )}
 
   const searchDiv = (
-      <div className='hidden s10:inline overflow-auto relative' onClick={(e)=>{e.stopPropagation(); setFocused(true)}}>
-        <div className={'group flex py-2 my-2 items-center rounded-full border-2 px-4 bg-[#EFF3F4] border-transparent focus-within:bg-[#ffffff] border '+colors[color]+' transition-all duration-200 dark:bg-[#16181c]'}>
-            <SearchIcon picked={[false,"Explore"]} color={color} size={"20"}/>
-            <input onChange={(e)=>{setSearch(e.target.value)}} value={search} placeholder='Search' className='bg-transparent w-full ml-3 focus:outline-none dark:text-[#ffffff]'/>
-        </div>
-        {focused && users.users.length > 0 ? 
-          <div className='w-full h-auto border-2 absolute z-40 bg-[#ffffff] dark:border-[#16181c]/[.9]'>
+      <div className='hidden s10:inline overflow-auto relative' onFocus={()=>setFocus(true)} onBlur={()=>{setFocus(false)}} onClick={(e)=>{e.stopPropagation();}}>
+        <SearchBar ref={search}/>
+        {focus === true && users.users.length > 0 ? 
+          <div className='animate-fade-in w-full h-auto border-2 absolute z-40 bg-[#ffffff] dark:border-[#16181c]/[.9]'>
             {users.users.map((user, index)=>(
                 <SearchResults user={user} key={index}/>
             ))}

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { VerifiedIcon } from "../icons/profile";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFollows } from "../../redux/actions/userActions";
-import { useEffect } from "react";
 
 function UserPreview({user, action}) {
     const currUser = useSelector(state => state.currUser)
@@ -10,16 +9,8 @@ function UserPreview({user, action}) {
     const followed = users.find(user => user.id === currUser.user).info.following.includes(user.id)
     const dispatch = useDispatch()
 
-    useEffect(()=>{
-        setTimeout(()=>{
-            const prev = document.querySelector("#preview")
-            prev.classList.remove("opacity-0")
-            prev.classList.add("opacity-100")
-        },100)
-    },[])
-
     return (
-        <div id="preview" className="absolute h-auto w-[350px] bg-[#ffffff] dark:bg-[#000000] dark:border-[#ffffff]/[.2] transition-all duration-300 z-10 top-12 left-3 p-3 border opacity-0" onMouseOut={action}>
+        <div id="preview" className="animate-fade-in absolute h-auto w-[350px] bg-[#ffffff] dark:bg-[#000000] dark:border-[#ffffff]/[.2] transition-all duration-300 z-10 top-12 left-3 p-3 border" onMouseOut={action}>
             <div className="w-full flex justify-between items-start mb-2">
                 <Link className="leading-5" to={"/"+user.info.username}>
                     <div className="rounded-full w-[80px] h-[80px] bg-cover bg-no-repeat bg-center hover:brightness-75 transition-all duration-300" style={{backgroundImage:`url("${user.info.profilepicture}")`}}></div>

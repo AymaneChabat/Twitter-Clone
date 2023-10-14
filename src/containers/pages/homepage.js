@@ -40,7 +40,7 @@ function Template() {
 
   return (
     users.activeprofiles.find((user) => user.id === currUser.user) !== undefined &&
-      <div className='flex h-screen overflow-hidden'>
+      <div onScroll={(e)=>{document.querySelector('#childDiv').scrollTop = e.currentTarget.scrollTop}} id='MainDiv' className='flex h-screen overflow-hidden'>
           <FinalMenu w={w}/>
           <Routes>
               {elements && elements.map((element, index)=>(
