@@ -99,6 +99,7 @@ function DisplayPosts({postPath, postList, reply, main}) {
             }, 500)
         }
     }
+
     
     return (
     post !== "Deleted" ? <article className={"relative flex border-[#1d9bf0]/[.1] transition-all duration-200 dark:border-[#ffffff]/[.3]" + (reply ? "" : " border-b")} >
@@ -125,10 +126,10 @@ function DisplayPosts({postPath, postList, reply, main}) {
                             <div className="p-1.5 hover:bg-[#1D9BF0]/[.1] rounded-full" onClick={!options ? () => {setOptions(true)} : () => {setOptions(false)}}>
                                 <Dots w={12}/>
                             </div>
-                            {user.id === currUser.user && <div className={"absolute bg-[#ffffff] w-[60%] border z-40 rounded-2xl px-2 opacity-0 transition-all duration-500 -translate-x-[90%] " + (options ? "opacity-100" : "pointer-events-none")}>
-                                <button className="flex justify-around w-full items-center py-2 hover:bg-[#ffffff]/[.8]" onClick={()=>{dispatch(deletePost(currUser.token, post.postPath)); setOptions(false)}}>
+                            {user.id === currUser.user && <div className={"dark:bg-[#000000] dark:hover:brightness-75 hover:bg-[#ffffff]/[.9] absolute bg-[#ffffff] w-[60%] border z-40 px-2 opacity-0 transition-all duration-500 -translate-x-[90%] " + (options ? "opacity-100" : "pointer-events-none")}>
+                                <button className="flex justify-around w-full items-center py-2" onClick={()=>{dispatch(deletePost(currUser.token, post.postPath)); setOptions(false)}}>
                                     <DeleteIcon color={"#f4212e"}/>
-                                    <span className="text-[#f4212e] text-[18px] font-semibold w-[85%] text-left -mb-[4px]">Delete</span>
+                                    <span className="dark:text-[#ffffff] text-[#f4212e] text-[16px] font-semibold w-[85%] text-left ">Delete</span>
                                 </button>
                             </div>}
                         </div>

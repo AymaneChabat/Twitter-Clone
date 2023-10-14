@@ -3,17 +3,18 @@ import HomePage from './containers/pages/homepage';
 import Login from './containers/pages/loginpage';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './functions/authentication';
 import { checkUser } from './redux/actions/authActions';
 import { clearError } from './redux/actions/errorActions';
+import { IconTwitter } from './components/icons/logos';
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const location = useLocation();
-
+  const [loading, setLoading] = useState(true)
   const currError = useSelector(state => state.error)
 
   useEffect(()=>{
@@ -54,16 +55,23 @@ function App() {
   }
 
   useEffect(()=>{
+      setTimeout(()=>{
+        setLoading(false)
+      }, 500)
+    
+  }, [])
+
+  useEffect(()=>{
     if (currError !== "") {
       setTimeout(()=>{
         dispatch(clearError())
-      }, 3000)
+      }, 5000)
     }
   }, [currError])
 
   return (
       <div className="App">
-        {}
+        {loading && <div className='w-full h-full bg-[#ffffff] flex justify-center items-center absolute animate-fade-out'><IconTwitter clas={"h-[50px] animate-bounce"}/></div>}
         {currError !== "" && <ErrorPreview />}
         <Routes>
           <Route path="/i/*" element={<Login />}/>

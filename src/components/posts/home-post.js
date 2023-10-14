@@ -48,7 +48,7 @@ function HomePost({floating, setPostOpen, type, postId, username}) {
                 {!posting && type !== "reply" && <PickAudience color={color}/>}
                 <div className='w-auto border-b relative border-[#1d9bf0]/[.1]'>
                     {content === "" ? (<div className='text-[#000000]/[.6] dark:text-[#ffffff]/[.4] text-[20px] font-chirp absolute pointer-events-none h-[30px]'>{type === "reply" ? "Post your reply" : "What is happening?!"}</div>) : ""}
-                    <div id="contentDiv" className={'focus:outline-none dark:text-[#ffffff] text-[20px] w-full grow-0 break-word font-chirp ' + (floating ? "min-h-[70px]" : "min-h-[50px]")} contentEditable={true} onInput={(e)=>{setContent(e.target.innerHTML)}}></div>
+                    <div id="contentDiv" className={'focus:outline-none overflow-scroll dark:text-[#ffffff] text-[20px] w-full grow-0 break-word font-chirp ' + (floating ? "min-h-[70px] max-h-[150px]" : "min-h-[50px]")} contentEditable={true} onInput={(e)=>{setContent(e.target.innerHTML)}}></div>
                     {images.length > 0 ?
                         <DisplayImages images={images} posting={true} setImages={setImages}/>
                     : ""}
