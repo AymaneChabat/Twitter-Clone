@@ -2,10 +2,15 @@
 
 Welcome to X / Twitter Clone! This project replicates the core features of Twitter, using ReactJS, Firebase, ExpressJS, Redux, and Rest APIs. Whether you're looking to learn how such a platform is built or you'd like to contribute, you're in the right place.
 
-![Screenshot of X Clone in action](https://firebasestorage.googleapis.com/v0/b/realchat-4fd5d.appspot.com/o/Screenshot%202023-10-04%20133109.png?alt=media&token=93bc733c-975c-48a8-b36c-c79d916fb680)
+
+
+https://github.com/AymaneChabat/Twitter-Clone/assets/92991595/07bc3b22-d1e9-456c-acc6-c3e60cd47c6e
+
+
+
 ## 📂 Repositories
 
-This repository contains the frontend code for X Clone. For the backend code, please visit the [X Clone Backend Repository](https://github.com/AymaneChabat/xclone-backend).
+This repository contains the frontend code for X Clone. For the backend code, please visit the [X Clone Backend Repository](https://github.com/AymaneChabat/xclone-backend) which is currently privated.
 ## ✨ Features
 
 - 🔐 **User Authentication**: Sign up, login, and log out using firestore authentication.
@@ -34,11 +39,11 @@ This project was developed with a combination of technologies to ensure an optim
 To run the project locally, follow these steps:
 1. Clone the project:
 ```
-    git clone https://github.com/AymaneChabat/X-Clone.git
+    git clone https://github.com/AymaneChabat/Twitter-Clone.git
 ```
 2. Navigate to project directory and Install dependencies:
 ```
-    cd X-Clone && npm i
+    cd Twitter-Clone && npm i
 ```
 > Following steps are for users who want to run the project with their own firebase app.
 3.  Visit **[Firebase](https://console.firebase.google.com/)**
@@ -55,17 +60,10 @@ To run the project locally, follow these steps:
       appId: ... 
     };
 ```
-6.  Access the file config inside folder functions and update the firebaseConfig constant and the domain to expressJs server we will start in next steps
-7.  Clone the backend repo:
-```
-  git clone https://github.com/AymaneChabat/xclone-backend.git
-```
-8.  Open the Backend folder and access config.js file
-9.  Change the firebaseConfig to the one linked to your App
-10. Now go to index.js, choose your port or leave it as 9001
-11. Go back to Frontnd folder and update domain to http://localhost: + the port you picked
-12. You are all set, all that is left is to run ```npm start``` in both folders
+6.  Access the file config inside folder functions and update the firebaseConfig constant.
+7. You are all set, all that is left is to run ```npm start``` in both folders
 
+Keep in mind that you will still be using my backend, the firebase you have updated will only be used for authentication.
 
 ## 📜 License
 
