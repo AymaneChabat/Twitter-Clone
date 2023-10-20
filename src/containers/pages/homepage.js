@@ -46,7 +46,7 @@ function Template() {
 
   return (
     users.activeprofiles.find((user) => user.id === currUser.user) !==
-      undefined && (
+      undefined ? (
       <div
         onScroll={(e) => {
           document.querySelector("#childDiv").scrollTop =
@@ -64,7 +64,7 @@ function Template() {
         </Routes>
         <LastContainer w={w} page={page} />
       </div>
-    )
+    ) : <div className='w-full h-full bg-[#ffffff] flex justify-center items-center absolute animate-fade-out'><IconTwitter clas={"h-[50px] animate-bounce"}/></div>
   );
 }
 

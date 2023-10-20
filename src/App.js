@@ -71,7 +71,6 @@ function App() {
 
   return (
       <div className="App">
-        {loading && <div className='w-full h-full bg-[#ffffff] flex justify-center items-center absolute animate-fade-out'><IconTwitter clas={"h-[50px] animate-bounce"}/></div>}
         {currError !== "" && <ErrorPreview />}
         <Routes>
           <Route path="/i/*" element={<Login />}/>
