@@ -1,7 +1,7 @@
 import { BackArrowIcon } from "../../components/icons/messages";
 import { Dots } from "../../components/icons/menu";
 import DisplayImages from "../../components/posts/displayImages";
-import DisplayPosts from "../../components/posts/displayposts";
+import DisplayPost from "../../components/posts/displaypost";
 import InteractionButtons from "../../components/buttons/model";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
@@ -129,7 +129,7 @@ function Post() {
               posts.postReplies
                 .find((reply) => reply.postPath === params["*"])
                 .replies.map((post, index) => (
-                  <DisplayPosts
+                  <DisplayPost
                     key={index}
                     postPath={post}
                     users={users.activeprofiles}

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { VerifiedIcon } from "../icons/profile";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFollows } from "../../redux/actions/userActions";
+import { motion, useAnimation } from "framer-motion";
 
 function UserPreview({user, action}) {
     const currUser = useSelector(state => state.currUser)
@@ -9,8 +10,26 @@ function UserPreview({user, action}) {
     const followed = users.find(user => user.id === currUser.user).info.following.includes(user.id)
     const dispatch = useDispatch()
 
+    const controls = useAnimation()
+
+    const startAnimation = async () => {
+        await controls.start({
+            borderColor: ["red", "blue", "green", "yellow", "purple", "orange", "red"],
+            transition: {
+                duration: 4, // Duration of the animation (4 seconds)
+                repeat: Infinity, // Repeat infinitely
+                ease: "linear", // Linear animation for a continuous loop
+            },
+        })
+    }
+
+    const variants = {
+        hidden: {opacity: 0},
+        visible: {opacity: 1, transition: {duration: 0.25}}
+    }
+
     return (
-        <div id="preview" className="animate-fade-in absolute h-auto w-[350px] bg-[#ffffff] dark:bg-[#000000] dark:border-[#ffffff]/[.2] transition-all duration-300 z-10 top-12 left-3 p-3 border" onMouseOut={action}>
+        <motion.div variants={variants} initial="hidden" animate="visible" exit="hidden" id="preview" className="absolute h-auto w-[350px] bg-[#ffffff] dark:bg-[#000000] dark:border-[#ffffff]/[.2] transition-all duration-300 z-10 top-12 left-3 p-3 border" onMouseOut={action}>
             <div className="w-full flex justify-between items-start mb-2">
                 <Link className="leading-5" to={"/"+user.info.username}>
                     <div className="rounded-full w-[80px] h-[80px] bg-cover bg-no-repeat bg-center hover:brightness-75 transition-all duration-300" style={{backgroundImage:`url("${user.info.profilepicture}")`}}></div>
@@ -33,7 +52,7 @@ function UserPreview({user, action}) {
                     <span className="text-[#536471] ml-1 mt-1 text-sm mx-3 dark:text-[#ffffff]"><strong>{user.id === currUser.user ? user.info.followers.length : user.info.followers}</strong> Followers</span>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
   }
   

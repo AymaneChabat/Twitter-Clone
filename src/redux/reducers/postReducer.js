@@ -37,7 +37,7 @@ const initialState = {
           payload.posts.splice(index, 1);
         }
       }
-  
+
       return { user: payload.user, posts: posts.reverse() };
     }
   
@@ -122,7 +122,6 @@ const initialState = {
             user: payload.user,
             posts: cleanPosts().posts,
           };
-  
           return {
             ...state,
             profile: [...localStateProfile, newProfile], // Add new profile to profile array
@@ -190,8 +189,8 @@ const initialState = {
       case "MEDIA_GET_POSTS":
         // Clean up and prevent duplicate posts
         posts = cleanPosts();
-        posts.posts.reverse();
-  
+        posts.posts.reverse()
+
         const mediaIndex = localStateMedia.findIndex(
           (media) => media.user === payload.user
         );
@@ -202,7 +201,7 @@ const initialState = {
           return {
             ...state,
             media: [...localStateMedia, media], // Add liked posts
-            posts: localStatePosts, // Add new posts to all posts
+            posts: [...localStatePosts, ...payload.posts], // Add new posts to all posts
           };
         } else {
           localStateMedia[mediaIndex] = {
@@ -402,7 +401,6 @@ const initialState = {
           (posts) => posts.user === payload.user
         );
   
-        console.log(i3);
         if (i3 !== -1) {
           localStateReplies[i3] = {
             ...localStateReplies[i3],

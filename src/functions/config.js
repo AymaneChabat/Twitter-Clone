@@ -1,6 +1,26 @@
 import { initializeApp } from "firebase/app";
 
-export const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+export const domain = "http://localhost:9001"
+
+export async function fetchTemplate(endpoint, type, method, token, body) {
+  return await fetch(domain + endpoint, {
+    method,
+    headers: (type === "json" ? {
+      "Content-Type": "application/json",
+      Authorization: token,
+    } : {
+      Authorization: token,
+    }),
+    body: method !== "GET" ? (type === "json" ? JSON.stringify(body) : body) : undefined
+  })
+  .then(async(res)=>
+    await res.json()
+    )
+  .catch((error)=>{
+    console.error(error.message);
+    return null;
+  })
+}
 
 const firebaseConfig = {
     apiKey: "AIzaSyAtTWWX097PvnlRXBBYXXivJqwp9r1Byy4",

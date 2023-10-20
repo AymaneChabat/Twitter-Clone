@@ -6,35 +6,3 @@
   word-wrap: break-word;
   
 }
-
-@keyframes pop-in {
-  0% {
-    transform: scale(0.9);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  }
-  70% {
-    transform: scale(1.02);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-}
-
-@keyframes fade-out {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.animate-fade-in {
-  animation: pop-in 0.3s; /* Adjust duration and timing function as needed */
-}
-
-.animate-fade-out {
-  animation-delay: 3s;
-  animation: fade-out 6s forwards; /* Adjust duration and timing function as needed */
-}

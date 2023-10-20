@@ -5,13 +5,13 @@ import { PostIcon } from '../../icons/menu';
 import Menu from "../items";
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../redux/actions/authActions';
-import { useEffect } from 'react';
 import { setBtnColor, setTheme } from '../../../redux/actions/themeActions';
 import TwitterButton from '../../buttons/twitterbutton';
-import {ProfileIcon, MessageIcon, CommunityIcon, BookmarkIcon, ListIcon, SearchIcon, HouseIcon, BellIcon, Dots, DisplayIcon} from "../../icons/menu"
+import { ProfileIcon, MessageIcon, CommunityIcon, BookmarkIcon, ListIcon, SearchIcon, HouseIcon, BellIcon, Dots, DisplayIcon } from "../../icons/menu"
+import { motion, AnimatePresence } from 'framer-motion';
 
 function MainMenu({setPostOpen, tab}) {
   
@@ -32,6 +32,8 @@ function MainMenu({setPostOpen, tab}) {
     "dim": ["Dim", "#15202b"]
   }
   const bgMode = useSelector(state => state.color.theme)
+
+
 
   const updateColor = (e) => {
     localStorage.btnColor = e
@@ -56,12 +58,26 @@ function MainMenu({setPostOpen, tab}) {
       body.classList.add('light');
     }
   };
-
-  const UpdateDisplay = () => {
+  
+  const updateDisplay = React.useMemo(() => {
+    const variants = {
+      hidden: {
+        scale: 0, 
+        opacity: 0
+      },
+      visible: {
+        scale: 1, 
+        opacity: 1,
+        transition: {
+          duration: 0.25
+        }
+      }
+    }
+    
     const colors = {"#1d9bf0":"bg-[#1d9bf0]", "#ffd400":"bg-[#ffd400]", "#f91880":"bg-[#f91880]", "#7856ff":"bg-[#7856ff]", "#ff7a00":"bg-[#ff7a00]", "#00ba7c":"bg-[#00ba7c]"}
     return (
       <div className='w-full h-full absolute top-0 left-0 bg-[#000000]/[.2] z-40 flex justify-center items-center dark:bg-[#ffffff]/[.2]' onMouseDown={()=>{setShowMenu(false)}}>
-        <div className={'s6:w-[560px] s6:h-[55%] flex items-center w-full h-full s6:rounded-2xl bg-['+ (modes[bgMode][1]) + ']'} onMouseDown={(e)=>{e.stopPropagation()}}>
+        <motion.div key={"0"} variants={variants} initial='hidden' animate='visible' exit="hidden" className={'s6:w-[560px] s6:h-[55%] flex items-center w-full h-full s6:rounded-2xl bg-['+ (modes[bgMode][1]) + ']'} onMouseDown={(e)=>{e.stopPropagation()}}>
           <div className='s6:w-full s6:h-full h-[60%] p-3 flex flex-col justify-between items-center'>
             <div className='text-center'>
               <h1 className='font-bold text-[20px] dark:text-[#ffffff]'>Customize your view</h1>
@@ -123,16 +139,14 @@ function MainMenu({setPostOpen, tab}) {
                 </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     )
-  }
+  })
 
   useEffect(()=>{
       updateTheme()
   }, [bg])
-
-    
 
   const menu = [
     [<HouseIcon picked={[active,"Home"]}/>,"Home"],
@@ -147,8 +161,6 @@ function MainMenu({setPostOpen, tab}) {
     [<DisplayIcon />,"Display"]
     
   ]
-
-  
 
   const verify = (e,n,element) => {
     if (n === 1) {
@@ -184,7 +196,6 @@ function MainMenu({setPostOpen, tab}) {
     }
   }
 
-
   useEffect(()=>{
     window.document.addEventListener("click", ()=>{
       if (logout) {
@@ -193,10 +204,11 @@ function MainMenu({setPostOpen, tab}) {
     })
   }, [])
 
-
   return (
     <div className='s13:w-[34.5%] pt-1 max-s13:max-w-[15%] s8:pr-2 px-1' onClick={showLogout}>
-      {showMenu && <UpdateDisplay />}
+      <AnimatePresence>
+        {showMenu && updateDisplay}
+      </AnimatePresence>
       <div className='flex flex-col items-end h-[99%] justify-between'>
         <div className='mx-auto s8:mx-0 s13:w-[16rem]'>
           <div className='flex flex-col s13:items-start items-end'>

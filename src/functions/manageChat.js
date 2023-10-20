@@ -1,137 +1,61 @@
-import { domain } from "./config";
+import { fetchTemplate } from "./config"
 
 // Function to create a new chat with a user
-async function createChats(token, user) {
-  try {
-    // Send a POST request to create a new chat
-    const response = await fetch(domain + "/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        userId: user,
-      }),
-    });
+async function createChats(token, userId) {
 
-    // Successfully created a new chat, log and return the JSON response
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-    return null;
+  const body = {
+    userId
   }
+
+  return await fetchTemplate("/api/chat", "json", "POST", token, body)
 }
 
 // Function to get a list of user's chats
 async function getChats(token, last) {
-  try {
-    // Send a POST request to fetch a list of user's chats
-    const response = await fetch(domain + "/api/chats", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ last: last }),
-    });
 
-    // Successfully fetched user's chats, log and return the JSON response
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-    return null;
+  const body = {
+    last
   }
+
+  return await fetchTemplate("/api/chats", "json", "POST", token, body)
 }
 
 // Function to delete a chat by its ID
 async function deleteChat(token, chatId) {
-  try {
-    // Send a DELETE request to delete a chat by its ID
-    const response = await fetch(domain + "/api/chats", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        chatId: chatId,
-      }),
-    });
 
-    // Successfully deleted the chat, log and return the JSON response
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-    return null;
+  const body = {
+    chatId
   }
+  return await fetchTemplate("/api/chats", "json", "DELETE", token, body)
 }
 
 // Function to send a message in a chat
 async function sendMessage(token, message) {
-  try {
-    // Send a POST request to send a message in a chat
-    const response = await fetch(domain + "/api/message", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        chat: message.chatId,
-        content: message.content,
-        media: message.media,
-      }),
-    });
 
-    // Successfully sent the message, return the JSON response
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-    return null;
+  const body = {
+    chat: message.chatId,
+    content: message.content,
+    media: message.media,
   }
+
+  return await fetchTemplate("/api/message", "json", "POST", token, body)
 }
 
 // Function to retrieve messages for a specific chat
 async function retrieveMessages(token, chatId) {
-  try {
-    // Send a GET request to retrieve messages for a specific chat
-    const response = await fetch(domain + "/api/message?chat=" + chatId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+  
+  const body = {}
 
-    // Successfully retrieved messages, return the JSON response
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-    return null;
-  }
+  return await fetchTemplate("/api/message?chat=" + chatId, "json", "GET", token, body)
 }
 
 // Function to check if a chat with a specific participant exists
 async function checkChat(token, participant) {
-  try {
-    // Send a GET request to check if a chat with a specific participant exists
-    const response = await fetch(
-      domain + "/api/chat?participant=" + participant,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
 
-    // Successfully checked the chat, return the JSON response
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-    return null;
-  }
-}
+  const body = {}
+
+  return await fetchTemplate("/api/chat?participant=" + participant, "json", "GET", token, body)
+} 
 
 // Export the chat-related functions
 export {
