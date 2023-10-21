@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 
-export const domain = "https://xclone-api-git-master-aymanechabat.vercel.app"
+export const domain = "http://localhost:9001"
 
 export async function fetchTemplate(endpoint, type, method, token, body) {
   return await fetch(domain + endpoint, {

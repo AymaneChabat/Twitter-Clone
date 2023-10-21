@@ -77,7 +77,7 @@ function MainMenu({setPostOpen, tab}) {
     const colors = {"#1d9bf0":"bg-[#1d9bf0]", "#ffd400":"bg-[#ffd400]", "#f91880":"bg-[#f91880]", "#7856ff":"bg-[#7856ff]", "#ff7a00":"bg-[#ff7a00]", "#00ba7c":"bg-[#00ba7c]"}
     return (
       <div className='w-full h-full absolute top-0 left-0 bg-[#000000]/[.2] z-40 flex justify-center items-center dark:bg-[#ffffff]/[.2]' onMouseDown={()=>{setShowMenu(false)}}>
-        <motion.div key={"0"} variants={variants} initial='hidden' animate='visible' exit="hidden" className={'s6:w-[560px] s6:h-[55%] flex items-center w-full h-full s6:rounded-2xl bg-['+ (modes[bgMode][1]) + ']'} onMouseDown={(e)=>{e.stopPropagation()}}>
+        <motion.div key={"0"} variants={variants} initial='hidden' animate='visible' exit="hidden" className={'s6:w-[560px] s6:h-[500px] max-h-[90%] flex items-center w-full h-full s6:rounded-2xl bg-['+ (modes[bgMode][1]) + ']'} onMouseDown={(e)=>{e.stopPropagation()}}>
           <div className='s6:w-full s6:h-full h-[60%] p-3 flex flex-col justify-between items-center'>
             <div className='text-center'>
               <h1 className='font-bold text-[20px] dark:text-[#ffffff]'>Customize your view</h1>

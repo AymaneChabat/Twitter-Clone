@@ -20,7 +20,7 @@ function Main({ setOpened, opened, w }) {
 
   const localChoices = ["For you", "Following"];
   const Header = React.useMemo(() => (
-      <div className="w-full h-auto bg-transparent bg-blur backdrop-blur-md sticky top-0 z-20 overflow-hidden">
+      <div className="w-full h-auto bg-[#ffffff]/[.7] bg-blur backdrop-blur-md sticky top-0 z-20 overflow-hidden">
         <div className="py-3 px-2">
           <header className="ml-1 text-[18px] text-400 font-bold hidden items-center mr-4 s6:flex justify-between items-center">
             <h1 className="dark:text-[#ffffff]">Home</h1>
