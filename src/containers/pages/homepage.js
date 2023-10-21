@@ -55,7 +55,7 @@ function Template() {
         id="MainDiv"
         className="flex h-screen overflow-hidden"
       >
-        <FinalMenu w={w} />
+        <FinalMenu opened={opened} w={w} setOpened={setOpened}/>
         <Routes>
           {elements &&
             elements.map((element, index) => (

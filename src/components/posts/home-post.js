@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PickAudience from './audience';
 import PickReplies from './repliesAudience';
 import { addPost, addReply } from '../../redux/actions/postActions';

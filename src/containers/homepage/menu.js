@@ -7,8 +7,9 @@ import { BackArrowIcon } from "../../components/icons/messages";
 import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import SlideMenu from "../../components/menu/menu-types/slide-menu-sm";
 
-function FinalMenu({ w }) {
+function FinalMenu({ w, opened, setOpened }) {
   const theme = useSelector((state) => state.color.theme);
   const [postOpen, setPostOpen] = useState(false);
   const location = useLocation();
@@ -35,8 +36,7 @@ function FinalMenu({ w }) {
   }, [location]);
 
   return (
-    <>
-      <AnimatePresence initial={true} mode="popLayout">
+      <AnimatePresence initial={true} mode="sync">
         {postOpen &&
           <div className={ "absolute w-full h-full s7:bg-[#000000]/[.4] z-50 s7:pt-[50px] bg-[#ffffff] " + bg() } onMouseDown={ () => {setPostOpen(false);} }>
             <div className="px-4 py-2 s7:hidden"onClick={() => {setPostOpen(false);}}>
@@ -47,30 +47,38 @@ function FinalMenu({ w }) {
             </motion.div>
           </div>
         }
+        {w < 600 ? (
+            <>
+              <BottomMenuSM key={200} />
+            </>
+        ) : (
+          <MainMenu
+            setPostOpen={setPostOpen}
+            tab={page.charAt(0).toUpperCase() + page.slice(1)}
+          />
+        )}
+        {w < 600 && page === "home" ? (
+          <>
+            {opened ? 
+              <motion.div>
+                <SlideMenu key={opened} opened={opened} setOpened={setOpened} /> 
+              </motion.div>
+                : ""}
+            
+            <div className="fixed right-4 bottom-[70px] z-20"  onClick={() => {setPostOpen(true);}}>
+              <button
+                type="button"
+                class="text-white s13:w-[16rem] px-0.5 s13:px-0 s13:py-3 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md"
+              >
+                <PostIcon />
+              </button>
+            </div> 
+          </>
+        ) : (
+          ""
+        )}
       </AnimatePresence>
-      {w < 600 ? (
-          <AnimatePresence initial={true} mode="popLayout">
-            <BottomMenuSM />
-          </AnimatePresence>
-      ) : (
-        <MainMenu
-          setPostOpen={setPostOpen}
-          tab={page.charAt(0).toUpperCase() + page.slice(1)}
-        />
-      )}
-      {w < 600 && page === "home" ? (
-        <div className="fixed right-4 bottom-[70px] z-20"  onClick={() => {setPostOpen(true);}}>
-          <button
-            type="button"
-            class="text-white s13:w-[16rem] px-0.5 s13:px-0 s13:py-3 bg-[#1ca4ff] hover:bg-[#0292f2] font-medium rounded-full transition duration-300 text-md"
-          >
-            <PostIcon />
-          </button>
-        </div>
-      ) : (
-        ""
-      )}
-    </>
+
   );
 }
 

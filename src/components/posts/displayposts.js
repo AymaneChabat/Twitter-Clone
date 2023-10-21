@@ -36,16 +36,16 @@ export default function DisplayPosts({tab, user}) {
         }
     }
 
-    const element = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
+    
     
     useEffect(()=>{
-        const e = element
-        if (e) {
+        const e = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
+        return () => {
             e.addEventListener("scroll", (e) => {
                 setScrollPos(e.currentTarget.scrollTop)
             })
         }
-    }, [element])
+    }, [])
 
     const last = () => {
         const userPosts = posts[tab].find((posts) => posts.user === user.id)
@@ -67,6 +67,7 @@ export default function DisplayPosts({tab, user}) {
     }
 
     useEffect(() => {
+        const element = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
         if (!loading) {
             if (tab === "home" || tab === "following") {
                 if (postsFound().length === 0) {
@@ -84,13 +85,13 @@ export default function DisplayPosts({tab, user}) {
         }
         prevScroll.current = scrollPos;
     }, [scrollPos, tab]);
-
+    
     return (
         <AnimatePresence initial={false}>
             {postsFound() && postsFound().map((post, index)=>(
                 <motion.div
                 variants={postsVariants}
-                key={index}
+                key={post}
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
