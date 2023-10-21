@@ -2,10 +2,7 @@
 
 Welcome to X / Twitter Clone! This project replicates the core features of Twitter, using ReactJS, Firebase, ExpressJS, Redux, and Rest APIs. Whether you're looking to learn how such a platform is built or you'd like to contribute, you're in the right place.
 
-
-
-https://github.com/AymaneChabat/Twitter-Clone/assets/92991595/07bc3b22-d1e9-456c-acc6-c3e60cd47c6e
-
+[![Watch the video](https://images.frandroid.com/wp-content/uploads/2023/07/x-logo-twitter-elon-musk.jpg)](https://www.youtube.com/watch?v=cN_kYsyfCkA)
 
 
 ## 📂 Repositories
