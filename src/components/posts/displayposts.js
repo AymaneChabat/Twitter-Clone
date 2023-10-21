@@ -40,11 +40,9 @@ export default function DisplayPosts({tab, user}) {
     
     useEffect(()=>{
         const e = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
-        return () => {
-            e.addEventListener("scroll", (e) => {
-                setScrollPos(e.currentTarget.scrollTop)
-            })
-        }
+        e.addEventListener("scroll", (e) => {
+            setScrollPos(e.currentTarget.scrollTop)
+        })
     }, [])
 
     const last = () => {
@@ -68,21 +66,23 @@ export default function DisplayPosts({tab, user}) {
 
     useEffect(() => {
         const element = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
-        if (!loading) {
+        if (loading === false) {
             if (tab === "home" || tab === "following") {
                 if (postsFound().length === 0) {
                     getPostTemp(undefined, undefined)
-                } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight === element.scrollHeight) {
+                } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight > element.scrollHeight - 500) {
                     getPostTemp(posts[tab][posts[tab].length - 1], undefined)
                 }
             } else {
                 if (postsFound() === undefined) {
                     getPostTemp(last(), user.info.username)
-                } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight === element.scrollHeight) {
+                } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight > element.scrollHeight - 500) {
+                    setLoading(true)
                     getPostTemp(last(), user.info.username)
                 }
             }
         }
+
         prevScroll.current = scrollPos;
     }, [scrollPos, tab]);
     

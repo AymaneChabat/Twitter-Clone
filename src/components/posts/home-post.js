@@ -32,7 +32,6 @@ function HomePost({floating, setPostOpen, type, postId, username}) {
         const contentWithBr = removeDivTag.replace(/<br>/g, '\n');
 
         const sanitizedHTML = DOMPurify.sanitize(contentWithBr);
-        console.log(sanitizedHTML)
         return sanitizedHTML;
     };
 

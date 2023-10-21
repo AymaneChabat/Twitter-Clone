@@ -13,6 +13,7 @@ function Main({ setOpened, opened, w }) {
   const color = useSelector((state) => state.color.color);
   const currUser = useSelector((state) => state.currUser);
   const users = useSelector((state) => state.users);
+  const [scrollPos, setScrollPos] = useState(0);
   const [tab, setTab] = useState("For you");
   const [updating, setUpdating] = useState(false);
 
@@ -36,7 +37,7 @@ function Main({ setOpened, opened, w }) {
               <div
                 className="bg-[#000000] h-[30px] w-[30px] rounded-full"
                 onClick={() => {
-                  setOpened(true)
+                  setOpened(true);
                 }}
               ></div>
             </div>
@@ -51,6 +52,7 @@ function Main({ setOpened, opened, w }) {
     <section 
       id="home"
       className="s10:max-w-[32%] s10:min-w-[600px] flex-grow border-l border-r dark:border-[#ffffff]/[.3] border-[#1d9bf0]/[.1] s6:mb-0 s6:h-auto h-[93%] overflow-y-auto overflow-x-hidden"
+      onScroll={(e)=>setScrollPos(e.currentTarget.scrollTop)}
       >
       <AnimatePresence mode="wait">
         {updating && <UpdateUsername setUpdating={setUpdating} username={users.activeprofiles.find((user) => user.id === currUser.user).info.username}/>}
@@ -58,7 +60,8 @@ function Main({ setOpened, opened, w }) {
       {Header}
       <div className="h-[90.4%]">
         {w >= 600 ? <HomePost color={color} /> : ""}
-        {<DisplayPosts  user={undefined} tab={tab === "For you" ? "home" : "following"}/>}
+        {<DisplayPosts user={undefined} tab={tab === "For you" ? "home" : "following"} scrollPos={scrollPos}/>}
+        {opened ? <SlideMenu opened={opened} setOpened={setOpened} /> : ""}
       </div>
     </section>
   );
