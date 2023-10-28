@@ -47,7 +47,7 @@ function HomePost({floating, type, postId, username, setReplying}) {
         setImages([])
         if (floating && type !== "reply") {
             navigate(-1)
-        } else {
+        } else if (type === "reply") {
             setReplying(false)
         }
     }
