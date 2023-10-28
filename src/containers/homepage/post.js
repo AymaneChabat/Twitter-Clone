@@ -2,7 +2,7 @@ import { BackArrowIcon } from "../../components/icons/messages";
 import { Dots } from "../../components/icons/menu";
 import DisplayImages from "../../components/posts/displayImages";
 import DisplayPost from "../../components/posts/displaypost";
-import InteractionButtons from "../../components/buttons/model";
+import InteractionButtons from "../../components/buttons/interaction_buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -26,6 +26,10 @@ function Post() {
     post !== undefined
       ? users.activeprofiles.find((user) => user.id === post.post.userId)
       : undefined;
+
+  const returnPostContent = (content) =>{
+    return content.replace(/<div>(.*?)<\/div>/g, '\n$1');
+    }
 
   useEffect(() => {
     if (post === undefined) {
@@ -96,7 +100,7 @@ function Post() {
             </div>
             <div className="border-b border-[#1d9bf0]/[.1]">
               <p className="text-[#0f1419]/[.8] text-[15px] leading-[20px] break-words dark:text-[#ffffff]">
-                {post.post.content}
+                {returnPostContent(post.post.content)}
                 <div className="mt-4">
                   {post.post.media.length > 0 && (
                     <DisplayImages images={post.post.media} posting={false} />

@@ -83,14 +83,14 @@ export default function UserProfile({profile, setFullScreen, setUpdating}) {
         <span className="text-[#536471] font-chirp ml-1 mt-1 text-sm mx-3">
             <strong>
             {id === currUser.user ? info.following.length : info.following}
-            </strong>{" "}
-            Following
+            </strong>
+            &nbsp; Following
         </span>
         <span className="text-[#536471] font-chirp ml-1 mt-1 text-sm mx-3">
             <strong>
             {id === currUser.user ? info.followers.length : info.followers}
-            </strong>{" "}
-            Followers
+            </strong>
+            &nbsp; Followers
         </span>
         </div>
     );

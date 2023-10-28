@@ -1,5 +1,5 @@
 import { BackArrowIcon } from "../../components/icons/messages";
-import ChoiceButtons from "../../components/buttons/choice";
+import TabNavigation from "../../components/buttons/tab_navigation";
 import UpdateUser from "../../components/profiles/updateuser";
 import { useNavigate, useParams } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
@@ -12,8 +12,8 @@ import DisplayPosts from "../../components/posts/displayposts";
 import { AnimatePresence } from "framer-motion";
 
 function Profile() {
-  const choices = ["Posts", "Replies", "Media", "Likes"];
-  const [chosen, setChosen] = useState("Posts");
+  const tabs = ["Posts", "Replies", "Media", "Likes"];
+  const [activeTab, setActiveTab] = useState("Posts");
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,8 +56,7 @@ function Profile() {
       </AnimatePresence>
       <div
         id="profile"
-        className="box-border s10:w-[30%] s10:min-w-[600px] flex-grow border-l border-r border-[#1d9bf0]/[.1] overflow-auto relative mb-[60px] s6:mb-0 dark:border-[#ffffff]/[.3]"
-      >
+        >
         <div className="w-full box-border px-3 h-[60px] flex items-center justify-between bg-transparent z-50">
           <div
             className="p-2 hover:bg-[#000000]/[.1] rounded-full cursor-pointer"
@@ -83,10 +82,10 @@ function Profile() {
         <div className="relative">
           <UserProfile profile={{ id, info }} setFullScreen={setFullScreen} setUpdating={setUpdating}/>
           <div className="mt-3">
-                <ChoiceButtons choices={choices} setChosen={setChosen} />
+                <TabNavigation onTabSelect={setActiveTab} tabLabels={tabs} />
           </div>
-          <DisplayPosts tab={chosen.toLowerCase() === "posts" ? "profile" : chosen.toLowerCase()} user={{id, info}}/>
         </div>
+        <DisplayPosts tab={activeTab.toLowerCase() === "posts" ? "profile" : activeTab.toLowerCase()} user={{id, info}}/>
       </div>
     </Fragment>
   ) : (

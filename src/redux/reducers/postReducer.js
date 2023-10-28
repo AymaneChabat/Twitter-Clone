@@ -414,11 +414,14 @@ const initialState = {
         localStatePosts.push(payload.res);
         // Increment comment list
         localStatePosts[i2].post.comments += 1;
-        // Add the comment to the replies
-        localStatePostReplies[i1].replies = [
-          payload.res.postPath,
-          ...localStatePostReplies[i1].replies,
-        ];
+
+        if (i1 !== -1) {
+          // Add the comment to the replies
+          localStatePostReplies[i1].replies = [
+            payload.res.postPath,
+            ...localStatePostReplies[i1].replies,
+          ];
+        }
   
         return {
           ...state,

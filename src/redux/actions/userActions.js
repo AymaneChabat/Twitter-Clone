@@ -9,7 +9,9 @@ import {
   // Action creator to fetch a list of users based on optional parameters
   export const getUsers =
     (username, token, tab, limit, last, setLoad) => (dispatch) => {
-      setLoad(true);
+      if ( setLoad ) {
+        setLoad(true);
+      }
       // Call the fetchUsers function to fetch a list of users
       fetchUsers(username, token, limit, last).then((res) => {
         if (tab === "explore") {
@@ -27,7 +29,9 @@ import {
           type: "GET_USERS",
           payload: { res, tab },
         });
-        setLoad(false);
+        if ( setLoad ) {
+          setLoad(false);
+        }
       });
     };
   

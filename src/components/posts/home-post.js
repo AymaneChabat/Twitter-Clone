@@ -8,8 +8,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import DisplayImages from './displayImages';
 import TwitterButton from '../buttons/twitterbutton';
 import DOMPurify from 'dompurify';
+import { useNavigate } from 'react-router';
 
-function HomePost({floating, setPostOpen, type, postId, username}) {
+function HomePost({floating, type, postId, username, setReplying}) {
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state => state.users)
     const [posting, setPosting] = useState(false)
@@ -18,6 +19,7 @@ function HomePost({floating, setPostOpen, type, postId, username}) {
     const [images,setImages] = useState([])
     const dispatch = useDispatch()
     const color = useSelector(state => state.color.color)
+    const navigate = useNavigate()
 
     const handleInput = (e) => {
         const c = e.currentTarget.innerHTML;
@@ -43,9 +45,11 @@ function HomePost({floating, setPostOpen, type, postId, username}) {
         document.querySelector("#contentDiv").innerHTML = ""
         setContent("")
         setImages([])
-        if (floating) {
-            setPostOpen(false)
-        }  
+        if (floating && type !== "reply") {
+            navigate(-1)
+        } else {
+            setReplying(false)
+        }
     }
 
     const post = () => {

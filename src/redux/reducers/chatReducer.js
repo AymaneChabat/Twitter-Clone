@@ -48,13 +48,6 @@ const chatReducer = (state = initialState, action) => {
         activeChat: payload.newChat.chat.id,
       };
 
-    case "SELECT_CHAT":
-      // Update the state with the selected active chat
-      return {
-        ...state,
-        activeChat: payload.active,
-      };
-
     case "DELETE_CHAT":
       // Define a helper function to conditionally return values
       const res = (r1, r2) => (payload.id === state.activeChat ? r1 : r2);

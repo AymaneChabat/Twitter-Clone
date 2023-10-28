@@ -40,9 +40,10 @@ function UpdateUsername({ setUpdating, username }) {
         setUpdating(false);
       };
 
+  console.log(window.location)
   return (
     <div className="absolute left-0 top-0 w-full h-full bg-[#ffffff] s6:bg-[#000000]/[.5] z-40 flex justify-center items-center dark:bg-[#ffffff]/[.4]"
-      onMouseDown={() => [setUpdating(false)]}>
+      onMouseDown={() => setUpdating(false)}>
       <motion.div
         key="0" variants={usernameVariants} initial="hidden" animate="visible" exit="hidden" 
         className="w-full h-full bg-[#ffffff] flex justify-center items-center s6:h-[700px] s6:max-w-[500px] p-4 dark:bg-[#000000] rounded-xl animate-fade-in"

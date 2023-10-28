@@ -4,14 +4,15 @@ import { getPost } from "../../redux/actions/postActions";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import LoadingIcon from "../icons/loading";
+import { Fragment } from "react";
 
 export default function DisplayPosts({tab, user}) {
     const posts = useSelector((state) => state.posts);
     const currUser = useSelector(state => state.currUser)
     const [loading, setLoading] = useState(false)
-    const [scrollPos, setScrollPos] = useState(0);
     const prevScroll = useRef(0)
-
+    const [scrollPos, setScrollPos] = useState(0);
+    const postList = useSelector(state => state.posts.posts)
     const dispatch = useDispatch()
 
     const postsFound = () => {
@@ -22,28 +23,7 @@ export default function DisplayPosts({tab, user}) {
         }
     }
 
-    const postsVariants = {
-        hidden: {
-            height: 0,
-            opacity: 0
-        },
-        visible: {
-            height: "auto",
-            opacity: 1,
-            transition: {
-                duration: 1
-            }
-        }
-    }
 
-    
-    
-    useEffect(()=>{
-        const e = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
-        e.addEventListener("scroll", (e) => {
-            setScrollPos(e.currentTarget.scrollTop)
-        })
-    }, [])
 
     const last = () => {
         const userPosts = posts[tab].find((posts) => posts.user === user.id)
@@ -64,8 +44,15 @@ export default function DisplayPosts({tab, user}) {
         dispatch(getPost(undefined, tab, last, username, currUser.token, setLoading))
     }
 
+    useEffect(()=>{
+        const element = document.getElementById("main");
+        element.addEventListener("scroll", (e)=>{
+            setScrollPos(e.currentTarget.scrollHeight)
+        })
+    }, [])
+
     useEffect(() => {
-        const element = document.getElementById(tab !== "home" && tab !== "following" ? "profile" : "home");
+        const element = document.getElementById("main");
         if (loading === false) {
             if (tab === "home" || tab === "following") {
                 if (postsFound().length === 0) {
@@ -77,43 +64,39 @@ export default function DisplayPosts({tab, user}) {
                 if (postsFound() === undefined) {
                     getPostTemp(last(), user.info.username)
                 } else if (prevScroll.current < scrollPos && scrollPos + element.clientHeight > element.scrollHeight - 500) {
-                    setLoading(true)
                     getPostTemp(last(), user.info.username)
                 }
             }
         }
 
+
         prevScroll.current = scrollPos;
     }, [scrollPos, tab]);
-    
+
     return (
-        <AnimatePresence initial={false}>
+        <Fragment>
             {postsFound() && postsFound().map((post, index)=>(
-                <motion.div
-                variants={postsVariants}
-                key={post}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                >
+                <div>
                     { tab !== "replies" 
                     ? 
-                    <DisplayPost postPath={post} /> : 
-                    <>
+                    <DisplayPost postPath={post} postList={postList} key={index}/> : 
+                    <Fragment>
                         <DisplayPost
                         postPath={post.mainPost}
                         key={post + "1"}
                         main={true}
+                        postList={postList}
                         />
                         <DisplayPost
                         postPath={post.replyPost}
                         key={post + "2"}
                         reply={true}
+                        postList={postList}
                         />
-                    </>}
-                </motion.div>
+                    </Fragment>}
+                </div>
             ))}
             {loading && <LoadingIcon />}
-        </AnimatePresence>
+        </Fragment>
     )
 }

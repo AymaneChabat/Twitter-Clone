@@ -1,28 +1,89 @@
 import { IconTwitter } from '../../icons/logos';
-import Dropdowns from '../../../components/menu/dropdowns';
 import { ProfileIcon, CommunityIcon, BookmarkIcon, ListIcon } from '../../icons/menu'
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { AnalyticsIcon, AdsIcon, SettingsIcon, HelpIcon, DataIcon, DisplayIcon, KeyboardIcon, LogoutIcon } from '../../icons/menu';
+import { useDispatch } from 'react-redux';
+import { DownArrow } from '../../icons/menu';
+import { signOut } from "../../../redux/actions/authActions"
+import { AnimatePresence, motion } from 'framer-motion';
 
-function SlideMenu({setOpened}) {
+
+const dropdown = [
+    ["Creator Studio", [
+            [<AnalyticsIcon />, "Analytics"]
+        ]
+    ],
+    ["Professional Tools", [
+            [<AdsIcon />, "Ads"]
+        ]
+    ],
+    ["Settings and Support", [
+            [<SettingsIcon margin={'mr-[12px]'}/>, "Settings and privacy"],
+            [<HelpIcon />, "Help Center"],
+            [<DataIcon />, "Data saver"],
+            [<DisplayIcon />, "Display"],
+            [<KeyboardIcon />, "Keyboard shortcuts"],
+            [<LogoutIcon />, "Log out"]
+        ]
+    ]
+]
+
+const menu = [
+    [<ProfileIcon />,"Profile"],
+    [<IconTwitter clas={"w-[26px]"}/>,"Verified"],
+    [<ListIcon />,"Lists"],
+    [<BookmarkIcon />,"Bookmarks"],
+    [<CommunityIcon />,"Communities"],
+]
+
+function Dropdown({item}) {
+    const [active,setActive] = useState(false)
+    const dispatch = useDispatch()
+
+    const parentVariants = {
+        inactive: {
+            rotate: 0
+        },
+        active: {
+            rotate: 540
+        }
+    }
+
+    return (
+        <div className='w-[90%] mx-auto mt-2 mb-6'>
+            <div className='flex justify-between items-center' onClick={()=>{active ? setActive(false) : setActive(true)}}>
+                <span className='font-semibold text-[#000000]/[.9] dark:text-[#ffffff]'>{item[0]}</span>
+                    <motion.div variants={parentVariants} animate={active ? "active" : "inactive"}>
+                        <DownArrow active={active}/>
+                    </motion.div>
+            </div>
+            <div className={active ? 'pt-2 block' : 'pt-2 hidden'}>
+                {item[1].map((data, index) => (
+                    <div className='flex py-2 w-[100%] items-center' onClick={data[1] === "Log out" ? ()=>{dispatch(signOut())} : ""} key={index}>
+                        {data[0]}
+                        <span className='font-medium text-[16px] text-[#000000]/[.7] -mb-0.5 dark:text-[#ffffff] ml-2'>{data[1]}</span>
+                    </div>  
+                    ))}
+            </div>
+        </div>
+    )
+
+}
+
+function SlideMenu() {
     const currUser = useSelector(state => state.currUser)
     const users = useSelector(state => state.users)
     const user = users.activeprofiles.find(user => user.id === currUser.user)
     const theme = useSelector(state => state.color.theme)
+    const navigate = useNavigate()
 
     const variants = {
         hidden: { x: "-50%" },
         visible: { x: "0" }
     }
 
-    const menu = [
-        [<ProfileIcon picked={["",null]}/>,"Profile"],
-        [<IconTwitter clas={"w-[26px]"}/>,"Verified"],
-        [<ListIcon picked={["",null]}/>,"Lists"],
-        [<BookmarkIcon picked={["",null]}/>,"Bookmarks"],
-        [<CommunityIcon picked={["",null]}/>,"Communities"],
-    ]
 
     const DisplayMenuItems = ({data}) => (
         <div className='py-0.5'>
@@ -36,7 +97,7 @@ function SlideMenu({setOpened}) {
     const bgs = {"dim": "dark:bg-[#15202b]", "dark": "dark:bg-[#000000]", "light": "bg-[#ffffff]"}
 
     return (
-        <div className='absolute top-0 h-full w-full bg-[#000000]/[.4] z-[100] block ' onClick={()=>{setOpened(false)}}>
+        <div className='absolute top-0 h-full w-full bg-[#000000]/[.4] z-[100] block ' onClick={()=>{navigate(-1)}}>
             <motion.div key={0} variants={variants} initial="hidden" animate="visible" exit="hidden" className={'flex flex-col h-[100%] w-[280px] overflow-y-auto transition-all transition-500 ' + (bgs[theme])} onClick={(e)=>{e.stopPropagation()}}>
                 <div className='w-[90%] mx-auto mt-5'>
                     <div className='bg-[#000000] rounded-full h-[40px] w-[40px]'></div>
@@ -57,14 +118,18 @@ function SlideMenu({setOpened}) {
                     <div className='h-[100%] flex flex-col justify-around mt-2 xl:items-start items-center'>
                         <ul className='w-[90%] dark:text-[#ffffff]'>
                         {menu.map((pick, index) => (
-                            <Link to={'/profile/' + user.info.username} key={index} className={pick[1] !== "Profile" ? 'pointer-events-none' : ""} onClick={()=>{setOpened(false)}}>
+                            <Link to={'/profile/' + user.info.username} key={index} className={pick[1] !== "Profile" ? 'pointer-events-none' : ""} onClick={()=>{navigate(-1)}}>
                                 <DisplayMenuItems data={pick}/>
                             </Link>
                         ))}
                         </ul>
                     </div>
                 </div>
-                <Dropdowns />
+                <AnimatePresence>
+                    {dropdown.map((item, index)=>(
+                        <Dropdown item={item} key={index}/>
+                    ))}
+                </AnimatePresence>
             </motion.div>
         </div>
     );

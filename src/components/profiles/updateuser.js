@@ -1,4 +1,4 @@
-import { UploadImage } from "../icons/profile";
+import { UploadImage, CloseIcon } from "../icons/profile";
 import { DeleteIcon } from "../icons/posts";
 import CredentialInput from "../inputs/credentials";
 import ReactFileReader from "react-file-reader";
@@ -59,10 +59,10 @@ function UpdateUser({ setUpdating, user }) {
   };
 
   return (
-    <div className="absolute w-full h-full bg-[#000000]/[.7] z-50 flex justify-center items-center dark:bg-[#ffffff]/[.2] " onMouseDown={()=> { setUpdating(false); }} > 
+    <div className="absolute w-full h-full left-0 bg-[#000000]/[.7] z-50 flex justify-center items-center dark:bg-[#ffffff]/[.2] " onMouseDown={()=> { setUpdating(false); }} > 
       <motion.div key="0" variants={userVariants} initial="hidden" animate="visible" exit="hidden"  className="bg-[#ffffff] s7:w-[580px] s7:h-[620px] h-full w-full s7:rounded-lg relative dark:bg-[#000000] animate-fade-in" onMouseDown={(e)=> { e.stopPropagation(); }} > <div className="flex justify-between items-center p-2.5">
         <button className="hover:bg-[#000000]/[.1] p-2 rounded-full" onClick={()=> { setUpdating(false); }} >
-          <DeleteIcon />
+          <CloseIcon />
         </button>
         <span className="text-[20px] w-[75%] font-chirp font-bold py-2 dark:text-[#ffffff]"> Edit profile </span>
         <button className="bg-[#000000] text-[#ffffff] py-1 px-4 rounded-full dark:border dark:hover:bg-[#ffffff]/[.1]" onClick={updateUserData}> Save </button>

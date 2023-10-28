@@ -38,7 +38,7 @@ function DisplayImages({images, posting, setImages}) {
     return (
         
         
-        <div className='grid grid-cols-2 grid-rows-2 mb-3 justify-between w-[100%] h-[500px] rounded-xl overflow-hidden gap-0.5' onClick={(e)=>e.preventDefault()}>
+        <div className='grid grid-cols-2 grid-rows-2 mb-3 justify-between w-[100%] h-[500px] rounded-xl overflow-hidden gap-0.5 mt-2' onClick={(e)=>e.preventDefault()}>
             {fullscreen !== false ? imageFS : ""}
             {images.map((image, index)=> imageDisplay(image, index))}
         </div>
