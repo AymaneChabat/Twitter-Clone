@@ -30,6 +30,7 @@ This project was developed with a combination of technologies to ensure an optim
 - **[Tailwind CSS](https://tailwindcss.com/docs/installation)**: A predictable state container for JavaScript apps.
 - **[Create React App](https://github.com/facebook/create-react-app)**: A tool to set up a new React project with a good default configuration.
 - **REST APIs**: To communicate with backend services and get/send data.
+- **[Framer Motion](https://www.framer.com/motion/)**: To add animations to the front-end and make the web application smoother.
 
 ## 🚀 Setup
 
