@@ -62,6 +62,7 @@ To run the project locally, follow these steps:
 7. You are all set, all that is left is to run ```npm start``` in both folders
 
 Keep in mind that you will still be using my backend, the firebase you have updated will only be used for authentication.
+To use your own backend make sure to check the back end repository: [X Clone Backend Repository](https://github.com/AymaneChabat/twitter-backend)
 
 ## 📜 License
 
