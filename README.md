@@ -7,7 +7,7 @@ Welcome to X / Twitter Clone! This project replicates the core features of Twitt
 
 ## 📂 Repositories
 
-This repository contains the frontend code for X Clone. For the backend code, please visit the [X Clone Backend Repository](https://github.com/AymaneChabat/xclone-backend) which is currently privated.
+This repository contains the frontend code for X Clone. For the backend code, please visit the [X Clone Backend Repository](https://github.com/AymaneChabat/twitter-backend) which is currently privated.
 ## ✨ Features
 
 - 🔐 **User Authentication**: Sign up, login, and log out using firestore authentication.
