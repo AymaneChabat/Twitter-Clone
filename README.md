@@ -7,7 +7,7 @@ Welcome to X / Twitter Clone! This project replicates the core features of Twitt
 
 ## 📂 Repositories
 
-This repository contains the frontend code for X Clone. For the backend code, please visit the [X Clone Backend Repository](https://github.com/AymaneChabat/xclone-backend) which is currently privated.
+This repository contains the frontend code for X Clone. For the backend code, please visit the [Twitter Clone Backend Repository](https://github.com/AymaneChabat/twitter-backend) which is currently privated.
 ## ✨ Features
 
 - 🔐 **User Authentication**: Sign up, login, and log out using firestore authentication.
@@ -30,6 +30,7 @@ This project was developed with a combination of technologies to ensure an optim
 - **[Tailwind CSS](https://tailwindcss.com/docs/installation)**: A predictable state container for JavaScript apps.
 - **[Create React App](https://github.com/facebook/create-react-app)**: A tool to set up a new React project with a good default configuration.
 - **REST APIs**: To communicate with backend services and get/send data.
+- **[Framer Motion](https://www.framer.com/motion/)**: To add animations to the front-end and make the web application smoother.
 
 ## 🚀 Setup
 
@@ -61,6 +62,7 @@ To run the project locally, follow these steps:
 7. You are all set, all that is left is to run ```npm start``` in both folders
 
 Keep in mind that you will still be using my backend, the firebase you have updated will only be used for authentication.
+To use your own backend make sure to check the back end repository: [Twitter Clone Backend Repository](https://github.com/AymaneChabat/twitter-backend)
 
 ## 📜 License
 
