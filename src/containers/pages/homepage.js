@@ -4,7 +4,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IconTwitter } from "../../components/icons/logos";
 import FinalMenu from "../../containers/homepage/menu";
 import LastContainer from "../homepage/last-container";
@@ -16,7 +16,14 @@ import Post from "../homepage/post";
 import UpdateDisplay from "../homepage/updateDisplays";
 import FloatingPost from "../../components/posts/floating_post";
 import SlideMenu from "../../components/menu/menu-types/slide-menu-sm";
+import { signOut } from "../../redux/actions/authActions";
 
+const SignOutComponent = () => {
+  const dispatch = useDispatch()
+  return (
+    <div onLoad={()=>dispatch(signOut())}></div>
+  )
+}
 
 function Template() {
   const location = useLocation()
@@ -30,6 +37,7 @@ function Template() {
     ["/messages/:chat?/info?", <Messages />],
     ["/:username", <Profile />],
     ["/:username/*", <Post />],
+    ["/logout", <SignOutComponent />],
     ["/", <NotFound to="/home" />],
   ];
 

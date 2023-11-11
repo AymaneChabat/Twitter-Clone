@@ -1,12 +1,10 @@
 import { IconTwitter } from '../../icons/logos';
 import { ProfileIcon, CommunityIcon, BookmarkIcon, ListIcon } from '../../icons/menu'
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AnalyticsIcon, AdsIcon, SettingsIcon, HelpIcon, DataIcon, DisplayIcon, KeyboardIcon, LogoutIcon } from '../../icons/menu';
-import { useDispatch } from 'react-redux';
 import { DownArrow } from '../../icons/menu';
-import { signOut } from "../../../redux/actions/authActions"
 import { AnimatePresence, motion } from 'framer-motion';
 
 
@@ -20,7 +18,7 @@ const dropdown = [
         ]
     ],
     ["Settings and Support", [
-            [<SettingsIcon margin={'mr-[12px]'}/>, "Settings and privacy"],
+            [<SettingsIcon />, "Settings and privacy"],
             [<HelpIcon />, "Help Center"],
             [<DataIcon />, "Data saver"],
             [<DisplayIcon />, "Display"],
@@ -39,8 +37,18 @@ const menu = [
 ]
 
 function Dropdown({item}) {
+    const location = useLocation()
     const [active,setActive] = useState(false)
-    const dispatch = useDispatch()
+    const path = (item) => {
+        switch(item) {
+            case "Log out":
+                return "/logout"
+            case "Display":
+                return "/display"
+            default:
+                return ""
+        }
+    }
 
     const parentVariants = {
         inactive: {
@@ -56,15 +64,15 @@ function Dropdown({item}) {
             <div className='flex justify-between items-center' onClick={()=>{active ? setActive(false) : setActive(true)}}>
                 <span className='font-semibold text-[#000000]/[.9] dark:text-[#ffffff]'>{item[0]}</span>
                     <motion.div variants={parentVariants} animate={active ? "active" : "inactive"}>
-                        <DownArrow active={active}/>
+                        <DownArrow active={active} size={17}/>
                     </motion.div>
             </div>
             <div className={active ? 'pt-2 block' : 'pt-2 hidden'}>
                 {item[1].map((data, index) => (
-                    <div className='flex py-2 w-[100%] items-center' onClick={data[1] === "Log out" ? ()=>{dispatch(signOut())} : ""} key={index}>
+                    <Link to={path(data[1])} className={'flex py-2 w-[100%] items-center ' + (data[1] === "Log out" ? "cursor-pointer" : "cursor-default")} state={{previousLocation: location}} key={index}>
                         {data[0]}
                         <span className='font-medium text-[16px] text-[#000000]/[.7] -mb-0.5 dark:text-[#ffffff] ml-2'>{data[1]}</span>
-                    </div>  
+                    </Link>  
                     ))}
             </div>
         </div>

@@ -126,12 +126,12 @@ const DisplayPost = ({postPath, reply, main, postList, floating}) => {
                     </div>
                     <div className="w-[88%]">
                         <div className="flex w-full items-start justify-between">
-                            <div className="group flex flex justify-center items-center">
-                                <h1 className="flex mr-1" onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}>
-                                    <span id="name" className="font-bold text-[15px] hover:underline mr-1.5 dark:text-[#ffffff]">{user.info.name}</span> 
+                            <div className="group flex flex-wrap justify-start items-center text-left">
+                                <h1 className="flex mr-1 " onMouseOver={(e)=>{showPreview(e)}} onMouseOut={hidePreview}>
+                                    <span id="name" className="font-bold text-[15px] hover:underline mr-1.5 dark:text-[#ffffff] max-w-[150px] truncate overflow-hidden">{user.info.name}</span> 
                                     {user.info.username === "owner" ? <VerifiedIcon /> : ""}
                                 </h1>
-                                <span className="text-[15px] text-[#71767b]"><span className="text-[12px]">@</span>{user.info.username} · {postedAt(post.post.postedAt)}</span>
+                                <span className="text-[15px] text-[#71767b] max-w-[800px] truncate overflow-hidden"><span className="text-[12px]">@</span>{user.info.username} · {postedAt(post.post.postedAt)}</span>
                             </div>
                             <div onClick={(e)=>{e.stopPropagation(); e.preventDefault()}}>
                                 <div className="p-1.5 hover:bg-[#1D9BF0]/[.1] rounded-full" onClick={!options ? () => {setOptions(true)} : () => {setOptions(false)}}>
